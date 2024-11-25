@@ -11,18 +11,6 @@
                 </div>
                 <ul class="table-top-head">
                     <li>
-                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Pdf"><img src="assets/img/icons/pdf.svg"
-                                alt="img"></a>
-                    </li>
-                    <li>
-                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Excel"><img
-                                src="assets/img/icons/excel.svg" alt="img"></a>
-                    </li>
-                    <li>
-                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Print"><i data-feather="printer"
-                                class="feather-rotate-ccw"></i></a>
-                    </li>
-                    <li>
                         <a data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh"><i data-feather="rotate-ccw"
                                 class="feather-rotate-ccw"></i></a>
                     </li>
@@ -32,12 +20,8 @@
                     </li>
                 </ul>
                 <div class="page-btn">
-                    <a href="add-product.html" class="btn btn-added"><i data-feather="plus-circle" class="me-2"></i>Add
-                        New Product</a>
-                </div>
-                <div class="page-btn import">
-                    <a href="#" class="btn btn-added color" data-bs-toggle="modal" data-bs-target="#view-notes"><i
-                            data-feather="download" class="me-2"></i>Import Product</a>
+                    <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#tambahPegawai"><i
+                            data-feather="plus-circle" class="me-2"></i>Tambah Pegawai</a>
                 </div>
             </div>
 
@@ -602,4 +586,50 @@
             <!-- /product list -->
         </div>
     </div>
+
+    <!-- Add Pegawai -->
+    <div class="modal fade" id="tambahPegawai">
+        <div class="modal-dialog modal-dialog-centered custom-modal-two">
+            <div class="modal-content">
+                <div class="page-wrapper-new p-0">
+                    <div class="content">
+                        <div class="modal-header border-0 custom-modal-header">
+                            <div class="page-title">
+                                <h4>Tambah Pegawai</h4>
+                            </div>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body custom-modal-body">
+                            <form action="category-list.html">
+                                <div class="mb-3">
+                                    <label class="form-label">Category</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Category Slug</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class="mb-0">
+                                    <div
+                                        class="status-toggle modal-status d-flex justify-content-between align-items-center">
+                                        <span class="status-label">Status</span>
+                                        <input type="checkbox" id="user2" class="check" checked="">
+                                        <label for="user2" class="checktoggle"></label>
+                                    </div>
+                                </div>
+                                <div class="modal-footer-btn">
+                                    <button type="button" class="btn btn-cancel me-2"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-submit">Create Category</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Add Pegawai -->
 @endsection
