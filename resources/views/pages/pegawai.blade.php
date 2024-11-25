@@ -21,615 +21,350 @@
                 </ul>
                 <div class="page-btn">
                     <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#tambahPegawai"><i
-                            data-feather="plus-circle" class="me-2"></i>Tambah Pegawai</a>
+                            data-feather="plus-circle" class="me-2"></i>TAMBAH PEGAWAI</a>
                 </div>
             </div>
-
             <!-- /product list -->
-            <div class="card table-list-card">
-                <div class="card-body">
-                    <div class="table-top">
-                        <div class="search-set">
-                            <div class="search-input">
-                                <a href="javascript:void(0);" class="btn btn-searchset"><i data-feather="search"
-                                        class="feather-search"></i></a>
-                            </div>
+            <div class="card-body pb-0">
+                <div class="table-top table-top-two table-top-new">
+                    <div class="search-set mb-0">
+                        <div class="total-employees">
+                            <h6><i data-feather="users" class="feather-user"></i>Total Pegawai
+                                <span>{{ $count }}</span>
+                            </h6>
                         </div>
-                        <div class="search-path">
-                            <a class="btn btn-filter" id="filter_search">
-                                <i data-feather="filter" class="filter-icon"></i>
-                                <span><img src="assets/img/icons/closes.svg" alt="img"></span>
-                            </a>
-                        </div>
-                        <div class="form-sort">
-                            <i data-feather="sliders" class="info-img"></i>
-                            <select class="select">
-                                <option>Sort by Date</option>
-                                <option>14 09 23</option>
-                                <option>11 09 23</option>
-                            </select>
+                        <div class="search-input">
+                            <a href="#" class="btn btn-searchset"><i data-feather="search"
+                                    class="feather-search"></i></a>
+                            <input type="search" id="searchInput" class="form-control">
                         </div>
                     </div>
-                    <!-- /Filter -->
-                    <div class="card mb-0" id="filter_inputs">
-                        <div class="card-body pb-0">
-                            <div class="row">
-                                <div class="col-lg-12 col-sm-12">
-                                    <div class="row">
-                                        <div class="col-lg-2 col-sm-6 col-12">
-                                            <div class="input-blocks">
-                                                <i data-feather="box" class="info-img"></i>
-                                                <select class="select">
-                                                    <option>Choose Product</option>
-                                                    <option>
-                                                        Lenovo 3rd Generation</option>
-                                                    <option>Nike Jordan</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-2 col-sm-6 col-12">
-                                            <div class="input-blocks">
-                                                <i data-feather="stop-circle" class="info-img"></i>
-                                                <select class="select">
-                                                    <option>Choose Categroy</option>
-                                                    <option>Laptop</option>
-                                                    <option>Shoe</option>
-                                                </select>
-                                            </div>
-                                        </div>
+                </div>
+            </div>
+            <!-- /product list -->
 
-                                        <div class="col-lg-2 col-sm-6 col-12">
-                                            <div class="input-blocks">
-                                                <i data-feather="git-merge" class="info-img"></i>
-                                                <select class="select">
-                                                    <option>Choose Sub Category</option>
-                                                    <option>Computers</option>
-                                                    <option>Fruits</option>
-                                                </select>
-                                            </div>
-                                        </div>
 
-                                        <div class="col-lg-2 col-sm-6 col-12">
-                                            <div class="input-blocks">
-                                                <i data-feather="stop-circle" class="info-img"></i>
-                                                <select class="select">
-                                                    <option>All Brand</option>
-                                                    <option>Lenovo</option>
-                                                    <option>Nike</option>
-                                                </select>
-                                            </div>
-                                        </div>
+            <div class="employee-grid-widget">
+                <div class="row">
+                    @foreach ($pegawai as $item)
+                        <div class="col-xxl-3 col-xl-4 col-lg-6 col-md-6 employee-item" data-name="{{ $item->nama }}"
+                            data-nip="{{ $item->nip }}" data-jabatan="{{ $item->jabatan->jabatan }}">
+                            <div class="employee-grid-profile">
+                                <div class="profile-head">
+                                    <label class="checkboxs">
+                                        <span class="checkmarks"></span>
+                                    </label>
+                                    <div class="profile-head-action">
+                                        @if ($item->status == 1)
+                                            <span class="badge badge-linesuccess text-center w-auto me-1">Active</span>
+                                        @else
+                                            <span class="badge badge-linedanger text-center w-auto me-1">InActive</span>
+                                        @endif
+                                        <div class="dropdown profile-action">
+                                            <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
+                                                aria-expanded="false"><i data-feather="more-vertical"
+                                                    class="feather-user"></i></a>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a data-bs-effect="effect-sign" data-bs-toggle="modal"
+                                                        href="#modaledit{{ $item->id }}" class="dropdown-item"><i
+                                                            data-feather="edit" class="info-img"></i>Edit</a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" class="dropdown-item confirm-text mb-0"
+                                                        data-item-id="{{ $item->id }}">
+                                                        <i data-feather="trash-2" class="info-img"></i>Delete
+                                                    </a>
 
-                                        <div class="col-lg-2 col-sm-6 col-12">
-                                            <div class="input-blocks">
-                                                <i class="fas fa-money-bill info-img"></i>
-                                                <select class="select">
-                                                    <option>Price</option>
-                                                    <option>$12500.00</option>
-                                                    <option>$12500.00</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-2 col-sm-6 col-12">
-                                            <div class="input-blocks">
-                                                <a class="btn btn-filters ms-auto"> <i data-feather="search"
-                                                        class="feather-search"></i> Search </a>
-                                            </div>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="profile-info">
+                                    <div class="profile-pic profile">
+                                        @if ($item->image != null)
+                                            <img src="{{ asset('storage/avatar/' . $item->image) }}" alt="avatar">
+                                        @else
+                                            <img src="{{ asset('assets') }}/img/notfound.png" alt="avatar">
+                                        @endif
+                                    </div>
+                                    <h5>NIP : {{ $item->nip }}</h5>
+                                    <h4>{{ $item->nama }}</h4>
+                                    <span>{{ $item->jabatan->jabatan }}</span>
+                                </div>
+                                <ul class="department">
+                                    <li>
+                                        Kontak
+                                        <span>{{ $item->kontak }}</span>
+                                    </li>
+                                    <li>
+                                        Alamat
+                                        <span>{{ $item->alamat }}</span>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
-                    </div>
-                    <!-- /Filter -->
-                    <div class="table-responsive product-list">
-                        <table class="table datanew">
-                            <thead>
-                                <tr>
-                                    <th class="no-sort">
-                                        <label class="checkboxs">
-                                            <input type="checkbox" id="select-all">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </th>
-                                    <th>Product</th>
-                                    <th>SKU</th>
-                                    <th>Category</th>
-                                    <th>Brand</th>
-                                    <th>Price</th>
-                                    <th>Unit</th>
-                                    <th>Qty</th>
-                                    <th>Created by</th>
-                                    <th class="no-sort">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>
-                                        <div class="productimgname">
-                                            <a href="javascript:void(0);" class="product-img stock-img">
-                                                <img src="assets/img/products/stock-img-01.png" alt="product">
-                                            </a>
-                                            <a href="javascript:void(0);">Lenovo 3rd Generation </a>
-                                        </div>
-                                    </td>
-                                    <td>PT001 </td>
-                                    <td>Laptop</td>
-                                    <td>Lenovo</td>
-                                    <td>$12500.00</td>
-                                    <td>Pc</td>
-                                    <td>100</td>
-                                    <td>
-                                        <div class="userimgname">
-                                            <a href="javascript:void(0);" class="product-img">
-                                                <img src="assets/img/users/user-30.jpg" alt="product">
-                                            </a>
-                                            <a href="javascript:void(0);">Arroon</a>
-                                        </div>
-                                    </td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 edit-icon  p-2" href="product-details.html">
-                                                <i data-feather="eye" class="feather-eye"></i>
-                                            </a>
-                                            <a class="me-2 p-2" href="edit-product.html">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="confirm-text p-2" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>
-                                        <div class="productimgname">
-                                            <a href="javascript:void(0);" class="product-img stock-img">
-                                                <img src="assets/img/products/stock-img-06.png" alt="product">
-                                            </a>
-                                            <a href="javascript:void(0);">Bold V3.2</a>
-                                        </div>
-                                    </td>
-                                    <td>PT002</td>
-                                    <td>Electronics</td>
-                                    <td>Bolt</td>
-                                    <td>$1600.00</td>
-                                    <td>Pc</td>
-                                    <td>140</td>
-                                    <td>
-                                        <div class="userimgname">
-                                            <a href="javascript:void(0);" class="product-img">
-                                                <img src="assets/img/users/user-13.jpg" alt="product">
-                                            </a>
-                                            <a href="javascript:void(0);">Kenneth</a>
-                                        </div>
-                                    </td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 edit-icon p-2" href="product-details.html">
-                                                <i data-feather="eye" class="action-eye"></i>
-                                            </a>
-                                            <a class="me-2 p-2" href="edit-product.html">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="confirm-text p-2" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
 
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>
-                                        <div class="productimgname">
-                                            <a href="javascript:void(0);" class="product-img stock-img">
-                                                <img src="assets/img/products/stock-img-02.png" alt="product">
-                                            </a>
-                                            <a href="javascript:void(0);">Nike Jordan</a>
+                        <!-- EDIT PEGAWAI -->
+                        <div class="modal fade" id="modaledit{{ $item->id }}">
+                            <div class="modal-dialog modal-dialog-centered text-center" role="document">
+                                <div class="modal-content modal-content-demo">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Edit Pegawai</h4><button aria-label="Close"
+                                            class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <form action="pegawai/{{ $item->id }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="modal-body text-start">
+                                            <div class="mb-3">
+                                                <label class="form-label">NIP</label>
+                                                <input type="text" name="nip" value="{{ $item->nip }}"
+                                                    class="form-control" readonly>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Nama</label>
+                                                    <input type="text" name="nama" value="{{ $item->nama }}"
+                                                        class="form-control">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Kontak</label>
+                                                    <input type="text" name="kontak" value="{{ $item->kontak }}"
+                                                        class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Jabatan</label>
+                                                <select class="select" name="jabatan">
+                                                    <option>Pilih Jabatan</option>
+                                                    @foreach ($jabatan as $itemjabatan)
+                                                        <option value="{{ $itemjabatan->id }}"
+                                                            @if ($item->jabatan_id == $itemjabatan->id) selected="selected" @endif>
+                                                            {{ $itemjabatan->jabatan }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class=" mb-3">
+                                                <div class="new-employee-field">
+                                                    <label class="form-label">Avatar</label>
+                                                    <div class="profile-pic-upload">
+                                                        <div class="profile-pic active-profile preview2"
+                                                            data-target="preview2-{{ $item->id }}">
+                                                            @if ($item->image != null)
+                                                                <img src="{{ asset('storage/Avatar/' . $item->image) }}"
+                                                                    alt="avatar">
+                                                            @else
+                                                                <img src="{{ asset('assets') }}/img/notfound.png"
+                                                                    alt="avatar">
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <input type="file" class="form-control" name="avatar"
+                                                        id="image2-{{ $item->id }}">
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Alamat</label>
+                                                <textarea class="form-control" name="alamat">{{ $item->alamat }}</textarea>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Status</label>
+                                                <select class="select" name="status">
+                                                    <option>Pilih Status</option>
+                                                    <option value="1"
+                                                        @if ($item->status == 1) selected="selected" @endif>
+                                                        Aktif</option>
+                                                    <option value="2"
+                                                        @if ($item->status == 2) selected="selected" @endif>
+                                                        Tidak Aktif</option>
+                                                </select>
+                                            </div>
                                         </div>
-                                    </td>
-                                    <td>PT003</td>
-                                    <td>Shoe</td>
-                                    <td>Nike</td>
-                                    <td>$6000.00</td>
-                                    <td>Pc</td>
-                                    <td>780</td>
-                                    <td>
-                                        <div class="userimgname">
-                                            <a href="javascript:void(0);" class="product-img">
-                                                <img src="assets/img/users/user-11.jpg" alt="product">
-                                            </a>
-                                            <a href="javascript:void(0);">Gooch</a>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-cancel"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save
+                                                changes</button>
                                         </div>
-                                    </td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 edit-icon p-2" href="product-details.html">
-                                                <i data-feather="eye" class="action-eye"></i>
-                                            </a>
-                                            <a class="me-2 p-2" href="edit-product.html">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="confirm-text p-2" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>
-                                        <div class="productimgname">
-                                            <a href="javascript:void(0);" class="product-img stock-img">
-                                                <img src="assets/img/products/stock-img-03.png" alt="product">
-                                            </a>
-                                            <a href="javascript:void(0);">Apple Series 5 Watch</a>
-                                        </div>
-                                    </td>
-                                    <td>PT004</td>
-                                    <td>Electronics</td>
-                                    <td>Apple</td>
-                                    <td>$25000.00</td>
-                                    <td>Pc</td>
-                                    <td>450</td>
-                                    <td>
-                                        <div class="userimgname">
-                                            <a href="javascript:void(0);" class="product-img">
-                                                <img src="assets/img/users/user-03.jpg" alt="product">
-                                            </a>
-                                            <a href="javascript:void(0);">Nathan</a>
-                                        </div>
-                                    </td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 edit-icon p-2" href="product-details.html">
-                                                <i data-feather="eye" class="action-eye"></i>
-                                            </a>
-                                            <a class="me-2 p-2" href="edit-product.html">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="confirm-text p-2" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>
-                                        <div class="productimgname">
-                                            <a href="javascript:void(0);" class="product-img stock-img">
-                                                <img src="assets/img/products/stock-img-04.png" alt="product">
-                                            </a>
-                                            <a href="javascript:void(0);">Amazon Echo Dot</a>
-                                        </div>
-                                    </td>
-                                    <td>PT005</td>
-                                    <td>Speaker</td>
-                                    <td>Amazon</td>
-                                    <td>$1600.00</td>
-                                    <td>Pc</td>
-                                    <td>477</td>
-                                    <td>
-                                        <div class="userimgname">
-                                            <a href="javascript:void(0);" class="product-img">
-                                                <img src="assets/img/users/user-02.jpg" alt="product">
-                                            </a>
-                                            <a href="javascript:void(0);">Alice</a>
-                                        </div>
-                                    </td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 edit-icon p-2" href="product-details.html">
-                                                <i data-feather="eye" class="action-eye"></i>
-                                            </a>
-                                            <a class="me-2 p-2" href="edit-product.html">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="confirm-text p-2" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>
-                                        <div class="productimgname">
-                                            <a href="javascript:void(0);" class="product-img stock-img">
-                                                <img src="assets/img/products/stock-img-05.png" alt="product">
-                                            </a>
-                                            <a href="javascript:void(0);">Lobar Handy</a>
-                                        </div>
-                                    </td>
-                                    <td>PT006</td>
-                                    <td>Furnitures</td>
-                                    <td>Woodmart</td>
-                                    <td>$4521.00</td>
-                                    <td>Kg</td>
-                                    <td>145</td>
-                                    <td>
-                                        <div class="userimgname">
-                                            <a href="javascript:void(0);" class="product-img">
-                                                <img src="assets/img/users/user-05.jpg" alt="product">
-                                            </a>
-                                            <a href="javascript:void(0);">Robb</a>
-                                        </div>
-                                    </td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 edit-icon p-2" href="product-details.html">
-                                                <i data-feather="eye" class="action-eye"></i>
-                                            </a>
-                                            <a class="me-2 p-2" href="edit-product.html">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="confirm-text p-2" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>
-                                        <div class="productimgname">
-                                            <a href="javascript:void(0);" class="product-img stock-img">
-                                                <img src="assets/img/products/expire-product-01.png" alt="product">
-                                            </a>
-                                            <a href="javascript:void(0);">Red Premium Handy</a>
-                                        </div>
-                                    </td>
-                                    <td>PT007</td>
-                                    <td>Bags</td>
-                                    <td>Versace</td>
-                                    <td>$2024.00</td>
-                                    <td>Kg</td>
-                                    <td>747</td>
-                                    <td>
-                                        <div class="userimgname">
-                                            <a href="javascript:void(0);" class="product-img">
-                                                <img src="assets/img/users/user-08.jpg" alt="product">
-                                            </a>
-                                            <a href="javascript:void(0);">Steven</a>
-                                        </div>
-                                    </td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 edit-icon p-2" href="product-details.html">
-                                                <i data-feather="eye" class="action-eye"></i>
-                                            </a>
-                                            <a class="me-2 p-2" href="edit-product.html">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="confirm-text p-2" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>
-                                        <div class="productimgname">
-                                            <a href="javascript:void(0);" class="product-img stock-img">
-                                                <img src="assets/img/products/expire-product-02.png" alt="product">
-                                            </a>
-                                            <a href="javascript:void(0);">Iphone 14 Pro</a>
-                                        </div>
-                                    </td>
-                                    <td>PT008</td>
-                                    <td>Phone</td>
-                                    <td>Iphone</td>
-                                    <td>$1698.00</td>
-                                    <td>Pc</td>
-                                    <td>897</td>
-                                    <td>
-                                        <div class="userimgname">
-                                            <a href="javascript:void(0);" class="product-img">
-                                                <img src="assets/img/users/user-04.jpg" alt="product">
-                                            </a>
-                                            <a href="javascript:void(0);">Gravely</a>
-                                        </div>
-                                    </td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 edit-icon p-2" href="product-details.html">
-                                                <i data-feather="eye" class="action-eye"></i>
-                                            </a>
-                                            <a class="me-2 p-2" href="edit-product.html">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="confirm-text p-2" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>
-                                        <div class="productimgname">
-                                            <a href="javascript:void(0);" class="product-img stock-img">
-                                                <img src="assets/img/products/expire-product-03.png" alt="product">
-                                            </a>
-                                            <a href="javascript:void(0);">Black Slim 200</a>
-                                        </div>
-                                    </td>
-                                    <td>PT009</td>
-                                    <td>Chairs</td>
-                                    <td>Bently</td>
-                                    <td>$6794.00</td>
-                                    <td>Pc</td>
-                                    <td>741</td>
-                                    <td>
-                                        <div class="userimgname">
-                                            <a href="javascript:void(0);" class="product-img">
-                                                <img src="assets/img/users/user-01.jpg" alt="product">
-                                            </a>
-                                            <a href="javascript:void(0);">Kevin</a>
-                                        </div>
-                                    </td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 edit-icon p-2" href="product-details.html">
-                                                <i data-feather="eye" class="action-eye"></i>
-                                            </a>
-                                            <a class="me-2 p-2" href="edit-product.html">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="confirm-text p-2" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="checkboxs">
-                                            <input type="checkbox">
-                                            <span class="checkmarks"></span>
-                                        </label>
-                                    </td>
-                                    <td>
-                                        <div class="productimgname">
-                                            <a href="javascript:void(0);" class="product-img stock-img">
-                                                <img src="assets/img/products/expire-product-04.png" alt="product">
-                                            </a>
-                                            <a href="javascript:void(0);">Woodcraft Sandal</a>
-                                        </div>
-                                    </td>
-                                    <td>PT010</td>
-                                    <td>Bags</td>
-                                    <td>Woodcraft</td>
-                                    <td>$4547.00</td>
-                                    <td>Kg</td>
-                                    <td>148</td>
-                                    <td>
-                                        <div class="userimgname">
-                                            <a href="javascript:void(0);" class="product-img">
-                                                <img src="assets/img/users/user-10.jpg" alt="product">
-                                            </a>
-                                            <a href="javascript:void(0);">Grillo</a>
-                                        </div>
-                                    </td>
-                                    <td class="action-table-data">
-                                        <div class="edit-delete-action">
-                                            <a class="me-2 edit-icon p-2" href="product-details.html">
-                                                <i data-feather="eye" class="action-eye"></i>
-                                            </a>
-                                            <a class="me-2 p-2" href="edit-product.html">
-                                                <i data-feather="edit" class="feather-edit"></i>
-                                            </a>
-                                            <a class="confirm-text p-2" href="javascript:void(0);">
-                                                <i data-feather="trash-2" class="feather-trash-2"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
-            <!-- /product list -->
         </div>
     </div>
 
     <!-- Add Pegawai -->
     <div class="modal fade" id="tambahPegawai">
-        <div class="modal-dialog modal-dialog-centered custom-modal-two">
-            <div class="modal-content">
-                <div class="page-wrapper-new p-0">
-                    <div class="content">
-                        <div class="modal-header border-0 custom-modal-header">
-                            <div class="page-title">
-                                <h4>Tambah Pegawai</h4>
-                            </div>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+        <div class="modal-dialog modal-dialog-centered text-center" role="document">
+            <div class="modal-content modal-content-demo">
+                <div class="modal-header">
+                    <h4 class="modal-title">Tambah Pegawai</h4><button aria-label="Close" class="btn-close"
+                        data-bs-dismiss="modal"></button>
+                </div>
+                <form action="pegawai" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body text-start">
+                        <div class="mb-3">
+                            <label class="form-label">NIP</label>
+                            <input type="text" name="nip" class="form-control">
                         </div>
-                        <div class="modal-body custom-modal-body">
-                            <form action="category-list.html">
+                        <div class="row">
+                            <div class="col-lg-6">
                                 <div class="mb-3">
-                                    <label class="form-label">Category</label>
-                                    <input type="text" class="form-control">
+                                    <label class="form-label">Nama</label>
+                                    <input type="text" name="nama" class="form-control">
                                 </div>
+                            </div>
+                            <div class="col-lg-6">
                                 <div class="mb-3">
-                                    <label class="form-label">Category Slug</label>
-                                    <input type="text" class="form-control">
+                                    <label class="form-label">Kontak</label>
+                                    <input type="text" name="kontak" class="form-control">
                                 </div>
-                                <div class="mb-0">
-                                    <div
-                                        class="status-toggle modal-status d-flex justify-content-between align-items-center">
-                                        <span class="status-label">Status</span>
-                                        <input type="checkbox" id="user2" class="check" checked="">
-                                        <label for="user2" class="checktoggle"></label>
-                                    </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Jabatan</label>
+                            <select class="select" name="jabatan">
+                                <option>Pilih Jabatan</option>
+                                @foreach ($jabatan as $itemjabatan)
+                                    <option value="{{ $itemjabatan->id }}">{{ $itemjabatan->jabatan }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="new-employee-field">
+                            <label class="form-label">Avatar</label>
+                            <div class="profile-pic-upload">
+                                <div class="profile-pic active-profile preview" id="preview">
                                 </div>
-                                <div class="modal-footer-btn">
-                                    <button type="button" class="btn btn-cancel me-2"
-                                        data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-submit">Create Category</button>
-                                </div>
-                            </form>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Avatar</label>
+                            <div class="col-md-12">
+                                <input id="image" type="file" class="form-control" name="avatar">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Alamat</label>
+                            <textarea class="form-control" name="alamat"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Status</label>
+                            <select class="select" name="status">
+                                <option>Pilih Status</option>
+                                <option value="1"> Aktif</option>
+                                <option value="2"> Tidak Aktif</option>
+                            </select>
                         </div>
                     </div>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
     <!-- /Add Pegawai -->
+
+    <!-- jQuery -->
+    <script src="{{ asset('assets') }}/js/jquery-3.7.1.min.js" type="text/javascript"></script>
+
+    <script>
+        $(document).ready(function() {
+            document.getElementById('searchInput').addEventListener('input', function() {
+                const searchValue = this.value.toLowerCase();
+                const employeeItems = document.querySelectorAll('.employee-item');
+
+                employeeItems.forEach(item => {
+                    const name = item.getAttribute('data-name').toLowerCase();
+                    const nip = item.getAttribute('data-nip').toLowerCase();
+                    const jabatan = item.getAttribute('data-jabatan').toLowerCase();
+
+                    // Check if search value matches any attribute
+                    if (name.includes(searchValue) || nip.includes(searchValue) || jabatan.includes(
+                            searchValue)) {
+                        item.style.display = ''; // Show
+                    } else {
+                        item.style.display = 'none'; // Hide
+                    }
+                });
+            });
+
+            //ini saat input
+            const imgInput = document.getElementById('image')
+            const previewImage = document.getElementById('preview')
+
+            imgInput.addEventListener("change", () => {
+                const file = imgInput.files[0]
+                const reader = new FileReader;
+
+                reader.addEventListener("load", () => {
+                    previewImage.innerHTML = ""
+                    const img = document.createElement("img")
+                    img.src = reader.result
+
+                    previewImage.appendChild(img)
+                })
+
+                reader.readAsDataURL(file)
+            })
+            //ini saat input
+        });
+
+        document.querySelectorAll('.confirm-text').forEach(function(deleteButton) {
+            deleteButton.addEventListener('click', function() {
+                const itemId = this.getAttribute('data-item-id'); // Ambil ID item dari data-item-id
+
+                // SweetAlert2 untuk konfirmasi
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: 'Data ini akan dihapus secara permanen!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Kirim permintaan hapus (gunakan itemId)
+                        fetch(`/pegawai/${itemId}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}' // Pastikan token CSRF disertakan
+                                }
+                            })
+                            .then(response => {
+                                if (response.ok) {
+                                    Swal.fire('Dihapus!', 'Data berhasil dihapus.', 'success')
+                                        .then(() => location.reload());
+                                } else {
+                                    Swal.fire('Gagal!',
+                                        'Terjadi kesalahan saat menghapus data.', 'error');
+                                }
+                            })
+                            .catch(error => {
+                                Swal.fire('Gagal!', 'Terjadi kesalahan dalam penghapusan data.',
+                                    'error');
+                            });
+                    } else {
+                        // Jika batal, beri tahu pengguna
+                        Swal.fire(
+                            'Dibatalkan',
+                            'Data tidak dihapus.',
+                            'info'
+                        );
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

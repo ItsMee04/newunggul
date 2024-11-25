@@ -189,7 +189,7 @@
                     <a class="dropdown-item" href="general-settings.html"><i class="me-2"
                             data-feather="settings"></i>Settings</a>
                     <hr class="m-0">
-                    <a class="dropdown-item logout pb-0" href="signin.html"><img
+                    <a class="dropdown-item logout pb-0" href="/logout"><img
                             src="{{ asset('assets') }}/img/icons/log-out.svg" class="me-2"
                             alt="img">Logout</a>
                 </div>

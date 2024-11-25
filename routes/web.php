@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Pegawai\PegawaiController;
+use App\Http\Controllers\Pegawai\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,13 +28,12 @@ Route::middleware('auth')->group(function () {
         return view('pages.dashboard');
     });
 
-    Route::get('pegawai', function () {
-        return view('pages.pegawai');
-    });
+    Route::get('pegawai', [PegawaiController::class, 'index']);
+    Route::post('pegawai', [PegawaiController::class, 'store']);
+    Route::post('pegawai/{id}', [PegawaiController::class, 'update']);
+    Route::delete('pegawai/{id}', [PegawaiController::class, 'delete']);
 
-    Route::get('user', function () {
-        return view('pages.user');
-    });
+    Route::get('user', [UserController::class, 'index']);
 
     Route::get('jenis', function () {
         return view('pages.jenis');
@@ -69,4 +70,6 @@ Route::middleware('auth')->group(function () {
     Route::get('order', function () {
         return view('pages.order');
     });
+
+    Route::get('logout', [AuthController::class, 'logout']);
 });

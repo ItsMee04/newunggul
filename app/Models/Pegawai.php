@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Pegawai extends Model
 {
@@ -22,4 +23,14 @@ class Pegawai extends Model
         'image',
         'status'
     ];
+
+    /**
+     * Get the user that owns the Pegawai
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function jabatan(): BelongsTo
+    {
+        return $this->belongsTo(Jabatan::class, 'jabatan_id', 'id');
+    }
 }

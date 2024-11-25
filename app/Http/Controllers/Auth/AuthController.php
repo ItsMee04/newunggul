@@ -34,7 +34,7 @@ class AuthController extends Controller
             } else {
                 if (Auth::user()->role_id == 1) {
                     $pegawai = Pegawai::where('id', Auth::user()->pegawai_id)->first()->nama;
-                    $image   = Pegawai::where('id', Auth::user()->pegawai_id)->first()->avatar;
+                    $image   = Pegawai::where('id', Auth::user()->pegawai_id)->first()->image;
 
                     $jabatan_id   = Pegawai::where('id', Auth::user()->pegawai_id)->first()->jabatan_id;
                     $jabatan     = Jabatan::where('id', $jabatan_id)->first()->jabatan;
@@ -49,7 +49,7 @@ class AuthController extends Controller
                     return redirect('dashboard')->with('success-message', 'Login Berhasil');
                 } elseif (Auth::user()->role_id == 2) {
                     $pegawai = Pegawai::where('id', Auth::user()->pegawai_id)->first()->nama;
-                    $image   = Pegawai::where('id', Auth::user()->pegawai_id)->first()->avatar;
+                    $image   = Pegawai::where('id', Auth::user()->pegawai_id)->first()->image;
 
                     $jabatan_id   = Pegawai::where('id', Auth::user()->pegawai_id)->first()->jabatan_id;
                     $jabatan     = Jabatan::where('id', $jabatan_id)->first()->jabatan;
@@ -67,5 +67,14 @@ class AuthController extends Controller
         }
 
         return redirect('login')->with('errors-message', 'username atau password salah !');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        //mengarahkan ke halaman login
+        return redirect('login')->with('success-message', 'Logout Berhasil');
     }
 }
