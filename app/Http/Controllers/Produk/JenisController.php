@@ -100,16 +100,7 @@ class JenisController extends Controller
 
     public function delete($id)
     {
-        $jenis = Jenis::where('id', $id)->first();
-
-        $path = 'storage/Icon/' . $jenis->icon;
-
-        if (File::exists($path)) {
-            File::delete($path);
-        }
-
         Jenis::where('id', $id)->delete();
-
         return response()->json(['message' => 'Data berhasil dihapus.']);
     }
 }

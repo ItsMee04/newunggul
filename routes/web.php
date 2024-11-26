@@ -2,10 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Pegawai\PegawaiController;
 use App\Http\Controllers\Pegawai\UserController;
 use App\Http\Controllers\Produk\JenisController;
+use App\Http\Controllers\Produk\NampanController;
 use App\Http\Controllers\Produk\ProdukController;
+use App\Http\Controllers\Pegawai\PegawaiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,10 +46,14 @@ Route::middleware('auth')->group(function () {
 
     Route::get('produk', [ProdukController::class, 'index']);
     Route::post('produk', [ProdukController::class, 'store']);
+    Route::post('produk/{id}', [ProdukController::class, 'update']);
+    Route::delete('produk/{id}', [ProdukController::class, 'delete']);
 
-    Route::get('nampan', function () {
-        return view('pages.nampan');
-    });
+    Route::get('nampan', [NampanController::class, 'index']);
+    Route::post('nampan', [NampanController::class, 'store']);
+    Route::get('nampan/{id}', [NampanController::class, 'show']);
+    Route::post('update-nampan/{id}', [NampanController::class, 'update']);
+    Route::delete('delete-nampan/{id}', [NampanController::class, 'delete']);
 
     Route::get('scan', function () {
         return view('pages.scan');

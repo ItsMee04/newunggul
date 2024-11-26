@@ -60,7 +60,12 @@
                                         <td>
                                             <div class="productimgname">
                                                 <a href="javascript:void(0);" class="product-img stock-img">
-                                                    <img src="{{ asset('storage/icon/' . $item->icon) }}" alt="product">
+                                                    @if ($item->icon != null)
+                                                        <img src="{{ asset('storage/icon/' . $item->icon) }}"
+                                                            alt="avatar">
+                                                    @else
+                                                        <img src="{{ asset('assets') }}/img/notfound.png" alt="avatar">
+                                                    @endif
                                                 </a>
                                                 <a href="javascript:void(0);">{{ $item->jenis }} </a>
                                             </div>

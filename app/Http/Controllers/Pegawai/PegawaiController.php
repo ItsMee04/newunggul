@@ -151,15 +151,7 @@ class PegawaiController extends Controller
 
     public function delete($id)
     {
-        $pegawai = Pegawai::where('id', $id)->first();
         $user    = User::where('pegawai_id', $id)->first();
-
-        $path1 = 'storage/avatar/' . $pegawai->image;
-
-        if (File::exists($path1)) {
-            File::delete($path1);
-        }
-
         $hapuspegawai = Pegawai::where('id', $id)->delete();
 
         if ($user != null) {
