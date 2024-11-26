@@ -63,7 +63,8 @@
                                         <div class="dropdown profile-action">
                                             <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown"
                                                 aria-expanded="false"><i data-feather="more-vertical"
-                                                    class="feather-user"></i></a>
+                                                    class="feather-user"></i>
+                                            </a>
                                             <ul class="dropdown-menu">
                                                 <li>
                                                     <a data-bs-effect="effect-sign" data-bs-toggle="modal"
@@ -75,7 +76,6 @@
                                                         data-item-id="{{ $item->id }}">
                                                         <i data-feather="trash-2" class="info-img"></i>Delete
                                                     </a>
-
                                                 </li>
                                             </ul>
                                         </div>

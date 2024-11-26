@@ -611,9 +611,6 @@ $(document).ready(function(){
 	$(document).on("click",".productset",function () {
 		$(this).toggleClass("active");
 	});
-	$(document).on("click",".product-info",function () {
-		$(this).toggleClass("active");
-	});
 	$(document).on("click",".layout-box",function () {
 		$('.layout-hide-box').toggleClass("layout-show-box");
 	});

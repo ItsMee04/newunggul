@@ -44,8 +44,9 @@
             <div class="employee-grid-widget">
                 <div class="row">
                     @foreach ($user as $item)
-                        <div class="col-xxl-3 col-xl-4 col-lg-6 col-md-6 employee-item" data-name="{{ $item->nama }}"
-                            data-nip="{{ $item->nip }}">
+                        <div class="col-xxl-3 col-xl-4 col-lg-6 col-md-6 employee-item"
+                            data-name="{{ $item->pegawai->nama }}" data-nip="{{ $item->pegawai->nip }}"
+                            data-email="{{ $item->email }}">
                             <div class="employee-grid-profile">
                                 <div class="profile-head">
                                     <label class="checkboxs">
@@ -66,13 +67,6 @@
                                                     <a data-bs-effect="effect-sign" data-bs-toggle="modal"
                                                         href="#modaledit{{ $item->id }}" class="dropdown-item"><i
                                                             data-feather="edit" class="info-img"></i>Edit</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript:void(0);" class="dropdown-item confirm-text mb-0"
-                                                        data-item-id="{{ $item->id }}">
-                                                        <i data-feather="trash-2" class="info-img"></i>Delete
-                                                    </a>
-
                                                 </li>
                                             </ul>
                                         </div>
@@ -103,9 +97,65 @@
                                 </ul>
                             </div>
                         </div>
+                        <div class="modal fade" id="modaledit{{ $item->id }}">
+                            <div class="modal-dialog modal-dialog-centered text-center" role="document">
+                                <div class="modal-content modal-content-demo">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Edit User</h4><button aria-label="Close" class="btn-close"
+                                            data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <form action="user/{{ $item->id }}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="modal-body text-start">
+                                            <div class="mb-3">
+                                                <label class="form-label">Name</label>
+                                                <input type="text" name="name" value="{{ $item->pegawai->nama }}"
+                                                    class="form-control" readonly>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Email</label>
+                                                <input type="text" name="email" value="{{ $item->email }}"
+                                                    class="form-control">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Password</label>
+                                                <input type="password" name="password" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-cancel"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save
+                                                changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     @endforeach
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const searchValue = this.value.toLowerCase();
+            const employeeItems = document.querySelectorAll('.employee-item');
+
+            employeeItems.forEach(item => {
+                const name = item.getAttribute('data-name').toLowerCase();
+                const nip = item.getAttribute('data-nip').toLowerCase();
+                const email = item.getAttribute('data-email').toLowerCase();
+
+                // Check if search value matches any attribute
+                if (name.includes(searchValue) || nip.includes(searchValue) || email.includes(
+                        searchValue)) {
+                    item.style.display = ''; // Show
+                } else {
+                    item.style.display = 'none'; // Hide
+                }
+            });
+        });
+    </script>
 @endsection

@@ -47,8 +47,8 @@
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/fontawesome/css/fontawesome.min.css">
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/fontawesome/css/all.min.css">
 
-    <!-- SWEETALERT2 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    {{-- <!-- SWEETALERT2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet"> --}}
 
     <!-- Toatr CSS -->
     <link rel="stylesheet" href="{{ asset('assets') }}/plugins/toastr/toatr.css">
@@ -116,8 +116,8 @@
                 {{ session('errors-message') }}
             </div>
         </div>
-        <div id="dangerToastScan" class="toast colored-toast bg-danger-transparent" role="alert"
-            aria-live="assertive" aria-atomic="true">
+        <div id="dangerToastScan" class="toast colored-toast bg-danger-transparent" role="alert" aria-live="assertive"
+            aria-atomic="true">
             <div class="toast-header bg-danger text-fixed-white">
                 <strong class="me-auto">Peringatan !</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>

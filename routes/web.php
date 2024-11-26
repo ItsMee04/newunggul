@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Pegawai\PegawaiController;
 use App\Http\Controllers\Pegawai\UserController;
+use App\Http\Controllers\Produk\JenisController;
+use App\Http\Controllers\Produk\ProdukController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,14 +36,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('pegawai/{id}', [PegawaiController::class, 'delete']);
 
     Route::get('user', [UserController::class, 'index']);
+    Route::post('user/{id}', [UserController::class, 'update']);
 
-    Route::get('jenis', function () {
-        return view('pages.jenis');
-    });
+    Route::get('jenis', [JenisController::class, 'index']);
+    Route::post('jenis', [JenisController::class, 'store']);
+    Route::post('jenis/{id}', [JenisController::class, 'update']);
+    Route::delete('jenis/{id}', [JenisController::class, 'delete']);
 
-    Route::get('produk', function () {
-        return view('pages.produk');
-    });
+    Route::get('produk', [ProdukController::class, 'index']);
+    Route::post('produk', [ProdukController::class, 'store']);
 
     Route::get('nampan', function () {
         return view('pages.nampan');
