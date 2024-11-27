@@ -6,7 +6,9 @@ use App\Http\Controllers\Pegawai\UserController;
 use App\Http\Controllers\Produk\JenisController;
 use App\Http\Controllers\Produk\NampanController;
 use App\Http\Controllers\Produk\ProdukController;
+use App\Http\Controllers\Transaksi\POSController;
 use App\Http\Controllers\Pegawai\PegawaiController;
+use App\Http\Controllers\Transaksi\DiskonController;
 use App\Http\Controllers\Pelanggan\SuplierController;
 use App\Http\Controllers\Pelanggan\PelangganController;
 
@@ -75,13 +77,14 @@ Route::middleware('auth')->group(function () {
     Route::post('suplier/{id}', [SuplierController::class, 'update']);
     Route::delete('suplier/{id}', [SuplierController::class, 'delete']);
 
-    Route::get('diskon', function () {
-        return view('pages.diskon');
-    });
+    Route::get('diskon', [DiskonController::class, 'index']);
+    Route::post('diskon', [DiskonController::class, 'store']);
+    Route::post('diskon/{id}', [DiskonController::class, 'update']);
+    Route::delete('diskon/{id}', [DiskonController::class, 'delete']);
 
-    Route::get('pos', function () {
-        return view('pages.pos');
-    });
+    Route::get('pos', [POSController::class, 'index']);
+    Route::get('pos/{id}', [POSController::class, 'getItem']);
+    Route::get('pos/fetchAllItem', [POSController::class, 'fetchAllItem']);
 
     Route::get('order', function () {
         return view('pages.order');

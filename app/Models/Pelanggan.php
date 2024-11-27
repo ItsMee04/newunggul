@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Pelanggan extends Model
 {
     use HasFactory, SoftDeletes;
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at']; // Menyembunyikan created_at dan updated_at secara global
     protected $table = 'pelanggan';
     protected $fillable = [
         'kodepelanggan',

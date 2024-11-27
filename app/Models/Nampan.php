@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Nampan extends Model
 {
     use HasFactory, SoftDeletes;
-
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at']; // Menyembunyikan created_at dan updated_at secara global
     protected $table = 'nampan';
     protected $fillable =
     [

@@ -6,16 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Suplier extends Model
+class Diskon extends Model
 {
     use HasFactory, SoftDeletes;
     protected $hidden = ['created_at', 'updated_at', 'deleted_at']; // Menyembunyikan created_at dan updated_at secara global
-    protected $table = 'suplier';
+    protected $table = 'diskon';
     protected $fillable = [
-        'kodesuplier',
-        'suplier',
-        'kontak',
-        'alamat',
+        'nama',
+        'diskon',
         'status'
     ];
 }

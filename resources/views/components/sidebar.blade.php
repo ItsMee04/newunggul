@@ -132,9 +132,7 @@
                 <a href="javascript:void(0);"><i data-feather="clipboard"></i><span> Stock </span> <span
                         class="menu-arrow"></span></a>
                 <ul>
-                    <li><a href="/stok"><span> Manage Stock</span></a></li>
-                    <li><a href="/pos"><span> Stock Adjustment</span></a></li>
-                    <li><a href="/order"><span> Stock Transfer</span></a></li>
+                    <li><a href="/stock"><span> Manage Stock</span></a></li>
                 </ul>
             </li>
             <li class="submenu">
