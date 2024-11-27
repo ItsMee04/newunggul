@@ -72,7 +72,7 @@ class PegawaiController extends Controller
             ]);
         }
 
-        return redirect('pegawai')->with('success-message', 'Data Success Di Simpan !');
+        return redirect('pegawai')->with('success-message', 'Data Pegawai Berhasil Disimpan !');
     }
 
     public function update(Request $request, $id)
@@ -146,7 +146,7 @@ class PegawaiController extends Controller
                     ]);
             }
         }
-        return redirect('pegawai')->with('success-message', 'Data Success Di Update !');
+        return redirect('pegawai')->with('success-message', 'Data Pegawai Berhasil Disimpan !');
     }
 
     public function delete($id)

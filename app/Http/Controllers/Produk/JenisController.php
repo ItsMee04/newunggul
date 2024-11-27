@@ -46,7 +46,7 @@ class JenisController extends Controller
             'status' => $request->status
         ]);
 
-        return redirect('jenis')->with('success-message', 'Data Success Disimpan !');
+        return redirect('jenis')->with('success-message', 'Data Jenis Berhasil Disimpan');
     }
 
     public function update(Request $request, $id)
@@ -95,7 +95,7 @@ class JenisController extends Controller
                 ]);
         }
 
-        return redirect('jenis')->with('success-message', 'Data Success Diupdate !');
+        return redirect('jenis')->with('success-message', 'Data Jenis Berhasil Disimpan');
     }
 
     public function delete($id)

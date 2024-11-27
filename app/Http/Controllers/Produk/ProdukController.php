@@ -96,7 +96,7 @@ class ProdukController extends Controller
             'status'            =>  $request->status
         ]);
 
-        return redirect('produk')->with('success-message', 'Data Success Disimpan !');
+        return redirect('produk')->with('success-message', 'Data Produk Berhasil Disimpan');
     }
 
     public function update(Request $request, $id)
@@ -163,12 +163,79 @@ class ProdukController extends Controller
                 ]);
         }
 
-        return redirect('produk/' . $produk->nampan_id)->with('success-message', 'Data Success Di Update !');
+        return redirect('produk/' . $produk->nampan_id)->with('success-message', 'Data Produk Berhasil Disimpan');
     }
 
     public function delete($id)
     {
         Produk::where('id', $id)->delete();
         return response()->json(['message' => 'Data berhasil dihapus.']);
+    }
+
+    public function streamBarcode($id)
+    {
+
+        $produk = Produk::where('id', $id)->first();
+        $filePath = 'storage/barcode/' . $produk->image;
+
+        if (File::exists($filePath)) {
+            $file = fopen($filePath, 'r'); // Membuka file untuk dibaca
+
+            return response()->stream(function () use ($file) {
+                while (!feof($file)) {
+                    echo fread($file, 1024); // Membaca file per 1024 byte
+                }
+                fclose($file); // Menutup file setelah selesai
+            }, 200, [
+                'Content-Type' => 'image/png',  // Ganti sesuai dengan tipe file Anda
+                'Content-Disposition' => 'attachment; filename="' . $produk . '"'
+            ]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Data Barcode Tidak Ditemukan']);
+    }
+
+    public function downloadBarcode($id)
+    {
+        $produk = Produk::where('id', $id)->first();
+        $filePath = 'storage/barcode/' . $produk->image;
+
+        if (file_exists($filePath)) {
+            return response()->download($filePath);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Data Barcode Tidak Ditemukan']);
+    }
+
+    public function scanner()
+    {
+        return view('pages.scan');
+    }
+
+    public function scanDetail($id)
+    {
+        $produk = Produk::where('kodeproduk', $id)->get();
+
+        return view('pages.scanbarcode', ['produk' => $produk]);
+    }
+
+    public function scanqr(Request $request)
+    {
+        $id = $request->qr_code;
+        $qrcodeid = Produk::where('kodeproduk', $id)->first()->id;
+
+        if ($id == $qrcodeid) {
+            return response()->json([
+                'status' => 200,
+                'produk' => $qrcodeid
+            ]);
+        } else {
+            return response()->json(
+                [
+                    'status' => 400,
+                    'produk tidak ditemukan'
+                ]
+            );
+        }
     }
 }

@@ -45,12 +45,12 @@ class NampanController extends Controller
             'status'    =>  $request->status
         ]);
 
-        return redirect('nampan')->with('success-message', 'Data Success Disimpan !');
+        return redirect('nampan')->with('success-message', 'Data Nampan Berhasil Disimpan');
     }
 
     public function show($id)
     {
-        $nampanProduk = NampanProduk::with(['nampan', 'produk'])->get();
+        $nampanProduk = NampanProduk::with(['nampan', 'produk'])->where('nampan_id', $id)->get();
         $nampan       = Nampan::where('id', $id)->first();
         $produk       = Produk::where('jenis_id', $nampan->jenis_id)->get();
         return view('pages.nampan-produk', ['nampanProduk' => $nampanProduk, 'nampan' => $nampan, 'produk' => $produk]);
@@ -83,7 +83,7 @@ class NampanController extends Controller
                 'status'    =>  $request->status
             ]);
 
-        return redirect('nampan')->with('success-message', 'Data Success Disimpan !');
+        return redirect('nampan')->with('success-message', 'Data Nampan Berhasil Disimpan');
     }
 
     public function delete($id)
@@ -104,7 +104,7 @@ class NampanController extends Controller
             ->toArray();
 
         if (!empty($existingProducts)) {
-            return redirect('nampan')->with('errors-message', 'Beberapa produk sudah ada.');
+            return redirect('nampan/' . $id)->with('errors-message', 'Beberapa produk sudah ada.');
         }
 
         // Tambahkan produk yang belum ada
@@ -119,5 +119,11 @@ class NampanController extends Controller
         }
 
         return redirect('nampan/' . $id)->with('success-message', 'Produk berhasil ditambahkan. !');
+    }
+
+    public function nampanDelete($id)
+    {
+        $nampan = NampanProduk::where('id', $id)->delete();
+        return response()->json(['message' => 'Data berhasil dihapus.']);
     }
 }

@@ -80,13 +80,9 @@
                                         </td>
                                         <td>{{ $item->produk->berat }} </td>
                                         <td>{{ $item->produk->karat }}</td>
-                                        <td>{{ $item->produk->harga_jual }}</td>
+                                        <td>{{ 'Rp.' . ' ' . number_format($item->produk->harga_jual) }}</td>
                                         <td class="action-table-data">
                                             <div class="edit-delete-action">
-                                                <a class="me-2 p-2" data-bs-effect="effect-sign" data-bs-toggle="modal"
-                                                    href="#modaledit{{ $item->id }}">
-                                                    <i data-feather="edit" class="feather-edit"></i>
-                                                </a>
                                                 <a class="me-2 p-2 confirm-text" href="javascript:void(0);"
                                                     data-item-id="{{ $item->id }}">
                                                     <i data-feather="trash-2" class="feather-trash-2"></i>
@@ -214,7 +210,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         // Kirim permintaan hapus (gunakan itemId)
-                        fetch(`/delete-nampan/${itemId}`, {
+                        fetch(`/delete-nampan-produk/${itemId}`, {
                                 method: 'DELETE',
                                 headers: {
                                     'Content-Type': 'application/json',

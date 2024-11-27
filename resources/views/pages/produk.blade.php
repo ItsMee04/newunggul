@@ -57,11 +57,27 @@
                                                 <i class="fa-solid fa-ellipsis-vertical"></i>
                                             </a>
                                             <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" data-bs-effect="effect-sign"
+                                                <li>
+                                                    <a class="dropdown-item" href="downloadBarcode/{{ $item->id }}">
+                                                        Download Barcode
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" href="downloadBarcode/{{ $item->id }}">
+                                                        Stream Barcode
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" data-bs-effect="effect-sign"
                                                         data-bs-toggle="modal" href="#modaledit{{ $item->id }}">
-                                                        Edit</a></li>
-                                                <li><a class="dropdown-item confirm-text" data-item-id="{{ $item->id }}"
-                                                        href="javascript:void(0);"> Delete</a></li>
+                                                        Edit
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item confirm-text" data-item-id="{{ $item->id }}"
+                                                        href="javascript:void(0);"> Delete
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </div>
                                         <a href="javascript:void(0);" class="img-bg">
