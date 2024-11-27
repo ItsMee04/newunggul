@@ -20,8 +20,13 @@
                     </li>
                 </ul>
                 <div class="page-btn">
-                    <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#tambahNampan"><i
-                            data-feather="plus-circle" class="me-2"></i>TAMBAH NAMPAN / BAKI</a>
+                    <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#tambahProduk"><i
+                            data-feather="plus-circle" class="me-2"></i>TAMBAH PRODUK</a>
+                </div>
+                <div class="page-btn import">
+                    <a href="#" onclick="history.back();" class="btn btn-added btn-secondary" data-bs-toggle="modal"
+                        data-bs-target="#view-notes"><i data-feather="chevrons-left" class="me-2"></i> Kembali Ke
+                        Nampan</a>
                 </div>
             </div>
 
@@ -99,7 +104,100 @@
         </div>
     </div>
 
+    <div class="modal fade" id="tambahProduk">
+        <div class="modal-dialog modal-lg modal-dialog-centered text-center" role="document">
+            <div class="modal-content modal-content-demo">
+                <div class="modal-header">
+                    <h4 class="modal-title">Tambah Produk</h4><button aria-label="Close" class="btn-close"
+                        data-bs-dismiss="modal"></button>
+                </div>
+                <form action="/produk-nampan/{{ $nampan->id }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body text-start">
+                        <div class="table-responsive">
+                            <input type="text" id="searchInput" class="form-control col-md-3"
+                                placeholder="Search for names...">
+                            <table class="table datanew" id="myTable">
+                                <thead>
+                                    <tr>
+                                        <th class="no-sort">
+                                            <label class="checkboxs">
+                                                <input type="checkbox" id="select-all">
+                                                <span class="checkmarks"></span>
+                                            </label>
+                                        </th>
+                                        <th>No.</th>
+                                        <th>Kode Produk</th>
+                                        <th>Nama</th>
+                                        <th>Berat</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($produk as $item)
+                                        <tr>
+                                            <td>
+                                                <label class="checkboxs">
+                                                    <input type="checkbox" name="items[]" value="{{ $item->id }}">
+                                                    <span class="checkmarks"></span>
+                                                </label>
+                                            </td>
+                                            <td>{{ $loop->iteration }}.</td>
+                                            <td><span>{{ $item->kodeproduk }}</span></td>
+                                            <td>
+                                                <div class="productimgname">
+                                                    <a href="javascript:void(0);" class="product-img stock-img">
+                                                        <img src="{{ asset('storage/produk/' . $item->image) }}"
+                                                            alt="product">
+                                                    </a>
+                                                    <a href="javascript:void(0);">{{ $item->nama }}</a>
+                                                </div>
+                                            </td>
+                                            <td>{{ $item->berat }} / grams</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save
+                            changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Ambil input pencarian dan tabel
+        var input = document.getElementById("searchInput");
+        var table = document.getElementById("myTable");
+        var rows = table.getElementsByTagName("tr");
+
+        // Fungsi pencarian
+        input.addEventListener("keyup", function() {
+            var filter = input.value.toUpperCase();
+
+            // Loop melalui semua baris dan sembunyikan yang tidak sesuai dengan pencarian
+            for (var i = 1; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName("td");
+                var match = false;
+
+                // Cek apakah ada teks yang sesuai dalam baris
+                for (var j = 0; j < cells.length; j++) {
+                    var cellValue = cells[j].textContent || cells[j].innerText;
+                    if (cellValue.toUpperCase().indexOf(filter) > -1) {
+                        match = true;
+                        break;
+                    }
+                }
+
+                // Sembunyikan baris jika tidak ada kecocokan
+                rows[i].style.display = match ? "" : "none";
+            }
+        });
+
         document.querySelectorAll('.confirm-text').forEach(function(deleteButton) {
             deleteButton.addEventListener('click', function() {
                 const itemId = this.getAttribute('data-item-id'); // Ambil ID item dari data-item-id

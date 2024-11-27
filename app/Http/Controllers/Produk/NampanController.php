@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use App\Models\NampanProduk;
+use App\Models\Produk;
 
 class NampanController extends Controller
 {
@@ -51,7 +52,8 @@ class NampanController extends Controller
     {
         $nampanProduk = NampanProduk::with(['nampan', 'produk'])->get();
         $nampan       = Nampan::where('id', $id)->first();
-        return view('pages.nampan-produk', ['nampanProduk' => $nampanProduk, 'nampan' => $nampan]);
+        $produk       = Produk::where('jenis_id', $nampan->jenis_id)->get();
+        return view('pages.nampan-produk', ['nampanProduk' => $nampanProduk, 'nampan' => $nampan, 'produk' => $produk]);
     }
 
     public function update(Request $request, $id)
@@ -88,5 +90,34 @@ class NampanController extends Controller
     {
         $nampan = Nampan::where('id', $id)->delete();
         return response()->json(['message' => 'Data berhasil dihapus.']);
+    }
+
+    public function nampanStore(Request $request, $id)
+    {
+        $request->validate([
+            'items' => 'required|array',
+        ]);
+
+        // Ambil daftar produk_id yang sudah ada di NampanProduk
+        $existingProducts = NampanProduk::whereIn('produk_id', $request->items)
+            ->pluck('produk_id')
+            ->toArray();
+
+        if (!empty($existingProducts)) {
+            return redirect('nampan')->with('errors-message', 'Beberapa produk sudah ada.');
+        }
+
+        // Tambahkan produk yang belum ada
+        $nampanProducts = [];
+        foreach ($request->items as $item) {
+            $nampanProducts[] = NampanProduk::create([
+                'nampan_id' => $id,
+                'produk_id' => $item,
+                'tanggal'   => Carbon::today()->format('Y-m-d'),
+                'status'    => 1,
+            ]);
+        }
+
+        return redirect('nampan/' . $id)->with('success-message', 'Produk berhasil ditambahkan. !');
     }
 }

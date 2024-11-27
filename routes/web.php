@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function () {
     Route::get('nampan/{id}', [NampanController::class, 'show']);
     Route::post('update-nampan/{id}', [NampanController::class, 'update']);
     Route::delete('delete-nampan/{id}', [NampanController::class, 'delete']);
+    Route::post('produk-nampan/{id}', [NampanController::class, 'nampanStore']);
 
     Route::get('scan', function () {
         return view('pages.scan');
