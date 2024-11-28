@@ -2,6 +2,9 @@ $(document).ready(function () {
     loadKeranjang();
     loadProducts("all");
     getCount();
+    initDeleteHandler(); // Inisialisasi event handler untuk tombol hapus
+    totalHargaKeranjang();
+    kodeTransaksi();
 
     $("ul.tabs li").click(function () {
         var $this = $(this);
@@ -16,10 +19,10 @@ $(document).ready(function () {
                 .removeClass("active");
             $(
                 '.tabs_container .tab_content[data-tab="' +
-                    $theTab +
-                    '"], ul.tabs li[id="' +
-                    $theTab +
-                    '"]'
+                $theTab +
+                '"], ul.tabs li[id="' +
+                $theTab +
+                '"]'
             ).addClass("active");
 
             loadProducts($theTab);
@@ -106,6 +109,7 @@ $(document).ready(function () {
 
                     // Memuat ulang keranjang setelah produk ditambahkan
                     loadKeranjang();
+                    totalHargaKeranjang();
                 } else if (response.status === "error") {
                     // Menampilkan notifikasi error menggunakan Bootstrap Toast
                     const dangertoastExamplee =
@@ -201,12 +205,13 @@ $(document).ready(function () {
             },
         });
     }
+    // Fungsi untuk menangani penghapusan item
+    function initDeleteHandler() {
+        $(document).on("click", ".confirm-text", function () {
+            const deleteButton = $(this); // Tombol yang diklik
+            const itemId = deleteButton.data("item-id"); // ID item dari atribut data-item-id
 
-    document.querySelectorAll(".confirm-text").forEach(function (deleteButton) {
-        deleteButton.addEventListener("click", function () {
-            const itemId = this.getAttribute("data-item-id"); // Ambil ID item dari data-item-id
-
-            // SweetAlert2 untuk konfirmasi
+            // SweetAlert untuk konfirmasi
             Swal.fire({
                 title: "Apakah Anda yakin?",
                 text: "Data ini akan dihapus secara permanen!",
@@ -217,23 +222,20 @@ $(document).ready(function () {
                 reverseButtons: true,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Kirim permintaan hapus (gunakan itemId)
-                    fetch(`/jenis/${itemId}`, {
+                    // Kirim permintaan hapus ke server
+                    fetch(`/deleteKeranjangItem/${itemId}`, {
                         method: "DELETE",
                         headers: {
                             "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
-                                "content"
-                            ),
+                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
                         },
                     })
                         .then((response) => {
                             if (response.ok) {
-                                Swal.fire(
-                                    "Dihapus!",
-                                    "Data berhasil dihapus.",
-                                    "success"
-                                ).then(() => location.reload());
+                                Swal.fire("Dihapus!", "Data berhasil dihapus.", "success");
+                                getCount();
+                                loadKeranjang();
+                                totalHargaKeranjang();
                             } else {
                                 Swal.fire(
                                     "Gagal!",
@@ -250,10 +252,242 @@ $(document).ready(function () {
                             );
                         });
                 } else {
-                    // Jika batal, beri tahu pengguna
                     Swal.fire("Dibatalkan", "Data tidak dihapus.", "info");
                 }
             });
         });
+
+        $(document).on("click", ".confirm-deleteAll", function () {
+            const deleteButton = $(this); // Tombol yang diklik
+
+            // SweetAlert untuk konfirmasi
+            Swal.fire({
+                title: "Apakah Anda yakin?",
+                text: "Data ini akan dihapus secara permanen!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Ya, hapus!",
+                cancelButtonText: "Batal",
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Kirim permintaan hapus ke server
+                    fetch(`/deleteKeranjangAll`, {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                        },
+                    })
+                        .then((response) => {
+                            if (response.ok) {
+                                Swal.fire("Dihapus!", "Data berhasil dihapus.", "success");
+                                getCount();
+                                loadKeranjang();
+                                totalHargaKeranjang();
+                            } else {
+                                Swal.fire(
+                                    "Gagal!",
+                                    "Terjadi kesalahan saat menghapus data.",
+                                    "error"
+                                );
+                            }
+                        })
+                        .catch((error) => {
+                            Swal.fire(
+                                "Gagal!",
+                                "Terjadi kesalahan dalam penghapusan data.",
+                                "error"
+                            );
+                        });
+                } else {
+                    Swal.fire("Dibatalkan", "Data tidak dihapus.", "info");
+                }
+            });
+        });
+    }
+
+    function totalHargaKeranjang() {
+        $.ajax({
+            url: "/totalHargaKeranjang", // Endpoint di Laravel
+            type: "GET",
+            success: function (response) {
+                // Loop melalui setiap item yang dikembalikan dari server
+                $("#totalhargabarang").text(0);
+                if (response.success) {
+                    const total = response.total;
+
+                    const formatter = new Intl.NumberFormat("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                        minimumFractionDigits: 0, // Biasanya mata uang Rupiah tidak menggunakan desimal
+                    });
+
+                    var formattedAmount = formatter.format(total); // Output: "Rp1.500.000"
+
+                    $("#totalhargabarang").text(formattedAmount);
+                } else {
+                    $("#totalhargabarang").text(0);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching data:", error);
+            },
+        });
+    }
+
+    // Event listener untuk perubahan dropdown
+    $(document).on("change", "#pilihDiskon", function getDiscount() {
+        const diskon = $(this).val();
+
+        // Simpan nilai yang dipilih ke localStorage
+        localStorage.setItem("selectedDiskon", diskon);
+
+        $.ajax({
+            url: "/totalHargaKeranjang", // Endpoint di Laravel
+            type: "GET",
+            success: function (response) {
+                // Reset nilai tampilan
+                $("#hargadiskon").text(0);
+                $("#total").text(0);
+                $("#grandtotal").text(0);
+                $("#discount").text(diskon);
+
+                if (response.success) {
+                    const total = response.total;
+                    const subDiskon = diskon / 100;
+                    const TotalDiskon = total * subDiskon;
+                    const subTotalDiskon = total - TotalDiskon;
+
+                    // Format angka ke Rupiah
+                    const formatter = new Intl.NumberFormat("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                        minimumFractionDigits: 0, // Biasanya mata uang Rupiah tidak menggunakan desimal
+                    });
+
+                    const hargatotaldiskon = formatter.format(TotalDiskon); // Output diskon
+                    const hargatotal = formatter.format(subTotalDiskon); // Output subtotal
+
+                    // Update tampilan dengan data baru
+                    $("#hargadiskon").text(hargatotaldiskon);
+                    $("#total").text(hargatotal);
+                    $("#grandtotal").text(hargatotal);
+                } else {
+                    // Jika ada kesalahan dari server
+                    $("#hargadiskon").text(0);
+                    $("#total").text(0);
+                    $("#grandtotal").text(0);
+                    $("#discount").text(diskon);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching data:", error);
+            },
+        });
     });
+
+    $(document).on("click", "#checkout", function (e) {
+        e.preventDefault();
+
+        var csrfToken = $('meta[name="csrf-token"]').attr("content");
+        const pelanggan = document.querySelector("#pelanggan").value;
+        const diskon = document.querySelector("#pilihDiskon").value;
+
+        // Pastikan transaksi_id didefinisikan
+        const transaksi_id = document.querySelector("#transaksi_id").textContent;
+        // Validasi elemen DOM
+        if (!pelanggan || !diskon) {
+            console.error("Pelanggan atau diskon tidak dipilih.");
+            return;
+        }
+
+        $.ajax({
+            url: "/getKodeKeranjang", // Endpoint di Laravel
+            type: "GET",
+            success: function (response) {
+                if (response.success && response.kode && response.produk_id) {
+                    // Lakukan permintaan untuk total harga keranjang
+                    $.ajax({
+                        url: "/totalHargaKeranjang", // Endpoint di Laravel
+                        type: "GET",
+                        success: function (items) {
+                            if (items.success) {
+                                const total = items.total;
+                                const subDiskon = diskon / 100;
+                                const TotalDiskon = total * subDiskon;
+                                const subTotalDiskon = total - TotalDiskon;
+
+                                // Lakukan permintaan pembayaran
+                                $.ajax({
+                                    url: `/payment`, // Route Laravel
+                                    type: "POST",
+                                    data: {
+                                        _token: csrfToken, // Sertakan token CSRF
+                                        pelangganID: pelanggan,
+                                        diskonID: diskon,
+                                        transaksiID: transaksi_id,
+                                        kodeKeranjangID: response.kode,
+                                        produkID: response.produk_id,
+                                        total: subTotalDiskon,
+                                    },
+                                    success: function (paymentResponse) {
+                                        if (paymentResponse.success) {
+                                            const successtoastExample =
+                                                document.getElementById("successToast");
+                                            const toast = new bootstrap.Toast(successtoastExample);
+                                            $(".toast-body").text(paymentResponse.message);
+                                            toast.show();
+
+                                            loadKeranjang();
+                                            loadProducts("all");
+                                            getCount();
+                                            initDeleteHandler(); // Inisialisasi event handler untuk tombol hapus
+                                            totalHargaKeranjang();
+                                            // Lakukan aksi lain setelah pembayaran
+                                        } else {
+                                            const dangertoastExamplee =
+                                                document.getElementById("dangerToastError");
+                                            const toast = new bootstrap.Toast(dangertoastExamplee);
+                                            $(".toast-body").text(paymentResponse.message);
+                                            toast.show();
+                                        }
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.error("Error saat pembayaran:", error);
+                                    },
+                                });
+                            } else {
+                                console.error("Error fetching total keranjang:", items);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Error fetching total keranjang:", error);
+                        },
+                    });
+                } else {
+                    console.error("Response getKodeKeranjang tidak valid:", response);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching data:", error);
+            },
+        });
+    });
+
+    function kodeTransaksi()
+    {
+        $.ajax({
+            url: "/generateCodeTransaksi", // Endpoint di Laravel
+            type: "GET",
+            success: function (response) {
+                // Loop melalui setiap item yang dikembalikan dari server
+                $("#transaksi_id").text(response.kodetransaksi); // Tampilkan ke elemen
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching data:", error);
+            },
+        });
+    }
+
 });

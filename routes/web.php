@@ -86,10 +86,18 @@ Route::middleware('auth')->group(function () {
     Route::get('pos', [POSController::class, 'index']);
     Route::get('pos/{id}', [POSController::class, 'getItem']);
     Route::get('pos/fetchAllItem', [POSController::class, 'fetchAllItem']);
+    Route::get('getKodeKeranjang', [POSController::class, 'getKodeKeranjang']);
+    Route::get('generateCodeTransaksi', [POSController::class, 'getKodeTransaksi']);
 
     Route::post('addtocart/{id}', [KeranjangController::class, 'addtocart']);
     Route::get('getKeranjang', [KeranjangController::class, 'index']);
     Route::get('getCount', [KeranjangController::class, 'getCount']);
+    Route::delete('deleteKeranjangItem/{id}', [KeranjangController::class, 'deleteKeranjang']);
+    Route::delete('deleteKeranjangAll', [KeranjangController::class, 'deleteKeranjangAll']);
+    Route::get('totalHargaKeranjang', [KeranjangController::class, 'totalHargaKeranjang']);
+
+
+    Route::post('payment', [POSController::class, 'payment']);
 
 
     Route::get('order', function () {

@@ -105,7 +105,6 @@ class KeranjangController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Produk berhasil dihapus',
-            'data' => $keranjang
         ]);
     }
 
@@ -122,5 +121,18 @@ class KeranjangController extends Controller
             'message' => 'Semua Produk berhasil dihapus',
             'data' => $keranjang
         ]);
+    }
+
+    public function totalHargaKeranjang()
+    {
+        $total = Keranjang::with('produk')
+            ->where('status', 1)
+            ->where('user_id', Auth::user()->id)
+            ->get()
+            ->sum(function ($item) {
+                return $item->produk->harga_jual;
+            });
+
+        return response()->json(['success' => true, 'total' => $total]);
     }
 }

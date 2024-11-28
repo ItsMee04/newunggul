@@ -10,7 +10,7 @@
                         <ul class="tabs owl-carousel pos-category">
                             <li class="active" id="all">
                                 <a href="javascript:void(0);">
-                                    <img src="assets/img/categories/category-01.png" alt="Categories">
+                                    <img src="{{ asset('assets') }}/img/categories/category-01.png" alt="Categories">
                                 </a>
                                 <h6><a href="javascript:void(0);">All Categories</a></h6>
                                 <span>{{ $produk->where('status', 1)->count() }}</span>
@@ -41,7 +41,7 @@
                         <div class="head d-flex align-items-center justify-content-between w-100">
                             <div class>
                                 <h5>Order List</h5>
-                                <span>Transaction ID : <b id="transaksi_id">{{ $kodetransaksi }}</b></span>
+                                <span>Transaction ID : <b id="transaksi_id"></b></span>
                             </div>
                         </div>
                         <div class="customer-info block-section">
@@ -65,9 +65,10 @@
                                 <h6 class="d-flex align-items-center mb-0">Product Added<span class="count"
                                         id="produkCount"></span>
                                 </h6>
-                                <a href="javascript:void(0);" class="d-flex align-items-center text-danger"
-                                    data-bs-toggle="modal" data-bs-target="#modaldeleteALlKeranjang"><span class="me-1"><i
-                                            data-feather="x" class="feather-16"></i></span class="deleteAll">Clear all</a>
+                                <a href="javascript:void(0);"
+                                    class="d-flex align-items-center confirm-deleteAll text-danger"><span class="me-1"><i
+                                            data-feather="x" class="feather-16"></i></span class="deleteAll">Clear all
+                                </a>
                             </div>
                             <div class="product-wrap" id="keranjang">
                             </div>
@@ -111,9 +112,9 @@
                             </a>
                         </div>
                         <div class="btn-row d-sm-flex align-items-center justify-content-between">
-                            <a href="javascript:void(0);" class="btn btn-success btn-icon flex-fill" id="payment"><span
+                            <a href="javascript:void(0);" class="btn btn-success btn-icon flex-fill" id="checkout"><span
                                     class="me-1 d-flex align-items-center"><i data-feather="credit-card"
-                                        class="feather-16"></i></span>Payment</a>
+                                        class="feather-16"></i></span>Checkout</a>
                         </div>
                     </aside>
                 </div>

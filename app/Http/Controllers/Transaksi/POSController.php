@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Transaksi;
 
+use Carbon\Carbon;
 use App\Models\Jenis;
 use App\Models\Diskon;
 use App\Models\Produk;
 use App\Models\Keranjang;
 use App\Models\Pelanggan;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -16,32 +18,28 @@ class POSController extends Controller
 {
     private function generateCodeTransaksi()
     {
-        // Cek apakah ada kode keranjang terakhir dengan status 1
-        $lastKeranjangWithStatusOne = DB::table('transaksi')
-            ->where('status', 1)
+        // Ambil kode customer terakhir dari database
+        $lastCustomer = DB::table('transaksi')
             ->orderBy('kodetransaksi', 'desc')
             ->first();
 
-        // Jika ada kode keranjang dengan status 1, gunakan kode itu
-        if ($lastKeranjangWithStatusOne) {
-            return $lastKeranjangWithStatusOne->kodekeranjang;
-        }
-
-        // Jika tidak ada keranjang dengan status 1, ambil kode keranjang terakhir secara umum
-        $lastKeranjang = DB::table('transaksi')
-            ->orderBy('kodetransaksi', 'desc')
-            ->first();
-
-        // Jika tidak ada keranjang sama sekali, mulai dari 1
-        $lastNumber = $lastKeranjang ? (int) substr($lastKeranjang->kodekeranjang, -5) : 0;
+        // Jika tidak ada customer, mulai dari 1
+        $lastNumber = $lastCustomer ? (int) substr($lastCustomer->kodetransaksi, -5) : 0;
 
         // Tambahkan 1 pada nomor terakhir
         $newNumber = $lastNumber + 1;
 
-        // Format kode keranjang baru
-        $newKodeKeranjang = '#T-' . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
+        // Format kode customer baru
+        $newKodeCustomer = '#T-' . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
 
-        return $newKodeKeranjang;
+        return $newKodeCustomer;
+    }
+
+    public function getKodeTransaksi()
+    {
+        $kodetransaksi = $this->generateCodeTransaksi();
+
+        return response()->json(['success' => true, 'kodetransaksi' => $kodetransaksi]);
     }
 
     public function index()
@@ -102,5 +100,61 @@ class POSController extends Controller
             'message'   =>  "Data Ditemukan",
             'Data'      =>  $produk
         ]);
+    }
+
+    public function getKodeKeranjang()
+    {
+        $keranjang = Keranjang::where('status', 1)->where('user_id', Auth::user()->id)->first()->kodekeranjang;
+
+        // Cek apakah keranjang ditemukan
+        if ($keranjang) {
+            // Ambil kode keranjang
+            $produkID = Keranjang::select('produk_id')->where('kodekeranjang', $keranjang)->get();
+
+            foreach ($produkID as $item) {
+                $item['produk_id'];
+            }
+            return response()->json(['success' => true, 'kode' => $keranjang, 'produk_id' => $produkID]);
+        } else {
+            // Jika keranjang tidak ditemukan
+            return response()->json([
+                'success' => false,
+                'message' => 'Belum ada barang dalam keranjang',
+            ]);
+        }
+    }
+
+    public function payment(Request $request)
+    {
+        $produk = $request->produkID;
+
+        $payment = Transaksi::create([
+            'kodetransaksi' =>  $request->transaksiID,
+            'keranjang_id'  =>  $request->kodeKeranjangID,
+            'pelanggan_id'  =>  $request->pelangganID,
+            'diskon'        =>  $request->diskonID,
+            'tanggal'       =>  Carbon::today()->format('Y-m-d'),
+            'total'         =>  $request->total,
+            'user_id'       =>  Auth::user()->id,
+            'status'        =>  1,
+        ]);
+
+        if ($payment) {
+            Keranjang::where('status', 1)
+                ->where('user_id', Auth::user()->id)
+                ->where('kodekeranjang', $request->kodeKeranjangID)
+                ->update([
+                    'status' => 2,
+                ]);
+
+            foreach ($produk as $value) {
+                Produk::where('id', $value)
+                    ->update([
+                        'status' => 2,
+                    ]);
+            }
+        }
+
+        return response()->json(['success' => true, 'Transaksi Berhasil']);
     }
 }
