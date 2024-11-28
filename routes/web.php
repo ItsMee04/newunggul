@@ -11,6 +11,7 @@ use App\Http\Controllers\Pegawai\PegawaiController;
 use App\Http\Controllers\Transaksi\DiskonController;
 use App\Http\Controllers\Pelanggan\SuplierController;
 use App\Http\Controllers\Pelanggan\PelangganController;
+use App\Http\Controllers\Transaksi\KeranjangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,6 +86,11 @@ Route::middleware('auth')->group(function () {
     Route::get('pos', [POSController::class, 'index']);
     Route::get('pos/{id}', [POSController::class, 'getItem']);
     Route::get('pos/fetchAllItem', [POSController::class, 'fetchAllItem']);
+
+    Route::post('addtocart/{id}', [KeranjangController::class, 'addtocart']);
+    Route::get('getKeranjang', [KeranjangController::class, 'index']);
+    Route::get('getCount', [KeranjangController::class, 'getCount']);
+
 
     Route::get('order', function () {
         return view('pages.order');

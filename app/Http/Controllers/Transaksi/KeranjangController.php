@@ -56,6 +56,13 @@ class KeranjangController extends Controller
             ->first();
     }
 
+    public function getCount()
+    {
+        $count = Keranjang::where('status', 1)->where('user_id', Auth::user()->id)->count();
+
+        return response()->json(['success' => true, 'count' => $count]);
+    }
+
     public function addtocart(Request $request, $id)
     {
         //GENERATE CODE KERANJANG

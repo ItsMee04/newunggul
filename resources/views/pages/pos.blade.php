@@ -8,7 +8,7 @@
                         <h5>Jenis Perhiasan</h5>
                         <p>Pilih Dari Jenis Di Bawah Ini</p>
                         <ul class="tabs owl-carousel pos-category">
-                            <li id="all">
+                            <li class="active" id="all">
                                 <a href="javascript:void(0);">
                                     <img src="assets/img/categories/category-01.png" alt="Categories">
                                 </a>
@@ -41,7 +41,7 @@
                         <div class="head d-flex align-items-center justify-content-between w-100">
                             <div class>
                                 <h5>Order List</h5>
-                                <span>Transaction ID : #<b id="transaksi_id">{{ $kodetransaksi }}</b></span>
+                                <span>Transaction ID : <b id="transaksi_id">{{ $kodetransaksi }}</b></span>
                             </div>
                         </div>
                         <div class="customer-info block-section">
@@ -172,93 +172,5 @@
     </div>
     <!-- jQuery -->
     <script src="{{ asset('assets') }}/js/jquery-3.7.1.min.js" type="text/javascript"></script>
-
-    <script>
-        $(document).ready(function() {
-            $("ul.tabs li").click(function() {
-                var $this = $(this);
-                var $theTab = $(this).attr("id");
-                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
-
-                if ($this.hasClass("active")) {} else {
-                    $this
-                        .closest(".tabs_wrapper")
-                        .find("ul.tabs li, .tabs_container .tab_content")
-                        .removeClass("active");
-                    $(
-                        '.tabs_container .tab_content[data-tab="' +
-                        $theTab +
-                        '"], ul.tabs li[id="' +
-                        $theTab +
-                        '"]'
-                    ).addClass("active");
-
-                    $.ajax({
-                        url: `/pos/${$theTab}`,
-                        type: "GET",
-                        _token: CSRF_TOKEN,
-                        dataType: "json",
-                        success: function(data) {
-                            $("#daftarProduk").empty();
-                            $.each(data.Data, function(key, item) {
-                                const formatter = new Intl.NumberFormat("id-ID", {
-                                    style: "currency",
-                                    currency: "IDR",
-                                    minimumFractionDigits: 0, // Biasanya mata uang Rupiah tidak menggunakan desimal
-                                });
-
-                                const hargajual = formatter.format(item
-                                    .harga_jual); // Output: "Rp1.500.000"
-                                $("#daftarProduk").append(
-                                    `
-							<div class="col-sm-2 col-md-6 col-lg-3 col-xl-3">
-								<div class="product-info default-cover card">
-									<a href="javascript:void(0);" class="img-bg">
-										<img src="/storage/produk/${item.image}"
-											alt="Products" width="100px" height="100px"/>
-									</a>
-									<h6 class="cat-name">
-										<a href="javascript:void(0);">KODE : ${item.kodeproduk}</a>
-									</h6>
-									<h6 class="product-name">
-										<a href="javascript:void(0);">NAMA : ${item.nama}</a>
-									</h6>
-									<div
-										class="d-flex align-items-center justify-content-between price">
-										<span>BERAT : ${item.berat} /gram</span>
-										<p>HARGA: Rp. ${hargajual}</p>
-									</div>
-									<div class="align-items-center justify-content-between price text-center">
-                                        <button data-id="${item.id}" data-name="${item.nama}" data-harga="${item.harga_jual}" data-berat="${item.berat}" class="btn btn-sm btn-outline-primary ms-1 addCart">Add To Cart</button>
-                                    </div>
-								</div>
-							</div>
-						`
-                                );
-                            });
-                        },
-                    });
-                }
-            });
-
-            function getCount() {
-                $.ajax({
-                    url: "/getCount", // Endpoint di Laravel
-                    type: "GET",
-                    success: function(response) {
-                        // Loop melalui setiap item yang dikembalikan dari server
-                        $(".count").text(0);
-                        if (response.success) {
-                            $(".count").text(response.count);
-                        } else {
-                            $(".count").text(0);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Error fetching data:", error);
-                    },
-                });
-            }
-        })
-    </script>
+    <script src="{{ asset('js') }}/pos.js" type="text/javascript"></script>
 @endsection

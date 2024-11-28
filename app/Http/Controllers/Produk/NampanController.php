@@ -123,7 +123,8 @@ class NampanController extends Controller
 
     public function nampanDelete($id)
     {
-        $nampan = NampanProduk::where('id', $id)->delete();
-        return response()->json(['message' => 'Data berhasil dihapus.']);
+        $nampan = NampanProduk::find($id);
+        $nampan->delete();
+        return response()->json(['success' => true, 'message' => 'Data Pelanggan Berhasil Dihapus']);
     }
 }
