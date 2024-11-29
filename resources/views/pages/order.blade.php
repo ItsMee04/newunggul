@@ -82,7 +82,8 @@
                                         <td class="action-table-data">
                                             <div class="edit-delete-action">
                                                 @if ($item->status == 1)
-                                                    <a class="me-2 edit-icon  p-2" href="/order/{{ $item->kodetransaksi }}">
+                                                    <a class="me-2 edit-icon  p-2"
+                                                        href="/detailOrder/{{ $item->kodetransaksi }}">
                                                         <i data-feather="eye" class="feather-eye"></i>
                                                     </a>
                                                     <a class="me-2 confirm-payment p-2" href="javascript:void(0);"
@@ -94,8 +95,7 @@
                                                         <i data-feather="x-circle" class="feather-trash-2"></i>
                                                     </a>
                                                 @else
-                                                    <a class="me-2 edit-icon  p-2"
-                                                        href="/order/{{ $item->kodetransaksi }}">
+                                                    <a class="me-2 edit-icon  p-2" href="detailOrder/{{ $item->id }}">
                                                         <i data-feather="eye" class="feather-eye"></i>
                                                     </a>
                                                 @endif

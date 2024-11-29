@@ -102,6 +102,7 @@ Route::middleware('auth')->group(function () {
     Route::get('order', [OrderController::class, 'index']);
     Route::get('confirmPayment/{id}', [OrderController::class, 'confirmPayment']);
     Route::get('cancelPayment/{id}', [OrderController::class, 'cancelPayment']);
+    Route::get('detailOrder/{id}', [OrderController::class, 'detailOrder']);
 
     Route::get('logout', [AuthController::class, 'logout']);
 });

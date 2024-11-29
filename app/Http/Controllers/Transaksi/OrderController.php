@@ -54,4 +54,9 @@ class OrderController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Transaksi Dibatalkan']);
     }
+
+    public function detailOrder($id)
+    {
+        return view('pages.order-detail');
+    }
 }
