@@ -104,25 +104,32 @@ class POSController extends Controller
 
     public function getKodeKeranjang()
     {
-        $keranjang = Keranjang::where('status', 1)->where('user_id', Auth::user()->id)->first()->kodekeranjang;
+        // Ambil data keranjang pertama dengan status 1 dan user_id pengguna yang sedang login
+        $keranjang = Keranjang::where('status', 1)
+            ->where('user_id', Auth::user()->id)
+            ->first();
 
         // Cek apakah keranjang ditemukan
         if ($keranjang) {
             // Ambil kode keranjang
-            $produkID = Keranjang::select('produk_id')->where('kodekeranjang', $keranjang)->get();
+            $kodeKeranjang = $keranjang->kodekeranjang;
 
-            foreach ($produkID as $item) {
-                $item['produk_id'];
-            }
+            // Ambil daftar produk berdasarkan kode keranjang
+            $produkID = Keranjang::select('produk_id')
+                ->where('kodekeranjang', $kodeKeranjang)
+                ->get();
+
+            // Kembalikan response JSON dengan kode keranjang dan produk ID
             return response()->json(['success' => true, 'kode' => $keranjang, 'produk_id' => $produkID]);
         } else {
             // Jika keranjang tidak ditemukan
             return response()->json([
                 'success' => false,
-                'message' => 'Belum ada barang dalam keranjang',
+                'message' => 'Belum ada barang dalam keranjang'
             ]);
         }
     }
+
 
     public function payment(Request $request)
     {

@@ -11,6 +11,7 @@ use App\Http\Controllers\Pegawai\PegawaiController;
 use App\Http\Controllers\Transaksi\DiskonController;
 use App\Http\Controllers\Pelanggan\SuplierController;
 use App\Http\Controllers\Pelanggan\PelangganController;
+use App\Http\Controllers\Report\ReportController;
 use App\Http\Controllers\Transaksi\KeranjangController;
 use App\Http\Controllers\Transaksi\OrderController;
 
@@ -102,7 +103,9 @@ Route::middleware('auth')->group(function () {
     Route::get('order', [OrderController::class, 'index']);
     Route::get('confirmPayment/{id}', [OrderController::class, 'confirmPayment']);
     Route::get('cancelPayment/{id}', [OrderController::class, 'cancelPayment']);
-    Route::get('detailOrder/{id}', [OrderController::class, 'detailOrder']);
+    Route::get('order/{id}', [OrderController::class, 'detailOrder']);
+
+    Route::get('cetakNotaTransaksi', [ReportController::class, 'cetakNotaTransaksi']);
 
     Route::get('logout', [AuthController::class, 'logout']);
 });

@@ -23,173 +23,171 @@
 
             <div class="card">
                 <div class="card-body">
-                    <form action="sales-list.html">
-                        <div class="invoice-box table-height"
-                            style="max-width: 1600px;width:100%;overflow: auto;padding: 0;font-size: 14px;line-height: 24px;color: #555;">
-                            <div class="sales-details-items d-flex">
-                                <div class="details-item">
-                                    <h6>Customer Info</h6>
-                                    <p>walk-in-customer<br>
-                                        <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
-                                            data-cfemail="1a6d7b767137737437796f696e75777f685a7f627b776a767f34797577">[email&#160;protected]</a><br>
-                                        123456780<br>
-                                        N45 , Dhaka
-                                    </p>
-                                </div>
-                                <div class="details-item">
-                                    <h6>Company Info</h6>
-                                    <p>DGT<br>
-                                        <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
-                                            data-cfemail="d8b9bcb5b1b698bda0b9b5a8b4bdf6bbb7b5">[email&#160;protected]</a><br>
-                                        6315996770<br>
-                                        3618 Abia Martin Drive
-                                    </p>
-                                </div>
-                                <div class="details-item">
-                                    <h6>Invoice Info</h6>
-                                    <p>Reference<br>
-                                        Payment Status<br>
-                                        Status
-                                    </p>
-                                </div>
-                                <div class="details-item">
-                                    <h5><span>SL0101</span>Paid<br> Completed</h5>
-                                </div>
-                            </div>
-                            <h5 class="order-text">Order Summary</h5>
-                            <div class="table-responsive no-pagination">
-                                <table class="table  datanew">
-                                    <thead>
-                                        <tr>
-                                            <th>Product</th>
-                                            <th>Qty</th>
-                                            <th>Purchase Price($)</th>
-                                            <th>Discount($)</th>
-                                            <th>Tax(%)</th>
-                                            <th>Tax Amount($)</th>
-                                            <th>Unit Cost($)</th>
-                                            <th>Total Cost(%)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="productimgname">
-                                                    <a href="javascript:void(0);" class="product-img stock-img">
-                                                        <img src="assets/img/products/stock-img-02.png" alt="product">
-                                                    </a>
-                                                    <a href="javascript:void(0);">Nike Jordan</a>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="product-quantity">
-                                                    <span class="quantity-btn">+<i data-feather="plus-circle"
-                                                            class="plus-circle"></i></span>
-                                                    <input type="text" class="quntity-input" value="2">
-                                                    <span class="quantity-btn"><i data-feather="minus-circle"
-                                                            class="feather-search"></i></span>
-                                                </div>
-                                            </td>
-                                            <td>2000</td>
-                                            <td>500</td>
-                                            <td>
-                                                0.00
-                                            </td>
-                                            <td>0.00</td>
-                                            <td>0.00</td>
-                                            <td>1500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="productimgname">
-                                                    <a href="javascript:void(0);" class="product-img stock-img">
-                                                        <img src="assets/img/products/stock-img-03.png" alt="product">
-                                                    </a>
-                                                    <a href="javascript:void(0);">Apple Series 5 Watch</a>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="product-quantity">
-                                                    <span class="quantity-btn">+<i data-feather="plus-circle"
-                                                            class="plus-circle"></i></span>
-                                                    <input type="text" class="quntity-input" value="2">
-                                                    <span class="quantity-btn"><i data-feather="minus-circle"
-                                                            class="feather-search"></i></span>
-                                                </div>
-                                            </td>
-                                            <td>3000</td>
-                                            <td>400</td>
-                                            <td>
-                                                0.00
-                                            </td>
-                                            <td>0.00</td>
-                                            <td>0.00</td>
-                                            <td>1700</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="productimgname">
-                                                    <a href="javascript:void(0);" class="product-img stock-img">
-                                                        <img src="assets/img/products/stock-img-05.png" alt="product">
-                                                    </a>
-                                                    <a href="javascript:void(0);">Lobar Handy</a>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="product-quantity">
-                                                    <span class="quantity-btn">+<i data-feather="plus-circle"
-                                                            class="plus-circle"></i></span>
-                                                    <input type="text" class="quntity-input" value="2">
-                                                    <span class="quantity-btn"><i data-feather="minus-circle"
-                                                            class="feather-search"></i></span>
-                                                </div>
-                                            </td>
-                                            <td>2500</td>
-                                            <td>500</td>
-                                            <td>
-                                                0.00
-                                            </td>
-                                            <td>0.00</td>
-                                            <td>0.00</td>
-                                            <td>2000</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                    <div class="card-sales-split">
+                        <h2>Detail Transaction : {{ $transaksi->kodetransaksi }}</h2>
+                    </div>
+                    <div class="invoice-box table-height"
+                        style="max-width: 1600px;width:100%;overflow: auto;margin:15px auto;padding: 0;font-size: 14px;line-height: 24px;color: #555;">
+                        <table cellpadding="0" cellspacing="0" style="width: 100%;line-height: inherit;text-align: left;">
+                            <tbody>
+                                <tr class="top">
+                                    <td colspan="6" style="padding: 5px;vertical-align: top;">
+                                        <table style="width: 100%;line-height: inherit;text-align: left;">
+                                            <tbody>
 
+                                                <tr>
+                                                    <td
+                                                        style="padding:5px;vertical-align:top;text-align:left;padding-bottom:20px">
+                                                        <font style="vertical-align: inherit;margin-bottom:25px;">
+                                                            <font
+                                                                style="vertical-align: inherit;font-size:14px;color:#7367F0;font-weight:600;line-height: 35px; ">
+                                                                Pelanggan</font>
+                                                        </font><br>
+                                                        <font style="vertical-align: inherit;">
+                                                            <font
+                                                                style="vertical-align: inherit;font-size: 14px;color:#000;font-weight: 400;">
+                                                                {{ $transaksi->pelanggan->nama }}</font>
+                                                        </font><br>
+                                                        <font style="vertical-align: inherit;">
+                                                            <font
+                                                                style="vertical-align: inherit;font-size: 14px;color:#000;font-weight: 400;">
+                                                                {{ $transaksi->pelanggan->kontak }}</font>
+                                                        </font><br>
+                                                        <font style="vertical-align: inherit;">
+                                                            <font
+                                                                style="vertical-align: inherit;font-size: 14px;color:#000;font-weight: 400;">
+                                                                {{ $transaksi->pelanggan->alamat }}</font>
+                                                        </font><br>
+                                                    </td>
+                                                    <td
+                                                        style="padding:5px;vertical-align:top;text-align:left;padding-bottom:20px">
+                                                        <font style="vertical-align: inherit;margin-bottom:25px;">
+                                                            <font
+                                                                style="vertical-align: inherit;font-size:14px;color:#7367F0;font-weight:600;line-height: 35px; ">
+                                                                Invoice</font>
+                                                        </font><br>
+                                                        <font style="vertical-align: inherit;">
+                                                            <font
+                                                                style="vertical-align: inherit;font-size: 14px;color:#000;font-weight: 400;">
+                                                                Payment Status</font>
+                                                        </font><br>
+                                                        <font style="vertical-align: inherit;">
+                                                            <font
+                                                                style="vertical-align: inherit;font-size: 14px;color:#000;font-weight: 400;">
+                                                                Sales</font>
+                                                        </font><br>
+                                                    </td>
+                                                    <td
+                                                        style="padding:5px;vertical-align:top;text-align:right;padding-bottom:20px">
+                                                        <font style="vertical-align: inherit;margin-bottom:25px;">
+                                                            <font
+                                                                style="vertical-align: inherit;font-size:14px;color:#7367F0;font-weight:600;line-height: 35px; ">
+                                                                &nbsp;</font>
+                                                        </font><br>
+                                                        <font style="vertical-align: inherit;">
+                                                            @if ($transaksi->status == 1)
+                                                                <font
+                                                                    style="vertical-align: inherit;font-size: 14px;color:#ff0000;font-weight: 400;">
+                                                                    <span class="badge bg-danger">UN PAID</span>
+                                                                </font>
+                                                            @else
+                                                                <font
+                                                                    style="vertical-align: inherit;font-size: 14px;color:#2E7D32;font-weight: 400;">
+                                                                    <span class="badge bg-success">PAID</span>
+                                                                </font>
+                                                            @endif
+                                                        </font><br>
+                                                        <font
+                                                            style="vertical-align: inherit;font-size: 14px;color:#000000;font-weight: 400;">
+                                                            <strong>{{ $transaksi->user->pegawai->nama }}</strong>
+                                                        </font>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr class="heading " style="background: #F3F2F7;">
+                                    <td
+                                        style="padding: 5px;vertical-align: middle;font-weight: 600;color: #5E5873;font-size: 14px;padding: 10px; ">
+                                        Nama Item
+                                    </td>
+                                    <td
+                                        style="padding: 5px;vertical-align: middle;font-weight: 600;color: #5E5873;font-size: 14px;padding: 10px; ">
+                                        Berat
+                                    </td>
+                                    <td
+                                        style="padding: 5px;vertical-align: middle;font-weight: 600;color: #5E5873;font-size: 14px;padding: 10px; ">
+                                        Karat
+                                    </td>
+                                    <td
+                                        style="padding: 5px;vertical-align: middle;font-weight: 600;color: #5E5873;font-size: 14px;padding: 10px; ">
+                                        Harga
+                                    </td>
+                                    <td
+                                        style="padding: 5px;vertical-align: middle;font-weight: 600;color: #5E5873;font-size: 14px;padding: 10px; ">
+                                        Subtotal
+                                    </td>
+                                    <td
+                                        style="padding: 5px;vertical-align: middle;font-weight: 600;color: #5E5873;font-size: 14px;padding: 10px; ">
+                                        Print Surat Product
+                                    </td>
+                                </tr>
+                                @foreach ($keranjang as $item)
+                                    <tr class="details" style="border-bottom:1px solid #E9ECEF ;">
+                                        <td style="padding: 10px;vertical-align: top; display: flex;align-items: center;">
+                                            <img src="{{ asset('storage/produk/' . $item->produk->image) }}" alt="img"
+                                                class="me-2" style="width:40px;height:40px;">
+                                            {{ $item->produk->nama }}
+                                        </td>
+                                        <td style="padding: 10px;vertical-align: top; ">
+                                            {{ $item->produk->berat }} grams
+                                        </td>
+                                        <td style="padding: 10px;vertical-align: top; ">
+                                            {{ $item->produk->karat }}
+                                        </td>
+                                        <td style="padding: 10px;vertical-align: top; ">
+                                            {{ 'Rp.' . ' ' . number_format($item->produk->harga_jual) }}
+                                        </td>
+                                        <td style="padding: 10px;vertical-align: top; ">
+                                            {{ 'Rp.' . ' ' . number_format($item->total) }}
+                                        </td>
+                                        <td style="padding: 10px;vertical-align: top; ">
+                                            <a href="/NotaBarang/{{ $item->produk_id }}" target="__blank">
+                                                <i data-feather="printer" class="feather-rotate-ccw"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                    title="Cetak Surat Barang">
+                                                </i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
                         <div class="row">
-
-                            <div class="row">
-                                <div class="col-lg-6 ms-auto">
-                                    <div class="total-order w-100 max-widthauto m-auto mb-4">
-                                        <ul>
-                                            <li>
-                                                <h4>Order Tax</h4>
-                                                <h5>$ 0.00</h5>
-                                            </li>
-                                            <li>
-                                                <h4>Discount</h4>
-                                                <h5>$ 0.00</h5>
-                                            </li>
-                                            <li>
-                                                <h4>Grand Total</h4>
-                                                <h5>$ 5200.00</h5>
-                                            </li>
-                                            <li>
-                                                <h4>Paid</h4>
-                                                <h5>$ 5200.00</h5>
-                                            </li>
-                                            <li>
-                                                <h4>Due</h4>
-                                                <h5>$ 0.00</h5>
-                                            </li>
-                                        </ul>
-                                    </div>
+                            <div class="col-lg-6 ">
+                                <div class="total-order w-100 max-widthauto m-auto mb-4">
+                                    <ul>
+                                        <li class="total">
+                                            <h4>Sub Total</h4>
+                                            <h5 class="text-danger">{{ 'Rp.' . ' ' . number_format($subtotal) }}</h5>
+                                        </li>
+                                        <li class="total">
+                                            <h4>Discount</h4>
+                                            <h5>{{ $transaksi->diskon }} %</h5>
+                                        </li>
+                                        <li class="total">
+                                            <h4>Grand Total</h4>
+                                            <h5 class="text-success">{{ 'Rp.' . ' ' . number_format($transaksi->total) }}
+                                            </h5>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>

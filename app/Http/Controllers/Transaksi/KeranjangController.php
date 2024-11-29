@@ -130,7 +130,7 @@ class KeranjangController extends Controller
             ->where('user_id', Auth::user()->id)
             ->get()
             ->sum(function ($item) {
-                return $item->produk->harga_jual;
+                return $item->total;
             });
 
         return response()->json(['success' => true, 'total' => $total]);

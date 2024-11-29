@@ -57,6 +57,10 @@ class OrderController extends Controller
 
     public function detailOrder($id)
     {
-        return view('pages.order-detail');
+        $transaksi      = Transaksi::where('id', $id)->first();
+
+        $keranjang      = Keranjang::where('kodekeranjang', $transaksi->keranjang_id)->get();
+        $subtotal       = Keranjang::where('kodekeranjang', $transaksi->keranjang_id)->sum('total');
+        return view('pages.order-detail', ['transaksi' => $transaksi, 'keranjang' => $keranjang, 'subtotal' => $subtotal]);
     }
 }

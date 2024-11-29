@@ -397,86 +397,99 @@ $(document).ready(function () {
         // Pastikan transaksi_id didefinisikan
         const transaksi_id = document.querySelector("#transaksi_id").textContent;
         // Validasi elemen DOM
-        if (!pelanggan || !diskon) {
+        if (pelanggan === "walk in customer" || diskon === "pilih diskon") {
             console.error("Pelanggan atau diskon tidak dipilih.");
+            console.log(pelanggan)
+            console.log(diskon)
             return;
+        } else {
+            $.ajax({
+                url: "/getKodeKeranjang", // Endpoint di Laravel
+                type: "GET",
+                success: function (response) {
+                    // Jika keranjang tidak ditemukan
+                    if (!response.success) {
+                        const dangerToastExample = document.getElementById("dangerToastError");
+                        const toast = new bootstrap.Toast(dangerToastExample);
+                        $(".toast-body").text(response.message);
+                        toast.show();
+                    } 
+                    // Jika keranjang ditemukan
+                    else if (response.success && response.kode && response.produk_id) {
+                        // Ambil total harga keranjang
+                        $.ajax({
+                            url: "/totalHargaKeranjang", // Endpoint di Laravel
+                            type: "GET",
+                            success: function (items) {
+                                if (items.success) {
+                                    const total = items.total;
+                                    const subDiskon = diskon / 100; // Hitung diskon
+                                    const TotalDiskon = total * subDiskon;
+                                    const subTotalDiskon = total - TotalDiskon;
+            
+                                    // Kirim data pembayaran
+                                    $.ajax({
+                                        url: `/payment`, // Route Laravel
+                                        type: "POST",
+                                        data: {
+                                            _token: csrfToken, // Sertakan token CSRF
+                                            pelangganID: pelanggan,
+                                            diskonID: diskon,
+                                            transaksiID: transaksi_id,
+                                            kodeKeranjangID: response.kode.kodekeranjang,
+                                            produkID: response.produk_id,
+                                            total: subTotalDiskon,
+                                        },
+                                        success: function (paymentResponse) {
+                                            // Jika pembayaran sukses
+                                            if (paymentResponse.success) {
+                                                const successToastExample = document.getElementById("successToast");
+                                                const toast = new bootstrap.Toast(successToastExample);
+                                                $(".toast-body").text(paymentResponse.message);
+                                                toast.show();
+            
+                                                // Perbarui UI setelah pembayaran berhasil
+                                                loadKeranjang();
+                                                loadProducts("all");
+                                                getCount();
+                                                initDeleteHandler(); // Inisialisasi ulang tombol hapus
+                                                totalHargaKeranjang();
+                                            } 
+                                            // Jika pembayaran gagal
+                                            else {
+                                                const dangerToastExample = document.getElementById("dangerToastError");
+                                                const toast = new bootstrap.Toast(dangerToastExample);
+                                                $(".toast-body").text(paymentResponse.message);
+                                                toast.show();
+                                            }
+                                        },
+                                        error: function (xhr, status, error) {
+                                            console.error("Error saat pembayaran:", error);
+                                        },
+                                    });
+                                } else {
+                                    console.error("Error fetching total keranjang:", items);
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                console.error("Error fetching total keranjang:", error);
+                            },
+                        });
+                    } 
+                    // Jika respons tidak valid
+                    else {
+                        console.error("Response getKodeKeranjang tidak valid:", response);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching data:", error);
+                },
+            });
+            
         }
-
-        $.ajax({
-            url: "/getKodeKeranjang", // Endpoint di Laravel
-            type: "GET",
-            success: function (response) {
-                if (response.success && response.kode && response.produk_id) {
-                    // Lakukan permintaan untuk total harga keranjang
-                    $.ajax({
-                        url: "/totalHargaKeranjang", // Endpoint di Laravel
-                        type: "GET",
-                        success: function (items) {
-                            if (items.success) {
-                                const total = items.total;
-                                const subDiskon = diskon / 100;
-                                const TotalDiskon = total * subDiskon;
-                                const subTotalDiskon = total - TotalDiskon;
-
-                                // Lakukan permintaan pembayaran
-                                $.ajax({
-                                    url: `/payment`, // Route Laravel
-                                    type: "POST",
-                                    data: {
-                                        _token: csrfToken, // Sertakan token CSRF
-                                        pelangganID: pelanggan,
-                                        diskonID: diskon,
-                                        transaksiID: transaksi_id,
-                                        kodeKeranjangID: response.kode,
-                                        produkID: response.produk_id,
-                                        total: subTotalDiskon,
-                                    },
-                                    success: function (paymentResponse) {
-                                        if (paymentResponse.success) {
-                                            const successtoastExample =
-                                                document.getElementById("successToast");
-                                            const toast = new bootstrap.Toast(successtoastExample);
-                                            $(".toast-body").text(paymentResponse.message);
-                                            toast.show();
-
-                                            loadKeranjang();
-                                            loadProducts("all");
-                                            getCount();
-                                            initDeleteHandler(); // Inisialisasi event handler untuk tombol hapus
-                                            totalHargaKeranjang();
-                                            // Lakukan aksi lain setelah pembayaran
-                                        } else {
-                                            const dangertoastExamplee =
-                                                document.getElementById("dangerToastError");
-                                            const toast = new bootstrap.Toast(dangertoastExamplee);
-                                            $(".toast-body").text(paymentResponse.message);
-                                            toast.show();
-                                        }
-                                    },
-                                    error: function (xhr, status, error) {
-                                        console.error("Error saat pembayaran:", error);
-                                    },
-                                });
-                            } else {
-                                console.error("Error fetching total keranjang:", items);
-                            }
-                        },
-                        error: function (xhr, status, error) {
-                            console.error("Error fetching total keranjang:", error);
-                        },
-                    });
-                } else {
-                    console.error("Response getKodeKeranjang tidak valid:", response);
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error("Error fetching data:", error);
-            },
-        });
     });
 
-    function kodeTransaksi()
-    {
+    function kodeTransaksi() {
         $.ajax({
             url: "/generateCodeTransaksi", // Endpoint di Laravel
             type: "GET",
