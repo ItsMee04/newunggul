@@ -155,6 +155,6 @@ class POSController extends Controller
             }
         }
 
-        return response()->json(['success' => true, 'Transaksi Berhasil']);
+        return response()->json(['success' => true, 'message' => 'Transaksi Berhasil']);
     }
 }

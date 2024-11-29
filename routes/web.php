@@ -12,6 +12,7 @@ use App\Http\Controllers\Transaksi\DiskonController;
 use App\Http\Controllers\Pelanggan\SuplierController;
 use App\Http\Controllers\Pelanggan\PelangganController;
 use App\Http\Controllers\Transaksi\KeranjangController;
+use App\Http\Controllers\Transaksi\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -96,13 +97,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('deleteKeranjangAll', [KeranjangController::class, 'deleteKeranjangAll']);
     Route::get('totalHargaKeranjang', [KeranjangController::class, 'totalHargaKeranjang']);
 
-
     Route::post('payment', [POSController::class, 'payment']);
 
-
-    Route::get('order', function () {
-        return view('pages.order');
-    });
+    Route::get('order', [OrderController::class, 'index']);
+    Route::get('confirmPayment/{id}', [OrderController::class, 'confirmPayment']);
+    Route::get('cancelPayment/{id}', [OrderController::class, 'cancelPayment']);
 
     Route::get('logout', [AuthController::class, 'logout']);
 });
