@@ -54,14 +54,21 @@
             font-size: 11pt;
         }
 
-        .invoice-details,
-        .client-details {
+        .details {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
             margin: 20px 0;
         }
 
-        .invoice-details p,
-        .client-details p {
+        .details .client,
+        .details .invoice-info {
             font-size: 12pt;
+        }
+
+        .details .client p,
+        .details .invoice-info p {
+            margin: 5px 0;
         }
 
         .table {
@@ -113,15 +120,19 @@
             <p>Phone: (555) 555-5555 | Email: contact@yourcompany.com</p>
         </div>
 
-        <!-- Invoice & Client Details -->
-        <div class="client-details">
-            <p><strong>Client Name:</strong> John Doe</p>
-            <p><strong>Address:</strong> 5678 Elm Street, Another City, State ZIP</p>
-        </div>
+        <!-- Client & Invoice Details Section -->
+        <div class="details">
+            <!-- Client Details -->
+            <div class="client">
+                <p><strong>Client Name:</strong> John Doe</p>
+                <p><strong>Address:</strong> 5678 Elm Street, Another City, State ZIP</p>
+            </div>
 
-        <div class="invoice-details">
-            <p><strong>Invoice Date:</strong> November 29, 2024</p>
-            <p><strong>Invoice Number:</strong> INV-12345</p>
+            <!-- Invoice Details -->
+            <div class="invoice-info">
+                <p><strong>Invoice Date:</strong> November 29, 2024</p>
+                <p><strong>Invoice Number:</strong> INV-12345</p>
+            </div>
         </div>
 
         <!-- Table Section -->
@@ -138,7 +149,13 @@
             <tbody>
                 <tr>
                     <td>1</td>
-                    <td>Product A</td>
+                    <td>
+                        <div style="display: flex; align-items: center;">
+                            <img src="path/to/image.jpg" alt="Product A Image"
+                                style="width: 50px; height: 50px; margin-right: 10px;" />
+                            <span>Product A</span>
+                        </div>
+                    </td>
                     <td>2</td>
                     <td>$50.00</td>
                     <td>$100.00</td>
