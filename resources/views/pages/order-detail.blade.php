@@ -11,6 +11,11 @@
                 </div>
                 <ul class="table-top-head">
                     <li>
+                        <a href="cetakNotaTransaksi/{{ $transaksi->id }}" target="__blank" data-bs-toggle="tooltip"
+                            data-bs-placement="top" title="Print"><i data-feather="printer"
+                                class="feather-rotate-ccw"></i></a>
+                    </li>
+                    <li>
                         <a data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh"><i data-feather="rotate-ccw"
                                 class="feather-rotate-ccw"></i></a>
                     </li>

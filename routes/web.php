@@ -105,7 +105,7 @@ Route::middleware('auth')->group(function () {
     Route::get('cancelPayment/{id}', [OrderController::class, 'cancelPayment']);
     Route::get('order/{id}', [OrderController::class, 'detailOrder']);
 
-    Route::get('cetakNotaTransaksi', [ReportController::class, 'cetakNotaTransaksi']);
+    Route::get('order/cetakNotaTransaksi/{id}', [ReportController::class, 'cetakNotaTransaksi']);
 
     Route::get('logout', [AuthController::class, 'logout']);
 });

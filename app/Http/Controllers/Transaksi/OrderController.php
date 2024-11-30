@@ -59,8 +59,8 @@ class OrderController extends Controller
     {
         $transaksi      = Transaksi::where('id', $id)->first();
 
-        $keranjang      = Keranjang::where('kodekeranjang', $transaksi->keranjang_id)->get();
-        $subtotal       = Keranjang::where('kodekeranjang', $transaksi->keranjang_id)->sum('total');
+        $keranjang      = Keranjang::where('kodekeranjang', $transaksi->keranjang_id)->where('status', '!=', 0)->get();
+        $subtotal       = Keranjang::where('kodekeranjang', $transaksi->keranjang_id)->where('status', '!=', 0)->sum('total');
         return view('pages.order-detail', ['transaksi' => $transaksi, 'keranjang' => $keranjang, 'subtotal' => $subtotal]);
     }
 }

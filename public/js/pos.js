@@ -19,10 +19,10 @@ $(document).ready(function () {
                 .removeClass("active");
             $(
                 '.tabs_container .tab_content[data-tab="' +
-                $theTab +
-                '"], ul.tabs li[id="' +
-                $theTab +
-                '"]'
+                    $theTab +
+                    '"], ul.tabs li[id="' +
+                    $theTab +
+                    '"]'
             ).addClass("active");
 
             loadProducts($theTab);
@@ -110,6 +110,7 @@ $(document).ready(function () {
                     // Memuat ulang keranjang setelah produk ditambahkan
                     loadKeranjang();
                     totalHargaKeranjang();
+                    getCount();
                 } else if (response.status === "error") {
                     // Menampilkan notifikasi error menggunakan Bootstrap Toast
                     const dangertoastExamplee =
@@ -227,12 +228,18 @@ $(document).ready(function () {
                         method: "DELETE",
                         headers: {
                             "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                                "content"
+                            ),
                         },
                     })
                         .then((response) => {
                             if (response.ok) {
-                                Swal.fire("Dihapus!", "Data berhasil dihapus.", "success");
+                                Swal.fire(
+                                    "Dihapus!",
+                                    "Data berhasil dihapus.",
+                                    "success"
+                                );
                                 getCount();
                                 loadKeranjang();
                                 totalHargaKeranjang();
@@ -276,12 +283,18 @@ $(document).ready(function () {
                         method: "DELETE",
                         headers: {
                             "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                                "content"
+                            ),
                         },
                     })
                         .then((response) => {
                             if (response.ok) {
-                                Swal.fire("Dihapus!", "Data berhasil dihapus.", "success");
+                                Swal.fire(
+                                    "Dihapus!",
+                                    "Data berhasil dihapus.",
+                                    "success"
+                                );
                                 getCount();
                                 loadKeranjang();
                                 totalHargaKeranjang();
@@ -395,12 +408,13 @@ $(document).ready(function () {
         const diskon = document.querySelector("#pilihDiskon").value;
 
         // Pastikan transaksi_id didefinisikan
-        const transaksi_id = document.querySelector("#transaksi_id").textContent;
+        const transaksi_id =
+            document.querySelector("#transaksi_id").textContent;
         // Validasi elemen DOM
         if (pelanggan === "walk in customer" || diskon === "pilih diskon") {
             console.error("Pelanggan atau diskon tidak dipilih.");
-            console.log(pelanggan)
-            console.log(diskon)
+            console.log(pelanggan);
+            console.log(diskon);
             return;
         } else {
             $.ajax({
@@ -409,13 +423,18 @@ $(document).ready(function () {
                 success: function (response) {
                     // Jika keranjang tidak ditemukan
                     if (!response.success) {
-                        const dangerToastExample = document.getElementById("dangerToastError");
+                        const dangerToastExample =
+                            document.getElementById("dangerToastError");
                         const toast = new bootstrap.Toast(dangerToastExample);
                         $(".toast-body").text(response.message);
                         toast.show();
-                    } 
+                    }
                     // Jika keranjang ditemukan
-                    else if (response.success && response.kode && response.produk_id) {
+                    else if (
+                        response.success &&
+                        response.kode &&
+                        response.produk_id
+                    ) {
                         // Ambil total harga keranjang
                         $.ajax({
                             url: "/totalHargaKeranjang", // Endpoint di Laravel
@@ -426,7 +445,7 @@ $(document).ready(function () {
                                     const subDiskon = diskon / 100; // Hitung diskon
                                     const TotalDiskon = total * subDiskon;
                                     const subTotalDiskon = total - TotalDiskon;
-            
+
                                     // Kirim data pembayaran
                                     $.ajax({
                                         url: `/payment`, // Route Laravel
@@ -436,56 +455,84 @@ $(document).ready(function () {
                                             pelangganID: pelanggan,
                                             diskonID: diskon,
                                             transaksiID: transaksi_id,
-                                            kodeKeranjangID: response.kode.kodekeranjang,
+                                            kodeKeranjangID:
+                                                response.kode.kodekeranjang,
                                             produkID: response.produk_id,
                                             total: subTotalDiskon,
                                         },
                                         success: function (paymentResponse) {
                                             // Jika pembayaran sukses
                                             if (paymentResponse.success) {
-                                                const successToastExample = document.getElementById("successToast");
-                                                const toast = new bootstrap.Toast(successToastExample);
-                                                $(".toast-body").text(paymentResponse.message);
+                                                const successToastExample =
+                                                    document.getElementById(
+                                                        "successToast"
+                                                    );
+                                                const toast =
+                                                    new bootstrap.Toast(
+                                                        successToastExample
+                                                    );
+                                                $(".toast-body").text(
+                                                    paymentResponse.message
+                                                );
                                                 toast.show();
-            
+
                                                 // Perbarui UI setelah pembayaran berhasil
                                                 loadKeranjang();
                                                 loadProducts("all");
                                                 getCount();
                                                 initDeleteHandler(); // Inisialisasi ulang tombol hapus
                                                 totalHargaKeranjang();
-                                            } 
+                                            }
                                             // Jika pembayaran gagal
                                             else {
-                                                const dangerToastExample = document.getElementById("dangerToastError");
-                                                const toast = new bootstrap.Toast(dangerToastExample);
-                                                $(".toast-body").text(paymentResponse.message);
+                                                const dangerToastExample =
+                                                    document.getElementById(
+                                                        "dangerToastError"
+                                                    );
+                                                const toast =
+                                                    new bootstrap.Toast(
+                                                        dangerToastExample
+                                                    );
+                                                $(".toast-body").text(
+                                                    paymentResponse.message
+                                                );
                                                 toast.show();
                                             }
                                         },
                                         error: function (xhr, status, error) {
-                                            console.error("Error saat pembayaran:", error);
+                                            console.error(
+                                                "Error saat pembayaran:",
+                                                error
+                                            );
                                         },
                                     });
                                 } else {
-                                    console.error("Error fetching total keranjang:", items);
+                                    console.error(
+                                        "Error fetching total keranjang:",
+                                        items
+                                    );
                                 }
                             },
                             error: function (xhr, status, error) {
-                                console.error("Error fetching total keranjang:", error);
+                                console.error(
+                                    "Error fetching total keranjang:",
+                                    error
+                                );
                             },
                         });
-                    } 
+                    }
                     // Jika respons tidak valid
                     else {
-                        console.error("Response getKodeKeranjang tidak valid:", response);
+                        console.error(
+                            "Response getKodeKeranjang tidak valid:",
+                            response
+                        );
                     }
                 },
                 error: function (xhr, status, error) {
                     console.error("Error fetching data:", error);
                 },
             });
-            
         }
     });
 
@@ -502,5 +549,4 @@ $(document).ready(function () {
             },
         });
     }
-
 });

@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html lang="en">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Invoice Template</title>
-    <meta name="author" content="user" />
-    <style type="text/css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nota Transaksi</title>
+    <style>
+        /* Universal Styles */
         * {
             margin: 0;
             padding: 0;
@@ -15,15 +17,12 @@
         body {
             font-family: Calibri, sans-serif;
             line-height: 1.6;
-            background-color: #f9f9f9;
             color: #393939;
-            padding: 20px;
         }
 
         h1 {
-            font-size: 40pt;
+            font-size: 24pt;
             color: #3A5775;
-            text-align: left;
         }
 
         h2 {
@@ -32,49 +31,55 @@
             font-weight: bold;
         }
 
+        /* Layout for Print */
+        @page {
+            size: A5 landscape;
+            margin: 20mm;
+
+        }
+
         .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: #fff;
-            border: 1px solid #ddd;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: auto;
+            padding: 10px;
         }
 
         .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .header .company-info {
             text-align: left;
+            max-width: 60%;
         }
 
-        .header h2 {
-            margin-bottom: 5px;
-        }
-
-        .header p {
-            font-size: 11pt;
+        .header .client-box {
+            border: 1px solid #ddd;
+            padding: 10px;
+            width: 35%;
+            border-radius: 5px;
+            background-color: #f5f5f5;
+            font-size: 10pt;
         }
 
         .details {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            margin: 20px 0;
+            margin: 10px 0;
         }
 
         .details .client,
         .details .invoice-info {
-            font-size: 12pt;
-        }
-
-        .details .client p,
-        .details .invoice-info p {
-            margin: 5px 0;
+            width: 48%;
+            font-size: 10pt;
         }
 
         .table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         .table th,
@@ -82,7 +87,7 @@
             border: 1px solid #ddd;
             padding: 8px;
             text-align: center;
-            font-size: 12pt;
+            font-size: 10pt;
         }
 
         .table th {
@@ -95,17 +100,37 @@
         }
 
         .footer {
-            margin-top: 30px;
+            margin-top: 20px;
             text-align: left;
         }
 
         .footer p {
-            font-size: 12pt;
+            font-size: 10pt;
         }
 
         .total {
             font-weight: bold;
             color: #3A5775;
+        }
+
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+            }
+
+            .container {
+                padding: 0;
+                margin: 0;
+            }
+
+            .header,
+            .details,
+            .table,
+            .footer {
+                page-break-inside: avoid;
+            }
         }
     </style>
 </head>
@@ -114,24 +139,31 @@
     <div class="container">
         <!-- Header Section -->
         <div class="header">
-            <h1>INVOICE</h1>
-            <h2>Your Company Name</h2>
-            <p>1234 Main Street, City, State ZIP</p>
-            <p>Phone: (555) 555-5555 | Email: contact@yourcompany.com</p>
+            <!-- Company Information -->
+            <div class="company-info">
+                <h2>INVOICE <strong>{{ $transaksi->kodetransaksi }}</strong></h2>
+                <h1>UNGGUL KENCANA</h1>
+                <p>Jl. Kapten Pattimura No.8, Kec. Purwokerto Barat.</p>
+                <p>Kabupaten Banyumas, Jawa Tengah 53136</p>
+                <p>Phone: 0822-2537-7888 | Email: contact@yourcompany.com</p>
+            </div>
+
+            <!-- Client Information Box -->
+            <div class="client-box">
+                <p><strong>Mr/Mrs:</strong> {{ $transaksi->pelanggan->nama }}</p>
+                <p><strong>Alamat:</strong> {{ $transaksi->pelanggan->alamat }}</p>
+            </div>
         </div>
 
         <!-- Client & Invoice Details Section -->
         <div class="details">
-            <!-- Client Details -->
             <div class="client">
-                <p><strong>Client Name:</strong> John Doe</p>
-                <p><strong>Address:</strong> 5678 Elm Street, Another City, State ZIP</p>
+                <p><strong>Invoice Date:</strong> {{ $transaksi->tanggal }}</p>
+                <p><strong>Due Date:</strong> {{ $transaksi->duedate }}</p>
             </div>
-
-            <!-- Invoice Details -->
             <div class="invoice-info">
-                <p><strong>Invoice Date:</strong> November 29, 2024</p>
-                <p><strong>Invoice Number:</strong> INV-12345</p>
+                <p><strong>Payment Method:</strong> Transfer Bank</p>
+                <p><strong>Bank Account:</strong> 123456789</p>
             </div>
         </div>
 
@@ -139,54 +171,36 @@
         <table class="table">
             <thead>
                 <tr>
+                    <th>No.</th>
                     <th>Item</th>
-                    <th>Description</th>
-                    <th>Quantity</th>
-                    <th>Unit Price</th>
+                    <th>Berat</th>
+                    <th>Harga</th>
                     <th>Total</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>
-                        <div style="display: flex; align-items: center;">
-                            <img src="path/to/image.jpg" alt="Product A Image"
-                                style="width: 50px; height: 50px; margin-right: 10px;" />
-                            <span>Product A</span>
-                        </div>
-                    </td>
-                    <td>2</td>
-                    <td>$50.00</td>
-                    <td>$100.00</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Product B</td>
-                    <td>3</td>
-                    <td>$30.00</td>
-                    <td>$90.00</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Service C</td>
-                    <td>1</td>
-                    <td>$120.00</td>
-                    <td>$120.00</td>
-                </tr>
+                @foreach ($keranjang as $item)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $item->produk->nama }}</td>
+                        <td>{{ $item->produk->berat }}</td>
+                        <td>{{ 'Rp.' . ' ' . number_format($item->produk->harga_jual) }}</td>
+                        <td>{{ 'Rp.' . ' ' . number_format($item->total) }}</td>
+                    </tr>
+                @endforeach
             </tbody>
             <tfoot>
                 <tr>
                     <td colspan="4" class="total">Subtotal</td>
-                    <td>$310.00</td>
+                    <td>{{ 'Rp.' . ' ' . number_format($subtotal) }}</td>
                 </tr>
                 <tr>
-                    <td colspan="4" class="total">Tax (10%)</td>
-                    <td>$31.00</td>
+                    <td colspan="4" class="total">Diskon</td>
+                    <td>{{ $transaksi->diskon }} %</td>
                 </tr>
                 <tr>
                     <td colspan="4" class="total">Total</td>
-                    <td>$341.00</td>
+                    <td>{{ 'Rp.' . ' ' . number_format($transaksi->total) }}</td>
                 </tr>
             </tfoot>
         </table>
