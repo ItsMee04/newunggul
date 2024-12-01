@@ -80,7 +80,7 @@
                                         <div class="input-block">
                                             <label>Discount</label>
                                             <select class="select" id="pilihDiskon" name="diskon">
-                                                <option value="0" selected>Pilih Diskon</option>
+                                                <option value="zero" selected>Pilih Diskon</option>
                                                 @foreach ($diskon as $item)
                                                     <option value="{{ $item->diskon }}"> {{ $item->nama }}</option>
                                                 @endforeach

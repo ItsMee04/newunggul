@@ -243,6 +243,7 @@ $(document).ready(function () {
                                 getCount();
                                 loadKeranjang();
                                 totalHargaKeranjang();
+                                resetHarga();
                             } else {
                                 Swal.fire(
                                     "Gagal!",
@@ -298,6 +299,7 @@ $(document).ready(function () {
                                 getCount();
                                 loadKeranjang();
                                 totalHargaKeranjang();
+                                resetHarga();
                             } else {
                                 Swal.fire(
                                     "Gagal!",
@@ -410,12 +412,12 @@ $(document).ready(function () {
         // Pastikan transaksi_id didefinisikan
         const transaksi_id =
             document.querySelector("#transaksi_id").textContent;
-        // Validasi elemen DOM
-        if (pelanggan === "walk in customer" || diskon === "pilih diskon") {
-            console.error("Pelanggan atau diskon tidak dipilih.");
-            console.log(pelanggan);
-            console.log(diskon);
-            return;
+        if (pelanggan === "Walk in Customer" || diskon === "zero") {
+            const dangerToastExample =
+                document.getElementById("dangerToastError");
+            const toast = new bootstrap.Toast(dangerToastExample);
+            $(".toast-body").text("Pelanggan atau diskon tidak dipilih.");
+            toast.show();
         } else {
             $.ajax({
                 url: "/getKodeKeranjang", // Endpoint di Laravel
@@ -482,6 +484,10 @@ $(document).ready(function () {
                                                 getCount();
                                                 initDeleteHandler(); // Inisialisasi ulang tombol hapus
                                                 totalHargaKeranjang();
+                                                $("#hargadiskon").text(0);
+                                                $("#total").text(0);
+                                                $("#grandtotal").text(0);
+                                                $("#discount").text(diskon);
                                             }
                                             // Jika pembayaran gagal
                                             else {
@@ -548,5 +554,12 @@ $(document).ready(function () {
                 console.error("Error fetching data:", error);
             },
         });
+    }
+
+    function resetHarga() {
+        // Update tampilan dengan data baru
+        $("#hargadiskon").text(0);
+        $("#total").text(0);
+        $("#grandtotal").text(0);
     }
 });

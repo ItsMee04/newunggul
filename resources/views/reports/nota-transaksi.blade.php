@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nota Transaksi</title>
     <style>
-        /* Universal Styles */
         * {
             margin: 0;
             padding: 0;
@@ -17,12 +16,18 @@
         body {
             font-family: Calibri, sans-serif;
             line-height: 1.6;
+            background-color: #f9f9f9;
             color: #393939;
+            padding: 20px;
+            width: 20cm;
+            height: 10cm;
+            margin: 0;
         }
 
         h1 {
             font-size: 24pt;
             color: #3A5775;
+            text-align: left;
         }
 
         h2 {
@@ -31,51 +36,43 @@
             font-weight: bold;
         }
 
-        /* Layout for Print */
-        @page {
-            size: A5 landscape;
-            margin: 20mm;
-
-        }
-
         .container {
             width: auto;
+            height: auto;
+            background: #fff;
+            border: 1px solid #ddd;
             padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 20px;
-        }
-
-        .header .company-info {
             text-align: left;
-            max-width: 60%;
+            margin-bottom: 10px;
         }
 
-        .header .client-box {
-            border: 1px solid #ddd;
-            padding: 10px;
-            width: 35%;
-            border-radius: 5px;
-            background-color: #f5f5f5;
+        .header h2 {
+            margin-bottom: 5px;
+        }
+
+        .header p {
             font-size: 10pt;
         }
 
+        /* Client & Invoice Details Section */
         .details {
             display: flex;
             justify-content: space-between;
             margin: 10px 0;
         }
 
-        .details .client,
-        .details .invoice-info {
+        .client,
+        .invoice-info {
             width: 48%;
             font-size: 10pt;
         }
 
+        /* Table Section */
         .table {
             width: 100%;
             border-collapse: collapse;
@@ -85,7 +82,7 @@
         .table th,
         .table td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 6px;
             text-align: center;
             font-size: 10pt;
         }
@@ -113,24 +110,15 @@
             color: #3A5775;
         }
 
-        @media print {
-            body {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-            }
+        .table td img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
 
-            .container {
-                padding: 0;
-                margin: 0;
-            }
-
-            .header,
-            .details,
-            .table,
-            .footer {
-                page-break-inside: avoid;
-            }
+        .table tfoot td {
+            padding: 6px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -139,31 +127,19 @@
     <div class="container">
         <!-- Header Section -->
         <div class="header">
-            <!-- Company Information -->
-            <div class="company-info">
-                <h2>INVOICE <strong>{{ $transaksi->kodetransaksi }}</strong></h2>
-                <h1>UNGGUL KENCANA</h1>
-                <p>Jl. Kapten Pattimura No.8, Kec. Purwokerto Barat.</p>
-                <p>Kabupaten Banyumas, Jawa Tengah 53136</p>
-                <p>Phone: 0822-2537-7888 | Email: contact@yourcompany.com</p>
-            </div>
-
-            <!-- Client Information Box -->
-            <div class="client-box">
-                <p><strong>Mr/Mrs:</strong> {{ $transaksi->pelanggan->nama }}</p>
-                <p><strong>Alamat:</strong> {{ $transaksi->pelanggan->alamat }}</p>
-            </div>
+            <h2>INVOICE <strong>{{ $transaksi->kodetransaksi }}</strong></h2>
+            <h1>UNGGUL KENCANA</h1>
+            <p>Jl. Kapten Pattimura No.8, Kec. Purwokerto Barat.</p>
+            <p>Kabupaten Banyumas, Jawa Tengah 53136</p>
+            <p>Phone: 0822-2537-7888 | Email: contact@yourcompany.com</p>
         </div>
 
         <!-- Client & Invoice Details Section -->
         <div class="details">
+            <!-- Client Details -->
             <div class="client">
-                <p><strong>Invoice Date:</strong> {{ $transaksi->tanggal }}</p>
-                <p><strong>Due Date:</strong> {{ $transaksi->duedate }}</p>
-            </div>
-            <div class="invoice-info">
-                <p><strong>Payment Method:</strong> Transfer Bank</p>
-                <p><strong>Bank Account:</strong> 123456789</p>
+                <p><strong>Client Name:</strong> {{ $transaksi->pelanggan->nama }}</p>
+                <p><strong>Address:</strong> {{ $transaksi->pelanggan->alamat }}</p>
             </div>
         </div>
 
@@ -182,7 +158,13 @@
                 @foreach ($keranjang as $item)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $item->produk->nama }}</td>
+                        <td>
+                            <div style="display: flex; align-items: center;">
+                                <img src="storage/produk/{{ $item->produk->image }}" alt="Product A Image"
+                                    style="width: 40px; height: 40px; margin-right: 10px;" />
+                                <span>{{ $item->produk->nama }}</span>
+                            </div>
+                        </td>
                         <td>{{ $item->produk->berat }}</td>
                         <td>{{ 'Rp.' . ' ' . number_format($item->produk->harga_jual) }}</td>
                         <td>{{ 'Rp.' . ' ' . number_format($item->total) }}</td>

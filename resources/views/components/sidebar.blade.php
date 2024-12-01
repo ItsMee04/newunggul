@@ -126,6 +126,7 @@
                     <li><a href="/diskon"><span> Diskon</span></a></li>
                     <li><a href="/pos"><span> POS</span></a></li>
                     <li><a href="/order"><span> Order</span></a></li>
+                    <li><a href="/pembelian"><span> Pembelian</span></a></li>
                 </ul>
             </li>
             <li class="submenu">

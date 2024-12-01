@@ -30,7 +30,7 @@ class OrderController extends Controller
     {
         $transaksi = Transaksi::where('id', $id)->get();
 
-        $kodekeranjang  = Transaksi::where('id', $id)->first()->kodekeranjang;
+        $kodekeranjang  = Transaksi::where('id', $id)->first()->keranjang_id;
         $produk_id      = Keranjang::where('kodekeranjang', $kodekeranjang)->get();
 
         $produkid      = Keranjang::where('kodekeranjang', $kodekeranjang)->pluck('produk_id');
