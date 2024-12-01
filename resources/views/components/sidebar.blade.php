@@ -38,6 +38,7 @@
                         <li><a href="/diskon"><i data-feather="tag"></i><span> Diskon</span></a></li>
                         <li><a href="/pos"><i data-feather="hard-drive"></i><span> POS</span></a></li>
                         <li><a href="/order"><i data-feather="file-minus"></i><span> Order</span></a></li>
+                        <li><a href="/pembelian"><i data-feather="shopping-bag"></i><span> Pembelian</span></a></li>
                     </ul>
                 </li>
                 <li class="submenu-open">

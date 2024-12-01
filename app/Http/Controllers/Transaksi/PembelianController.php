@@ -6,6 +6,9 @@ use App\Models\Pembelian;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Jenis;
+use App\Models\Pelanggan;
+use App\Models\Suplier;
 
 class PembelianController extends Controller
 {
@@ -30,8 +33,16 @@ class PembelianController extends Controller
 
     public function index()
     {
-        $pembelian = Pembelian::with(['suplier', 'jenis', 'pelanggan'])->get();
-        return view('pages.pembelian', ['pembelian' => $pembelian]);
+        $pembelian  = Pembelian::with(['suplier', 'jenis', 'pelanggan'])->get();
+        $jenis      = Jenis::all();
+        $suplier    = Suplier::where('status', 1)->get();
+        $pelanggan  = Pelanggan::where('status', 1)->get();
+        return view('pages.pembelian', [
+            'pembelian' =>  $pembelian,
+            'jenis'     =>  $jenis,
+            'suplier'   =>  $suplier,
+            'pelanggan' =>  $pelanggan
+        ]);
     }
 
     public function store(Request $request) {}

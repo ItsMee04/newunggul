@@ -21,13 +21,13 @@
                                 data-feather="chevron-up" class="feather-chevron-up"></i></a>
                     </li>
                 </ul>
-                <div class="d-flex purchase-pg-btn">
-                    <div class="page-btn">
-                        <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#view-notes"><i
-                                data-feather="plus-circle" class="me-2"></i>TAMBAH PEMBELIAN</a>
-                    </div>
+                <div class="page-btn">
+                    <a class="btn btn-added" data-bs-toggle="modal" href="#tambahPembelian" title="Tambah Pembelian"
+                        id="tambahPembelianButton">
+                        <i data-feather="plus-circle" class="me-2"></i>TAMBAH
+                        PEMBELIAN
+                    </a>
                 </div>
-
             </div>
 
             <!-- /product list -->
@@ -99,511 +99,149 @@
             <!-- /product list -->
         </div>
     </div>
-    <!-- Add Purchase -->
-    <div class="modal fade" id="add-units">
-        <div class="modal-dialog purchase modal-dialog-centered stock-adjust-modal">
-            <div class="modal-content">
-                <div class="page-wrapper-new p-0">
-                    <div class="content">
-                        <div class="modal-header border-0 custom-modal-header">
-                            <div class="page-title">
-                                <h4>Add Purchase</h4>
-                            </div>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+
+    <!-- Add Pegawai -->
+    <div class="modal fade" id="tambahPembelian">
+        <div class="modal-dialog modal-dialog-centered text-center" role="document">
+            <div class="modal-content modal-content-demo">
+                <div class="modal-header">
+                    <h4 class="modal-title">Tambah Pembelian</h4>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form action="/pembelian" method="POST" enctype="multipart/form-data" id="formPembelian">
+                    @csrf
+                    <div class="modal-body text-start">
+                        <!-- Form untuk Suplier -->
+                        <div id="formSuplier" style="display: none;" class="mb-3">
+                            <label class="form-label">Suplier</label>
+                            <select class="form-control" name="suplier_id">
+                                <option>Pilih Suplier</option>
+                                @foreach ($suplier as $item)
+                                    <option value="{{ $item->id }}"> {{ $item->suplier }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                        <div class="modal-body custom-modal-body">
-                            <form action="purchase-list.html">
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <div class="input-blocks add-product">
-                                            <label>Supplier Name</label>
-                                            <div class="row">
-                                                <div class="col-lg-10 col-sm-10 col-10">
-                                                    <select class="select">
-                                                        <option>Select Customer</option>
-                                                        <option>Apex Computers</option>
-                                                        <option>Dazzle Shoes</option>
-                                                        <option>Best Accessories</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-lg-2 col-sm-2 col-2 ps-0">
-                                                    <div class="add-icon tab">
-                                                        <a href="javascript:void(0);"><i data-feather="plus-circle"
-                                                                class="feather-plus-circles"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <div class="input-blocks">
-                                            <label>Purchase Date</label>
 
-                                            <div class="input-groupicon calender-input">
-                                                <i data-feather="calendar" class="info-img"></i>
-                                                <input type="text" class="datetimepicker" placeholder="Choose">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <div class="input-blocks">
-                                            <label>Product Name</label>
-                                            <select class="select">
-                                                <option>Choose</option>
-                                                <option>Shoe</option>
-                                                <option>Mobile</option>
+                        <!-- Form untuk Pelanggan -->
+                        <div id="formPelanggan" style="display: none;" class="mb-3">
+                            <label class="form-label">Pelanggan</label>
+                            <select class="form-control" name="pelanggan_id">
+                                <option>Pilih Pelanggan</option>
+                                @foreach ($pelanggan as $item)
+                                    <option value="{{ $item->id }}"> {{ $item->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <div class="input-blocks">
-                                            <label>Reference No</label>
-                                            <input type="text" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="input-blocks">
-                                            <label>Product Name</label>
-                                            <input type="text" placeholder="Please type product code and select">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="modal-body-table">
-                                            <div class="table-responsive">
-                                                <table class="table  datanew">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Product</th>
-                                                            <th>Qty</th>
-                                                            <th>Purchase Price($)</th>
-                                                            <th>Discount($)</th>
-                                                            <th>Tax(%)</th>
-                                                            <th>Tax Amount($)</th>
-                                                            <th>Unit Cost($)</th>
-                                                            <th>Total Cost(%)</th>
-                                                        </tr>
-                                                    </thead>
+                        <!-- Form Tambahan -->
+                        <div class="mb-3">
+                            <label class="form-label">Nama Produk</label>
+                            <input type="text" name="nama" class="form-control">
+                        </div>
 
-                                                    <tbody>
-                                                        <tr>
-                                                            <td class="p-5"></td>
-                                                            <td class="p-5"></td>
-                                                            <td class="p-5"></td>
-                                                            <td class="p-5"></td>
-                                                            <td class="p-5"></td>
-                                                            <td class="p-5"></td>
-                                                            <td class="p-5"></td>
-                                                            <td class="p-5"></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label class="form-label">Berat</label>
+                                <input type="text" name="berat" class="form-control">
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label class="form-label">Karat</label>
+                                <input type="text" name="karat" class="form-control">
+                            </div>
+                        </div>
 
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-3 col-md-6 col-sm-12">
-                                            <div class="input-blocks">
-                                                <label>Order Tax</label>
-                                                <input type="text" value="0">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-md-6 col-sm-12">
-                                            <div class="input-blocks">
-                                                <label>Discount</label>
-                                                <input type="text" value="0">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-md-6 col-sm-12">
-                                            <div class="input-blocks">
-                                                <label>Shipping</label>
-                                                <input type="text" value="0">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-md-6 col-sm-12">
-                                            <div class="input-blocks">
-                                                <label>Status</label>
-                                                <select class="select">
-                                                    <option>Choose</option>
-                                                    <option>Received</option>
-                                                    <option>Pending</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label class="form-label">Jenis</label>
+                                <select class="form-control" name="jenis_id">
+                                    <option>Pilih Jenis</option>
+                                    @foreach ($jenis as $item)
+                                        <option value="{{ $item->id }}"> {{ $item->jenis }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label class="form-label">Harga Beli</label>
+                                <input type="text" name="hargabeli" class="form-control">
+                            </div>
+                        </div>
 
-                                <div class="col-lg-12">
-                                    <div class="input-blocks summer-description-box">
-                                        <label>Notes</label>
-                                        <div id="summernote"></div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="modal-footer-btn">
-                                        <button type="button" class="btn btn-cancel me-2"
-                                            data-bs-dismiss="modal">Cancel</button>
-                                        <button type="submit" class="btn btn-submit">Submit</button>
-                                    </div>
-                                </div>
-                            </form>
+                        <div class="mb-3">
+                            <label class="form-label">Kondisi Fisik</label>
+                            <select class="form-control" name="kondisi">
+                                <option selected> Pilih Kondisi</option>
+                                <option value="baik">Baik</option>
+                                <option value="kusam">Kusam</option>
+                                <option value="rusak">Rusak</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Keterangan</label>
+                            <textarea class="form-control" rows="4" name="keterangan"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Status</label>
+                            <select class="form-control" name="status">
+                                <option>Pilih Status</option>
+                                <option value="1">Aktif</option>
+                                <option value="2">Tidak Aktif</option>
+                            </select>
                         </div>
                     </div>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    <!-- /Add Purchase -->
-
-    <!-- Edit Purchase -->
-    <div class="modal fade" id="edit-units">
-        <div class="modal-dialog purchase modal-dialog-centered stock-adjust-modal">
-            <div class="modal-content">
-                <div class="page-wrapper-new p-0">
-                    <div class="content">
-                        <div class="modal-header border-0 custom-modal-header">
-                            <div class="page-title">
-                                <h4>Edit Purchase</h4>
-                            </div>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body custom-modal-body">
-                            <form action="purchase-list.html">
-                                <div>
-                                    <div class="row">
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="input-blocks">
-                                                <label>Supplier Name</label>
-                                                <div class="row">
-                                                    <div class="col-lg-10 col-sm-10 col-10">
-                                                        <select class="select">
-                                                            <option>Dazzle Shoes</option>
-                                                            <option>Apex Computers</option>
-                                                            <option>Beats Headphones</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-lg-2 col-sm-2 col-2 ps-0">
-                                                        <div class="add-icon tab">
-                                                            <a href="javascript:void(0);"><i data-feather="plus-circle"
-                                                                    class="feather-plus-circles"></i></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="input-blocks">
-                                                <label>Purchase Date </label>
-                                                <div class="input-groupicon">
-                                                    <input type="text" placeholder="19 Jan 2023"
-                                                        class="datetimepicker">
-                                                    <div class="addonset">
-                                                        <img src="{{ asset('assets') }}/img/icons/calendars.svg"
-                                                            alt="img">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="input-blocks">
-                                                <label>Product Name</label>
-                                                <select class="select">
-                                                    <option>Nike Jordan</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="input-blocks">
-                                                <label>Reference No.</label>
-                                                <input type="text" value="010203">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-12 col-sm-6 col-12">
-                                            <div class="input-blocks">
-                                                <label>Product</label>
-                                                <div class="input-groupicon">
-                                                    <input type="text"
-                                                        placeholder="Scan/Search Product by code and select">
-                                                    <div class="addonset">
-                                                        <img src="{{ asset('assets') }}/img/icons/scanners.svg"
-                                                            alt="img">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="modal-body-table">
-                                                <div class="table-responsive">
-                                                    <table class="table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Product Name</th>
-                                                                <th>QTY</th>
-                                                                <th>Purchase Price($) </th>
-                                                                <th>Discount($) </th>
-                                                                <th>Tax %</th>
-                                                                <th>Tax Amount($)</th>
-                                                                <th class="text-end">Unit Cost($)</th>
-                                                                <th class="text-end">Total Cost ($) </th>
-                                                                <th></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="productimgname">
-                                                                        <a href="javascript:void(0);"
-                                                                            class="product-img stock-img">
-                                                                            <img src="{{ asset('assets') }}/img/products/stock-img-02.png"
-                                                                                alt="product">
-                                                                        </a>
-                                                                        <a href="javascript:void(0);">Nike Jordan</a>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="product-quantity">
-                                                                        <span class="quantity-btn">+<i
-                                                                                data-feather="plus-circle"
-                                                                                class="plus-circle"></i></span>
-                                                                        <input type="text" class="quntity-input"
-                                                                            value="10">
-                                                                        <span class="quantity-btn"><i
-                                                                                data-feather="minus-circle"
-                                                                                class="feather-search"></i></span>
-                                                                    </div>
-                                                                </td>
-                                                                <td>2000</td>
-                                                                <td>500.00</td>
-                                                                <td>0.00</td>
-                                                                <td>0.00</td>
-                                                                <td>0.00</td>
-                                                                <td>1500</td>
-                                                                <td>
-                                                                    <a class="delete-set"><img
-                                                                            src="{{ asset('assets') }}/img/icons/delete.svg"
-                                                                            alt="svg"></a>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-12 float-md-right">
-                                            <div class="total-order">
-                                                <ul>
-                                                    <li>
-                                                        <h4>Order Tax</h4>
-                                                        <h5>$ 0.00</h5>
-                                                    </li>
-                                                    <li>
-                                                        <h4>Discount</h4>
-                                                        <h5>$ 0.00</h5>
-                                                    </li>
-                                                    <li>
-                                                        <h4>Shipping</h4>
-                                                        <h5>$ 0.00</h5>
-                                                    </li>
-                                                    <li class="total">
-                                                        <h4>Grand Total</h4>
-                                                        <h5>$1500.00</h5>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="input-blocks">
-                                                <label>Order Tax</label>
-                                                <input type="text" value="0">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="input-blocks">
-                                                <label>Discount</label>
-                                                <input type="text" value="0">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="input-blocks">
-                                                <label>Shipping</label>
-                                                <input type="text" value="0">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3 col-sm-6 col-12">
-                                            <div class="input-blocks">
-                                                <label>Status</label>
-                                                <select class="select">
-                                                    <option>Sent</option>
-                                                    <option>Ordered</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-12">
-                                    <div class="input-blocks summer-description-box">
-                                        <label>Description</label>
-                                        <div id="summernote2">
-                                            <p>These shoes are made with the highest quality materials. </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="modal-footer-btn">
-                                        <button type="button" class="btn btn-cancel me-2"
-                                            data-bs-dismiss="modal">Cancel</button>
-                                        <button type="submit" class="btn btn-submit">Save Changes</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Edit Purchase -->
-
-    <!-- Import Purchase -->
-    <div class="modal fade" id="view-notes">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="page-wrapper-new p-0">
-                    <div class="content">
-                        <div class="modal-header border-0 custom-modal-header">
-                            <div class="page-title">
-                                <h4>Import Purchase</h4>
-                            </div>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body custom-modal-body">
-                            <form action="purchase-list.html">
-                                <div class="row">
-                                    <div class="col-lg-6 col-sm-6 col-12">
-                                        <div class="input-blocks">
-                                            <label>Supplier Name</label>
-                                            <div class="row">
-                                                <div class="col-lg-10 col-sm-10 col-10">
-                                                    <select class="select">
-                                                        <option>Choose</option>
-                                                        <option>Apex Computers</option>
-                                                        <option>Apex Computers</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-lg-2 col-sm-2 col-2 ps-0">
-                                                    <div class="add-icon tab">
-                                                        <a href="javascript:void(0);"><i data-feather="plus-circle"
-                                                                class="feather-plus-circles"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-sm-6 col-12">
-                                        <div class="input-blocks">
-                                            <label>Purchase Status </label>
-                                            <select class="select">
-                                                <option>Choose</option>
-                                                <option>Received</option>
-                                                <option>Ordered</option>
-                                                <option>Pending</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12 col-sm-6 col-12">
-                                        <div class="row">
-                                            <div>
-                                                <!-- <div class="input-blocks download">
-                                                                                                                                                     <a class="btn btn-submit">Download Sample File</a>
-                                                                                                                                                    </div> -->
-                                                <div class="modal-footer-btn download-file">
-                                                    <a href="javascript:void(0)" class="btn btn-submit">Download
-                                                        Sample File</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="input-blocks image-upload-down">
-                                            <label> Upload CSV File</label>
-                                            <div class="image-upload download">
-                                                <input type="file">
-                                                <div class="image-uploads">
-                                                    <img src="{{ asset('assets') }}/img/download-img.png" alt="img">
-                                                    <h4>Drag and drop a <span>file to upload</span></h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-sm-6 col-12">
-                                        <div class="input-blocks">
-                                            <label>Order Tax</label>
-                                            <input type="text" value="0">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-sm-6 col-12">
-                                        <div class="input-blocks">
-                                            <label>Discount</label>
-                                            <input type="text" value="0">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-sm-6 col-12">
-                                        <div class="input-blocks">
-                                            <label>Shipping</label>
-                                            <input type="text" value="0">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="input-blocks summer-description-box transfer">
-                                    <label>Description</label>
-                                    <div id="summernote3">
-                                    </div>
-                                    <p>Maximum 60 Characters</p>
-                                </div>
-                                <div class="modal-footer-btn">
-                                    <button type="button" class="btn btn-cancel me-2"
-                                        data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-submit">Submit</button>
-                                </div>
-                            </form>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /Import Purchase -->
-    <div class="customizer-links" id="setdata">
-        <ul class="sticky-sidebar">
-            <li class="sidebar-icons">
-                <a href="#" class="navigation-add" data-bs-toggle="tooltip" data-bs-placement="left"
-                    data-bs-original-title="Theme">
-                    <i data-feather="settings" class="feather-five"></i>
-                </a>
-            </li>
-        </ul>
-    </div>
-
+    <!-- /Add Pegawai -->
 
     <!-- jQuery -->
     <script src="{{asset('assets')}}/js/jquery-3.7.1.min.js" type="754ab5592cf1ed2f16b073bb-text/javascript"></script>
+    <script>
+        $(document).ready(function() {
+            // Trigger ketika modal dibuka
+            $('#tambahPembelian').on('show.bs.modal', function() {
+                Swal.fire({
+                    title: 'Pilih Jenis Pembelian',
+                    input: 'radio',
+                    inputOptions: {
+                        'suplier': 'Pembelian dari Suplier',
+                        'pelanggan': 'Pembelian dari Pelanggan',
+                    },
+                    inputValidator: (value) => {
+                        if (!value) {
+                            return 'Anda harus memilih salah satu!';
+                        }
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: 'Lanjutkan',
+                    cancelButtonText: 'Batal',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        if (result.value === 'suplier') {
+                            $('#formSuplier').show();
+                            $('#formPelanggan').hide();
+                        } else if (result.value === 'pelanggan') {
+                            $('#formPelanggan').show();
+                            $('#formSuplier').hide();
+                        }
+                    } else {
+                        // Tutup modal jika pembatalan dilakukan
+                        $('#tambahPembelian').modal('hide');
+                    }
+                });
+            });
 
-    </html>
+            // Reset modal saat ditutup
+            $('#tambahPembelian').on('hidden.bs.modal', function() {
+                $('#formSuplier, #formPelanggan').hide();
+                $('#formPembelian')[0].reset();
+            });
+        });
+    </script>
 @endsection
