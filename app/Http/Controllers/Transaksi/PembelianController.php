@@ -45,5 +45,13 @@ class PembelianController extends Controller
         ]);
     }
 
-    public function store(Request $request) {}
+    public function store(Request $request)
+    {
+        if ($request->suplier_id != "Pilih Suplier") {
+            $request['pelanggan_id'] = null;
+        } else {
+            $request['suplier_id'] = null;
+        }
+        return response()->json($request);
+    }
 }

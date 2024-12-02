@@ -111,84 +111,230 @@
                 <form action="/pembelian" method="POST" enctype="multipart/form-data" id="formPembelian">
                     @csrf
                     <div class="modal-body text-start">
-                        <!-- Form untuk Suplier -->
-                        <div id="formSuplier" style="display: none;" class="mb-3">
-                            <label class="form-label">Suplier</label>
-                            <select class="form-control" name="suplier_id">
-                                <option>Pilih Suplier</option>
-                                @foreach ($suplier as $item)
-                                    <option value="{{ $item->id }}"> {{ $item->suplier }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        <div class="input-blocks add-products">
+                            <label class="d-block">Pembelian Dari</label>
+                            <div class="single-pill-product mb-3">
+                                <ul class="nav nav-pills" id="pills-tab1" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <span class="custom_radio me-4 mb-0 active" id="pills-home-tab"
+                                            data-bs-toggle="pill" data-bs-target="#pills-home" role="tab"
+                                            aria-controls="pills-home" aria-selected="true">
+                                            <input type="radio" class="form-control" name="payment">
+                                            <span class="checkmark"></span> Suplier</span>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <span class="custom_radio me-2 mb-0" id="pills-profile-tab" data-bs-toggle="pill"
+                                            data-bs-target="#pills-profile" role="tab" aria-controls="pills-profile"
+                                            aria-selected="false">
+                                            <input type="radio" class="form-control" name="sign">
+                                            <span class="checkmark"></span> Pelanggan</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
+                                    aria-labelledby="pills-home-tab">
+                                    <div class="mb-3">
+                                        <label class="form-label">Suplier</label>
+                                        <select class="select" name="suplier_id">
+                                            <option>Pilih Suplier</option>
+                                            @foreach ($suplier as $item)
+                                                <option value="{{ $item->id }}"> {{ $item->suplier }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="pills-profile" role="tabpanel"
+                                    aria-labelledby="pills-profile-tab">
+                                    <div class="mb-3">
+                                        <label class="form-label">Pelanggan</label>
+                                        <select class="select" name="pelanggan_id">
+                                            <option>Pilih Pelanggan</option>
+                                            @foreach ($pelanggan as $item)
+                                                <option value="{{ $item->id }}"> {{ $item->nama }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="modal-body-table variant-table" id="variant-table">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Variantion</th>
+                                                        <th>Variant Value</th>
+                                                        <th>SKU</th>
+                                                        <th>Quantity</th>
+                                                        <th>Price</th>
+                                                        <th class="no-sort">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="add-product">
+                                                                <input type="text" class="form-control"
+                                                                    value="color">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="add-product">
+                                                                <input type="text" class="form-control"
+                                                                    value="red">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="add-product">
+                                                                <input type="text" class="form-control"
+                                                                    value="1234">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="product-quantity">
+                                                                <span class="quantity-btn"><i data-feather="minus-circle"
+                                                                        class="feather-search"></i></span>
+                                                                <input type="text" class="quntity-input"
+                                                                    value="2">
+                                                                <span class="quantity-btn">+<i data-feather="plus-circle"
+                                                                        class="plus-circle"></i></span>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="add-product">
+                                                                <input type="text" class="form-control"
+                                                                    value="50000">
+                                                            </div>
+                                                        </td>
+                                                        <td class="action-table-data">
+                                                            <div class="edit-delete-action">
+                                                                <div class="input-block add-lists">
+                                                                    <label class="checkboxs">
+                                                                        <input type="checkbox" checked>
+                                                                        <span class="checkmarks"></span>
+                                                                    </label>
+                                                                </div>
+                                                                <a class="me-2 p-2" href="javascript:void(0);"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#add-variation">
+                                                                    <i data-feather="plus" class="feather-edit"></i>
+                                                                </a>
+                                                                <a class="confirm-text p-2" href="javascript:void(0);">
+                                                                    <i data-feather="trash-2" class="feather-trash-2"></i>
+                                                                </a>
+                                                            </div>
 
-                        <!-- Form untuk Pelanggan -->
-                        <div id="formPelanggan" style="display: none;" class="mb-3">
-                            <label class="form-label">Pelanggan</label>
-                            <select class="form-control" name="pelanggan_id">
-                                <option>Pilih Pelanggan</option>
-                                @foreach ($pelanggan as $item)
-                                    <option value="{{ $item->id }}"> {{ $item->nama }}</option>
-                                @endforeach
-                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="add-product">
+                                                                <input type="text" class="form-control"
+                                                                    value="color">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="add-product">
+                                                                <input type="text" class="form-control"
+                                                                    value="black">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="add-product">
+                                                                <input type="text" class="form-control"
+                                                                    value="2345">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="product-quantity">
+                                                                <span class="quantity-btn"><i data-feather="minus-circle"
+                                                                        class="feather-search"></i></span>
+                                                                <input type="text" class="quntity-input"
+                                                                    value="3">
+                                                                <span class="quantity-btn">+<i data-feather="plus-circle"
+                                                                        class="plus-circle"></i></span>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="add-product">
+                                                                <input type="text" class="form-control"
+                                                                    value="50000">
+                                                            </div>
+                                                        </td>
+                                                        <td class="action-table-data">
+                                                            <div class="edit-delete-action">
+                                                                <div class="input-block add-lists">
+                                                                    <label class="checkboxs">
+                                                                        <input type="checkbox" checked>
+                                                                        <span class="checkmarks"></span>
+                                                                    </label>
+                                                                </div>
+                                                                <a class="me-2 p-2" href="#" data-bs-toggle="modal"
+                                                                    data-bs-target="#edit-units">
+                                                                    <i data-feather="plus" class="feather-edit"></i>
+                                                                </a>
+                                                                <a class="confirm-text p-2" href="javascript:void(0);">
+                                                                    <i data-feather="trash-2" class="feather-trash-2"></i>
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Nama Produk</label>
+                                    <input type="text" name="nama" class="form-control">
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label">Berat</label>
+                                        <input type="text" name="berat" class="form-control">
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label">Karat</label>
+                                        <input type="text" name="karat" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label">Jenis</label>
+                                        <select class="form-control" name="jenis_id">
+                                            <option>Pilih Jenis</option>
+                                            @foreach ($jenis as $item)
+                                                <option value="{{ $item->id }}"> {{ $item->jenis }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label">Harga Beli</label>
+                                        <input type="text" name="hargabeli" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Kondisi Fisik</label>
+                                    <select class="form-control" name="kondisi">
+                                        <option selected> Pilih Kondisi</option>
+                                        <option value="baik">Baik</option>
+                                        <option value="kusam">Kusam</option>
+                                        <option value="rusak">Rusak</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Keterangan</label>
+                                    <textarea class="form-control" rows="4" name="keterangan"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Status</label>
+                                    <select class="form-control" name="status">
+                                        <option>Pilih Status</option>
+                                        <option value="1">Aktif</option>
+                                        <option value="2">Tidak Aktif</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-
                         <!-- Form Tambahan -->
-                        <div class="mb-3">
-                            <label class="form-label">Nama Produk</label>
-                            <input type="text" name="nama" class="form-control">
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6 mb-3">
-                                <label class="form-label">Berat</label>
-                                <input type="text" name="berat" class="form-control">
-                            </div>
-                            <div class="col-6 mb-3">
-                                <label class="form-label">Karat</label>
-                                <input type="text" name="karat" class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6 mb-3">
-                                <label class="form-label">Jenis</label>
-                                <select class="form-control" name="jenis_id">
-                                    <option>Pilih Jenis</option>
-                                    @foreach ($jenis as $item)
-                                        <option value="{{ $item->id }}"> {{ $item->jenis }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-6 mb-3">
-                                <label class="form-label">Harga Beli</label>
-                                <input type="text" name="hargabeli" class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Kondisi Fisik</label>
-                            <select class="form-control" name="kondisi">
-                                <option selected> Pilih Kondisi</option>
-                                <option value="baik">Baik</option>
-                                <option value="kusam">Kusam</option>
-                                <option value="rusak">Rusak</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Keterangan</label>
-                            <textarea class="form-control" rows="4" name="keterangan"></textarea>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Status</label>
-                            <select class="form-control" name="status">
-                                <option>Pilih Status</option>
-                                <option value="1">Aktif</option>
-                                <option value="2">Tidak Aktif</option>
-                            </select>
-                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
