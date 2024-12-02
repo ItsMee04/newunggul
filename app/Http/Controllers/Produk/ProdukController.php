@@ -176,7 +176,7 @@ class ProdukController extends Controller
     {
 
         $produk = Produk::where('id', $id)->first();
-        $filePath = 'storage/barcode/' . $produk->image;
+        $filePath = 'storage/barcode/' . $produk->kodeproduk . '.png';
 
         if (File::exists($filePath)) {
             $file = fopen($filePath, 'r'); // Membuka file untuk dibaca
@@ -198,7 +198,7 @@ class ProdukController extends Controller
     public function downloadBarcode($id)
     {
         $produk = Produk::where('id', $id)->first();
-        $filePath = 'storage/barcode/' . $produk->image;
+        $filePath = 'storage/barcode/' . $produk->kodeproduk . '.png';
 
         if (file_exists($filePath)) {
             return response()->download($filePath);

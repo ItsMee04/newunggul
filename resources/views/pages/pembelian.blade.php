@@ -66,14 +66,14 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->kodepembelian }} </td>
                                         <td>
-                                            @if ($item->supplier_id == null)
+                                            @if ($item->suplier_id == null)
                                                 {{ $item->pelanggan->nama }}
-                                            @else
+                                            @elseif($item->pelanggan_id == null)
                                                 {{ $item->suplier->suplier }}
                                             @endif
                                         </td>
-                                        <td>{{ $item->nama }}</td>
-                                        <td>{{ $item->berat }}</td>
+                                        <td>{{ $item->produk->nama }}</td>
+                                        <td>{{ $item->produk->berat }}</td>
                                         <td>{{ $item->tanggal }}</td>
                                         <td class="action-table-data">
                                             <div class="edit-delete-action">
@@ -155,132 +155,6 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="modal-body-table variant-table" id="variant-table">
-                                        <div class="table-responsive">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Variantion</th>
-                                                        <th>Variant Value</th>
-                                                        <th>SKU</th>
-                                                        <th>Quantity</th>
-                                                        <th>Price</th>
-                                                        <th class="no-sort">Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="add-product">
-                                                                <input type="text" class="form-control"
-                                                                    value="color">
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="add-product">
-                                                                <input type="text" class="form-control"
-                                                                    value="red">
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="add-product">
-                                                                <input type="text" class="form-control"
-                                                                    value="1234">
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="product-quantity">
-                                                                <span class="quantity-btn"><i data-feather="minus-circle"
-                                                                        class="feather-search"></i></span>
-                                                                <input type="text" class="quntity-input"
-                                                                    value="2">
-                                                                <span class="quantity-btn">+<i data-feather="plus-circle"
-                                                                        class="plus-circle"></i></span>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="add-product">
-                                                                <input type="text" class="form-control"
-                                                                    value="50000">
-                                                            </div>
-                                                        </td>
-                                                        <td class="action-table-data">
-                                                            <div class="edit-delete-action">
-                                                                <div class="input-block add-lists">
-                                                                    <label class="checkboxs">
-                                                                        <input type="checkbox" checked>
-                                                                        <span class="checkmarks"></span>
-                                                                    </label>
-                                                                </div>
-                                                                <a class="me-2 p-2" href="javascript:void(0);"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#add-variation">
-                                                                    <i data-feather="plus" class="feather-edit"></i>
-                                                                </a>
-                                                                <a class="confirm-text p-2" href="javascript:void(0);">
-                                                                    <i data-feather="trash-2" class="feather-trash-2"></i>
-                                                                </a>
-                                                            </div>
-
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="add-product">
-                                                                <input type="text" class="form-control"
-                                                                    value="color">
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="add-product">
-                                                                <input type="text" class="form-control"
-                                                                    value="black">
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="add-product">
-                                                                <input type="text" class="form-control"
-                                                                    value="2345">
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="product-quantity">
-                                                                <span class="quantity-btn"><i data-feather="minus-circle"
-                                                                        class="feather-search"></i></span>
-                                                                <input type="text" class="quntity-input"
-                                                                    value="3">
-                                                                <span class="quantity-btn">+<i data-feather="plus-circle"
-                                                                        class="plus-circle"></i></span>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="add-product">
-                                                                <input type="text" class="form-control"
-                                                                    value="50000">
-                                                            </div>
-                                                        </td>
-                                                        <td class="action-table-data">
-                                                            <div class="edit-delete-action">
-                                                                <div class="input-block add-lists">
-                                                                    <label class="checkboxs">
-                                                                        <input type="checkbox" checked>
-                                                                        <span class="checkmarks"></span>
-                                                                    </label>
-                                                                </div>
-                                                                <a class="me-2 p-2" href="#" data-bs-toggle="modal"
-                                                                    data-bs-target="#edit-units">
-                                                                    <i data-feather="plus" class="feather-edit"></i>
-                                                                </a>
-                                                                <a class="confirm-text p-2" href="javascript:void(0);">
-                                                                    <i data-feather="trash-2" class="feather-trash-2"></i>
-                                                                </a>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Nama Produk</label>
@@ -308,7 +182,7 @@
                                     </div>
                                     <div class="col-6 mb-3">
                                         <label class="form-label">Harga Beli</label>
-                                        <input type="text" name="hargabeli" class="form-control">
+                                        <input type="text" name="harga_beli" class="form-control">
                                     </div>
                                 </div>
                                 <div class="mb-3">

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Transaksi;
 
+use Carbon\Carbon;
 use App\Models\Jenis;
+use App\Models\Produk;
 use App\Models\Suplier;
 use App\Models\Pelanggan;
 use App\Models\Pembelian;
@@ -10,10 +12,19 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\Produk;
+use Illuminate\Support\Facades\Storage;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use App\Http\Controllers\Produk\ProdukController;
 
 class PembelianController extends Controller
 {
+    protected $produkController;
+
+    public function __construct(ProdukController $produkController)
+    {
+        $this->produkController = $produkController;
+    }
+
     private function generateCodeTransaksi()
     {
         // Ambil kode customer terakhir dari database
@@ -76,14 +87,39 @@ class PembelianController extends Controller
         }
 
         $request['kodepembelian']   = $this->generateCodeTransaksi();
-        $pembelian = Pembelian::create($request->all());
+        $request['kodeproduk']      = $this->produkController->generateKode();
 
-        if ($pembelian) {
-            Produk::create([
-                ''
+        $content = QrCode::format('png')->size(300)->generate($request['kodeproduk']); // Ini menghasilkan data PNG sebagai string
+
+        // Tentukan nama file
+        $fileName = 'barcode/' . $request['kodeproduk'] . '.png';
+
+        // Simpan file ke dalam storage/public/barcode/
+        Storage::put($fileName, $content);
+
+        $createProduk = Produk::create([
+            'kodeproduk'    => $request['kodeproduk'],
+            'jenis_id'      => $request->jenis_id,
+            'nama'          => $request->nama,
+            'harga_jual'    => 0,
+            'harga_beli'    => $request->harga_beli,
+            'keterangan'    => $request->keterangan,
+            'berat'         => $request->berat,
+            'karat'         => $request->karat,
+            'status'        => 2
+        ]);
+
+        if ($createProduk) {
+            Pembelian::create([
+                'kodepembelian' => $request['kodepembelian'],
+                'suplier_id'    => $request['suplier_id'],
+                'pelanggan_id'  => $request['pelanggan_id'],
+                'kodeproduk'    => $request['kodeproduk'],
+                'tanggal'       => Carbon::today()->format('Y-m-d'),
+                'status'        => $request['status']
             ]);
         }
 
-        return response()->json($request);
+        return redirect('pembelian')->with('success-message', 'Data Pembelian Berhasil Disimpan');
     }
 }

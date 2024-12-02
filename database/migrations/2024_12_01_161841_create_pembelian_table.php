@@ -17,21 +17,14 @@ return new class extends Migration
             $table->unsignedBigInteger('suplier_id')->nullable();
             $table->unsignedBigInteger('pelanggan_id')->nullable();
             $table->string('kodeproduk', 100);
-            $table->unsignedBigInteger('jenis_id');
-            $table->string('nama', 100);
-            $table->integer('harga_beli')->nullable();
-            $table->decimal('berat', 5, 2);
-            $table->integer('karat');
-            $table->string('kondisi', 100);
-            $table->string('keterangan', 100);
-            $table->string('image', 100)->nullable();
+            $table->date('tanggal');
             $table->integer('status')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('jenis_id')->references('id')->on('jenis')->onDelete('cascade');
             $table->foreign('suplier_id')->references('id')->on('suplier')->onDelete('cascade');
             $table->foreign('pelanggan_id')->references('id')->on('pelanggan')->onDelete('cascade');
+            $table->foreign('kodeproduk')->references('kodeproduk')->on('produk')->onDelete('cascade');
         });
     }
 
