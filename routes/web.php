@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Pegawai\UserController;
 use App\Http\Controllers\Produk\JenisController;
 use App\Http\Controllers\Produk\NampanController;
@@ -35,9 +36,7 @@ Route::get('login', [AuthController::class, 'index'])->name('login')->middleware
 Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware('auth')->group(function () {
-    Route::get('dashboard', function () {
-        return view('pages.dashboard');
-    });
+    Route::get('dashboard', [DashboardController::class, 'index']);
 
     Route::get('pegawai', [PegawaiController::class, 'index']);
     Route::post('pegawai', [PegawaiController::class, 'store']);

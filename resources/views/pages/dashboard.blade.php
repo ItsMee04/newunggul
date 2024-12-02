@@ -50,7 +50,7 @@
                 <div class="col-xl-3 col-sm-6 col-12 d-flex">
                     <div class="dash-count">
                         <div class="dash-counts">
-                            <h4>100</h4>
+                            <h4>{{ $totalPelanggan }}</h4>
                             <h5>Customers</h5>
                         </div>
                         <div class="dash-imgs">
@@ -61,7 +61,7 @@
                 <div class="col-xl-3 col-sm-6 col-12 d-flex">
                     <div class="dash-count das1">
                         <div class="dash-counts">
-                            <h4>110</h4>
+                            <h4>{{ $totalSuplier }}</h4>
                             <h5>Suppliers</h5>
                         </div>
                         <div class="dash-imgs">
@@ -72,7 +72,7 @@
                 <div class="col-xl-3 col-sm-6 col-12 d-flex">
                     <div class="dash-count das2">
                         <div class="dash-counts">
-                            <h4>150</h4>
+                            <h4>{{ $totalPembelian }}</h4>
                             <h5>Purchase Invoice</h5>
                         </div>
                         <div class="dash-imgs">
@@ -84,7 +84,7 @@
                 <div class="col-xl-3 col-sm-6 col-12 d-flex">
                     <div class="dash-count das3">
                         <div class="dash-counts">
-                            <h4>170</h4>
+                            <h4>{{ $totalPenjualan }}</h4>
                             <h5>Sales Invoice</h5>
                         </div>
                         <div class="dash-imgs">
