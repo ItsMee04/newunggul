@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Produk;
 
 class PembelianController extends Controller
 {
@@ -48,12 +49,6 @@ class PembelianController extends Controller
 
     public function store(Request $request)
     {
-        if ($request->suplier_id != "Pilih Suplier" || $request->pelanggan_id == "Pilih Pelanggan") {
-            $request['pelanggan_id'] = null;
-        } elseif ($request->suplier_id == 'Pilih Suplier' || $request->pelanggan_id != "Pilih Pelanggan") {
-            $request['suplier_id'] = null;
-        }
-
         $messages = [
             'required' => ':attribute wajib di isi !!!',
             'integer'  => ':attribute format wajib menggunakan angka',
@@ -63,7 +58,6 @@ class PembelianController extends Controller
         $credentials = $request->validate([
             'nama'          =>  'required',
             'jenis_id'      =>  'required|' . Rule::in(Jenis::where('status', 1)->pluck('id')),
-            'harga_jual'    =>  'integer',
             'harga_beli'    =>  'integer',
             'keterangan'    =>  'string',
             'berat'         =>  [
@@ -73,6 +67,22 @@ class PembelianController extends Controller
             'karat'         =>  'required|integer',
             'status'        =>  'required'
         ], $messages);
+
+
+        if ($request->suplier_id != "Pilih Suplier" || $request->pelanggan_id == "Pilih Pelanggan") {
+            $request['pelanggan_id'] = null;
+        } elseif ($request->suplier_id == 'Pilih Suplier' || $request->pelanggan_id != "Pilih Pelanggan") {
+            $request['suplier_id'] = null;
+        }
+
+        $request['kodepembelian']   = $this->generateCodeTransaksi();
+        $pembelian = Pembelian::create($request->all());
+
+        if ($pembelian) {
+            Produk::create([
+                ''
+            ]);
+        }
 
         return response()->json($request);
     }
