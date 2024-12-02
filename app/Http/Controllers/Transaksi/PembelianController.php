@@ -115,6 +115,7 @@ class PembelianController extends Controller
                 'suplier_id'    => $request['suplier_id'],
                 'pelanggan_id'  => $request['pelanggan_id'],
                 'kodeproduk'    => $request['kodeproduk'],
+                'kondisi'       => $request['kondisi'],
                 'tanggal'       => Carbon::today()->format('Y-m-d'),
                 'status'        => $request['status']
             ]);

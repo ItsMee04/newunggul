@@ -20,6 +20,7 @@ class Pembelian extends Model
         'pelanggan_id',
         'kodeproduk',
         'tanggal',
+        'kondisi',
         'status'
     ];
 
