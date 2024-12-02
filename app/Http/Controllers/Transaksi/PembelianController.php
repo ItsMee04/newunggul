@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Transaksi;
 
+use App\Models\Jenis;
+use App\Models\Suplier;
+use App\Models\Pelanggan;
 use App\Models\Pembelian;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\Jenis;
-use App\Models\Pelanggan;
-use App\Models\Suplier;
 
 class PembelianController extends Controller
 {
@@ -47,11 +48,32 @@ class PembelianController extends Controller
 
     public function store(Request $request)
     {
-        if ($request->suplier_id != "Pilih Suplier") {
+        if ($request->suplier_id != "Pilih Suplier" || $request->pelanggan_id == "Pilih Pelanggan") {
             $request['pelanggan_id'] = null;
-        } else {
+        } elseif ($request->suplier_id == 'Pilih Suplier' || $request->pelanggan_id != "Pilih Pelanggan") {
             $request['suplier_id'] = null;
         }
+
+        $messages = [
+            'required' => ':attribute wajib di isi !!!',
+            'integer'  => ':attribute format wajib menggunakan angka',
+            'mimes'    => ':attribute format wajib menggunakan PNG/JPG'
+        ];
+
+        $credentials = $request->validate([
+            'nama'          =>  'required',
+            'jenis_id'      =>  'required|' . Rule::in(Jenis::where('status', 1)->pluck('id')),
+            'harga_jual'    =>  'integer',
+            'harga_beli'    =>  'integer',
+            'keterangan'    =>  'string',
+            'berat'         =>  [
+                'required',
+                'regex:/^\d+\.\d{1}$/'
+            ],
+            'karat'         =>  'required|integer',
+            'status'        =>  'required'
+        ], $messages);
+
         return response()->json($request);
     }
 }
