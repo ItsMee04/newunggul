@@ -11,18 +11,6 @@
                 </div>
                 <ul class="table-top-head">
                     <li>
-                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Pdf"><img src="assets/img/icons/pdf.svg"
-                                alt="img"></a>
-                    </li>
-                    <li>
-                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Excel"><img
-                                src="assets/img/icons/excel.svg" alt="img"></a>
-                    </li>
-                    <li>
-                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Print"><i data-feather="printer"
-                                class="feather-rotate-ccw"></i></a>
-                    </li>
-                    <li>
                         <a data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh"><i data-feather="rotate-ccw"
                                 class="feather-rotate-ccw"></i></a>
                     </li>
@@ -31,14 +19,6 @@
                                 data-feather="chevron-up" class="feather-chevron-up"></i></a>
                     </li>
                 </ul>
-                <div class="page-btn">
-                    <a href="add-product.html" class="btn btn-added"><i data-feather="plus-circle" class="me-2"></i>Add
-                        New Product</a>
-                </div>
-                <div class="page-btn import">
-                    <a href="#" class="btn btn-added color" data-bs-toggle="modal" data-bs-target="#view-notes"><i
-                            data-feather="download" class="me-2"></i>Import Product</a>
-                </div>
             </div>
 
             <!-- /product list -->
