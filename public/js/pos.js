@@ -49,28 +49,28 @@ $(document).ready(function () {
                         minimumFractionDigits: 0, // Biasanya mata uang Rupiah tidak menggunakan desimal
                     });
 
-                    const hargajual = formatter.format(item.harga_jual); // Output: "Rp1.500.000"
+                    const hargajual = formatter.format(item.produk.harga_jual); // Output: "Rp1.500.000"
                     $("#daftarProduk").append(
                         `
                         <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3">
                             <div class="product-info default-cover card">
                                 <a href="javascript:void(0);" class="img-bg">
-                                    <img src="/storage/produk/${item.image}"
+                                    <img src="/storage/produk/${item.produk.image}"
                                         alt="Products" width="100px" height="100px"/>
                                 </a>
                                 <h6 class="cat-name">
-                                    <a href="javascript:void(0);">KODE : ${item.kodeproduk}</a>
+                                    <a href="javascript:void(0);">KODE : ${item.produk.kodeproduk}</a>
                                 </h6>
                                 <h6 class="product-name">
-                                    <a href="javascript:void(0);">NAMA : ${item.nama}</a>
+                                    <a href="javascript:void(0);">NAMA : ${item.produk.nama}</a>
                                 </h6>
                                 <div
                                     class="d-flex align-items-center justify-content-between price">
-                                    <span>BERAT : ${item.berat} /gram</span>
+                                    <span>BERAT : ${item.produk.berat} /gram</span>
                                     <p>HARGA: Rp. ${hargajual}</p>
                                 </div>
                                 <div class="align-items-center justify-content-between price text-center">
-                                    <button data-id="${item.id}" data-name="${item.nama}" data-harga="${item.harga_jual}" data-berat="${item.berat}" class="btn btn-sm btn-outline-secondary ms-1 addCart">Add To Cart</button>
+                                    <button data-id="${item.produk.id}" data-name="${item.produk.nama}" data-harga="${item.produk.harga_jual}" data-berat="${item.produk.berat}" class="btn btn-sm btn-outline-secondary ms-1 addCart">Add To Cart</button>
                                 </div>
                             </div>
                         </div>

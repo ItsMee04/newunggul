@@ -12,6 +12,8 @@ use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Nampan;
+use App\Models\NampanProduk;
 use Illuminate\Support\Facades\Auth;
 
 class POSController extends Controller
@@ -44,7 +46,8 @@ class POSController extends Controller
 
     public function index()
     {
-        $jenis = Jenis::where('status', 1)->get();
+        $nampan = Nampan::with('jenis')->where('status', 1)->get();
+        $nampanProduk = NampanProduk::where('status', 1)->get();
         $produk = Produk::where('status', 1)->get();
         $diskon = Diskon::where('status', 1)->get();
         $pelanggan = Pelanggan::where('status', 1)->get();
@@ -58,7 +61,8 @@ class POSController extends Controller
             ->get();
 
         return view('pages.pos', [
-            'jenis'         =>  $jenis,
+            'nampan'        =>  $nampan,
+            'nampanProduk'  =>  $nampanProduk,
             'produk'        =>  $produk,
             'jenisProduk'   =>  $jenisProduk,
             'pelanggan'     =>  $pelanggan,
@@ -71,19 +75,19 @@ class POSController extends Controller
     public function getItem($id)
     {
         if ($id == 'all') {
-            $produk = Produk::with('jenis')->where('status', 1)->get();
+            $produk = NampanProduk::with('produk')->where('status', 1)->get();
             return response()->json([
                 'success'   =>  true,
                 'message'   =>  "Data Ditemukan",
                 "Data"      =>  $produk
             ]);
         } else {
-            $produk = Produk::with('jenis')->where('jenis_id', $id)->where('status', 1)->get();
+            $produk = NampanProduk::with('produk')->where('nampan_id', $id)->where('status', 1)->get();
 
             return response()->json([
                 'success'   =>  true,
                 'message'   =>  "Data Ditemukan",
-                "Data"      =>  $produk->loadMissing('jenis')
+                "Data"      =>  $produk
             ]);
         }
     }

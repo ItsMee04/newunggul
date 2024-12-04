@@ -5,8 +5,8 @@
             <div class="row align-items-start pos-wrapper">
                 <div class="col-md-12 col-lg-8">
                     <div class="pos-categories tabs_wrapper">
-                        <h5>Jenis Perhiasan</h5>
-                        <p>Pilih Dari Jenis Di Bawah Ini</p>
+                        <h5>Nampan Perhiasan</h5>
+                        <p>Pilih Dari Nampan Di Bawah Ini</p>
                         <ul class="tabs owl-carousel pos-category">
                             <li class="active" id="all">
                                 <a href="javascript:void(0);">
@@ -15,13 +15,13 @@
                                 <h6><a href="javascript:void(0);">All Categories</a></h6>
                                 <span>{{ $produk->where('status', 1)->count() }}</span>
                             </li>
-                            @foreach ($jenis as $item)
+                            @foreach ($nampan as $item)
                                 <li id="{{ $item->id }}">
                                     <a href="javascript:void(0);">
-                                        <img src="{{ asset('storage/Icon/' . $item->icon) }}" alt="Categories">
+                                        <img src="{{ asset('storage/Icon/' . $item->jenis->icon) }}" alt="Categories">
                                     </a>
-                                    <h6><a href="javascript:void(0);">{{ $item->jenis }}</a></h6>
-                                    <span>{{ $produk->where('jenis_id', $item->id)->count() }} Item</span>
+                                    <h6><a href="javascript:void(0);">{{ $item->nampan }}</a></h6>
+                                    <span>{{ $nampanProduk->where('nampan_id', $item->id)->count() }} Item</span>
                                 </li>
                             @endforeach
                         </ul>
