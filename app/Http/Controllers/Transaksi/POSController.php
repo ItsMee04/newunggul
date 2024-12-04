@@ -163,6 +163,11 @@ class POSController extends Controller
                     ->update([
                         'status' => 2,
                     ]);
+
+                NampanProduk::where('produk_id', $value)
+                    ->update([
+                        'status'    => 2,
+                    ]);
             }
         }
 
