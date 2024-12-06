@@ -6,7 +6,7 @@ $(document).ready(function () {
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
 
         $.ajax({
-            url: `/getpegawai`, // URL endpoint
+            url: `pegawai/getpegawai`, // URL endpoint
             type: "GET",
             data: {
                 _token: CSRF_TOKEN,
@@ -42,10 +42,10 @@ $(document).ready(function () {
                                             <ul class="dropdown-menu">
                                                 <li>
                                                             
-                                                            <a href="javascript:void(0);" class="dropdown-item btn-edit"
-                                            data-id="${item.id}"
-                                            <i data-feather="edit" class="info-img"></i>Edit
-                                        </a>
+                                                    <a href="javascript:void(0);" class="dropdown-item btn-edit"
+                                                        data-id="${item.id}"
+                                                        <i data-feather="edit" class="info-img"></i>Edit
+                                                    </a>
                                                 </li>
                                                 <li>
                                                     <a href="javascript:void(0);" class="dropdown-item confirm-text mb-0"
@@ -86,20 +86,61 @@ $(document).ready(function () {
         });
     }
 
-    $('.btn-tambahPegawai').on('click', function () {
-        $('#mdTambahPegawai').modal('show');
-    })
-
-    function storePegawai()
-    {
-        $('#formTambahPegawai').on('submit', function (e) {
-            e.preventDefault(); // Mencegah form dari pengiriman normal
-    
-            let formData = new FormData(this);
-    
-            console.log(formData)
+    // Fungsi untuk memuat data jabatan
+    function loadJabatan() {
+        $.ajax({
+            url: "/jabatan", // Endpoint untuk mendapatkan data jabatan
+            type: "GET",
+            success: function (response) {
+                let options = '<option value="">-- Pilih Jabatan --</option>';
+                response.Data.forEach((item) => {
+                    options += `<option value="${item.id}">${item.jabatan}</option>`;
+                });
+                $("#jabatan").html(options); // Masukkan data ke select
+            },
+            error: function () {
+                alert("Gagal memuat data jabatan!");
+            },
         });
     }
+
+    $(".btn-tambahPegawai").on("click", function () {
+        $("#mdTambahPegawai").modal("show");
+        loadJabatan();
+    });
+
+    // Fungsi untuk menangani submit form pegawai
+    $("#storePegawai").on("submit", function (event) {
+        event.preventDefault(); // Mencegah form submit secara default
+
+        const formData = new FormData(this); // Ambil semua data form, termasuk file
+
+        $.ajax({
+            url: "/api/pegawai", // Endpoint Laravel untuk menyimpan pegawai
+            type: "POST",
+            data: formData,
+            processData: false, // Agar data tidak diubah menjadi string
+            contentType: false, // Agar header Content-Type otomatis disesuaikan
+            success: function (response) {
+                alert("Pegawai berhasil ditambahkan!");
+                $("#mdTambahPegawai").modal("hide"); // Tutup modal
+                $("#storePegawai")[0].reset(); // Reset form
+            },
+            error: function (xhr) {
+                // Tampilkan pesan error dari server
+                const errors = xhr.responseJSON.errors;
+                if (errors) {
+                    let errorMessage = "";
+                    for (let key in errors) {
+                        errorMessage += `${errors[key][0]}\n`;
+                    }
+                    alert(errorMessage);
+                } else {
+                    alert("Terjadi kesalahan, silakan coba lagi.");
+                }
+            },
+        });
+    });
 
     function searchInput() {
         document

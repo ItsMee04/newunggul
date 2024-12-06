@@ -16,7 +16,13 @@ class PegawaiController extends Controller
         $jabatan = Jabatan::where('status', 1)->get();
         $pegawai = Pegawai::with('jabatan')->get();
         $count = Pegawai::where('status', 1)->count();
-        return view('pages.pegawai', ['pegawai' => $pegawai, 'jabatan' => $jabatan, 'count' => $count]);
+        return view('pages.pegawai', ['jabatan' => $jabatan, 'count' => $count]);
+    }
+
+    public function getpegawai()
+    {
+        $pegawai = Pegawai::with('jabatan')->get();
+        return response()->json(['success' => true, 'message' => 'Data Pegawai Ditemukan', 'Data' => $pegawai]);
     }
 
     public function store(Request $request)

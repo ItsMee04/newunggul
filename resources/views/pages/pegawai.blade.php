@@ -20,8 +20,8 @@
                     </li>
                 </ul>
                 <div class="page-btn">
-                    <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#tambahPegawai"><i
-                            data-feather="plus-circle" class="me-2"></i>TAMBAH PEGAWAI</a>
+                    <a href="#" class="btn btn-added btn-tambahPegawai"><i data-feather="plus-circle"
+                            class="me-2"></i>TAMBAH PEGAWAI</a>
                 </div>
             </div>
             <!-- /product list -->
@@ -45,8 +45,8 @@
 
 
             <div class="employee-grid-widget">
-                <div class="row">
-                    @foreach ($pegawai as $item)
+                <div class="row" id="daftarPegawai">
+                    {{-- @foreach ($pegawai as $item)
                         <div class="col-xxl-3 col-xl-4 col-lg-6 col-md-6 employee-item" data-name="{{ $item->nama }}"
                             data-nip="{{ $item->nip }}" data-jabatan="{{ $item->jabatan->jabatan }}">
                             <div class="employee-grid-profile">
@@ -194,48 +194,45 @@
                                 </div>
                             </div>
                         </div>
-                    @endforeach
+                    @endforeach --}}
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Add Pegawai -->
-    <div class="modal fade" id="tambahPegawai">
+    <div class="modal fade" id="mdTambahPegawai">
         <div class="modal-dialog modal-dialog-centered text-center" role="document">
             <div class="modal-content modal-content-demo">
                 <div class="modal-header">
                     <h4 class="modal-title">Tambah Pegawai</h4><button aria-label="Close" class="btn-close"
                         data-bs-dismiss="modal"></button>
                 </div>
-                <form action="pegawai" method="POST" enctype="multipart/form-data">
+                <form id="storePegawai" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body text-start">
                         <div class="mb-3">
                             <label class="form-label">NIP</label>
-                            <input type="text" name="nip" class="form-control">
+                            <input type="text" name="nip" id="nip" class="form-control">
                         </div>
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label class="form-label">Nama</label>
-                                    <input type="text" name="nama" class="form-control">
+                                    <input type="text" name="nama" id="nama" class="form-control">
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label class="form-label">Kontak</label>
-                                    <input type="text" name="kontak" class="form-control">
+                                    <input type="text" name="kontak" id="kontak" class="form-control">
                                 </div>
                             </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Jabatan</label>
-                            <select class="select" name="jabatan">
-                                <option>Pilih Jabatan</option>
-                                @foreach ($jabatan as $itemjabatan)
-                                    <option value="{{ $itemjabatan->id }}">{{ $itemjabatan->jabatan }}</option>
-                                @endforeach
+                            <select class="select" name="jabatan" id="jabatan">
+
                             </select>
                         </div>
                         <div class="new-employee-field">
