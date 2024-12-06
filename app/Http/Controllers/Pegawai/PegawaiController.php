@@ -81,6 +81,63 @@ class PegawaiController extends Controller
         return redirect('pegawai')->with('success-message', 'Data Pegawai Berhasil Disimpan !');
     }
 
+    public function storePegawai(Request $request)
+    {
+        $messages = [
+            'required' => ':attribute wajib di isi !!!',
+            'mimes'    => ':attribute format wajib menggunakan PNG/JPG',
+            'unique'   => ':attribute sudah digunakan'
+        ];
+
+        $credentials = $request->validate([
+            'nip'           =>  'required|unique:pegawai',
+            'avatar'        => 'mimes:png,jpg,jpeg',
+        ], $messages);
+
+        if ($request->jabatan == 'Pilih Jabatan') {
+            return redirect('pegawai')->with('errors-message', 'Jabatan Harus Di Pilih');
+        } elseif ($request->status == 'Pilih Status') {
+            return redirect('pegawai')->with('errors-message', 'Status Harus Di Pilih');
+        }
+
+        $newAvatar = '';
+
+        if ($request->file('image')) {
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $newAvatar = $request->nip . '.' . $extension;
+            $request->file('image')->storeAs('Avatar', $newAvatar);
+            $request['image'] = $newAvatar;
+        }
+
+        $store = Pegawai::create([
+            'nip'           => $request->nip,
+            'nama'          => $request->nama,
+            'alamat'        => $request->alamat,
+            'kontak'        => $request->kontak,
+            'jabatan_id'    => $request->jabatan,
+            'status'        => $request->status,
+            'image'         => $newAvatar,
+        ]);
+
+        $pegawai_id = Pegawai::where('nip', '=', $request->nip)->first()->id;
+
+        if ($store) {
+            User::create([
+                'pegawai_id' => $pegawai_id,
+                'role_id'    => $request->jabatan,
+                'status'     => $request->status
+            ]);
+        }
+
+        return response()->json(['success' => true, 'message' => 'Data Pegawai Berhasil Disimpan']);
+    }
+
+    public function getPegawaibyID($id)
+    {
+        $pegawai = Pegawai::findOrFail($id);
+        return response()->json(['success' => true, 'message' => 'Data Pegawai Berhasil Ditemukan', 'data' => $pegawai]);
+    }
+
     public function update(Request $request, $id)
     {
         $pegawai = Pegawai::where('id', $id)->first();
@@ -99,12 +156,6 @@ class PegawaiController extends Controller
             'avatar'        => 'mimes:png,jpg,jpeg',
         ], $messages);
 
-        if ($request->jabatan == 'Pilih Jabatan') {
-            return redirect('pegawai')->with('errors-message', 'Jabatan Harus Di Pilih');
-        } elseif ($request->status == 'Pilih Status') {
-            return redirect('pegawai')->with('errors-message', 'Status Harus Di Pilih');
-        }
-
         if ($request->file('avatar')) {
             $pathavatar     = 'storage/Avatar/' . $pegawai->image;
 
@@ -117,7 +168,7 @@ class PegawaiController extends Controller
             $request->file('avatar')->storeAs('Avatar', $newAvatar);
             $request['avatar'] = $newAvatar;
 
-            $updarepegawai = Pegawai::where('id', $id)
+            $updatepegawai = Pegawai::where('id', $id)
                 ->update([
                     'nama'          => $request->nama,
                     'alamat'        => $request->alamat,
@@ -127,7 +178,7 @@ class PegawaiController extends Controller
                     'image'        => $newAvatar,
                 ]);
 
-            if ($updarepegawai) {
+            if ($updatepegawai) {
                 User::where('pegawai_id', $id)
                     ->update([
                         'role_id'   =>  $request->jabatan,
@@ -152,7 +203,7 @@ class PegawaiController extends Controller
                     ]);
             }
         }
-        return redirect('pegawai')->with('success-message', 'Data Pegawai Berhasil Disimpan !');
+        return response()->json(['success' => true, 'message' => "Data Pegawai Berhasil Disimpan", 'Data' => $pegawai]);
     }
 
     public function delete($id)

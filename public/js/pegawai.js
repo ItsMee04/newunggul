@@ -21,7 +21,9 @@ $(document).ready(function () {
                             : '<span class="badge badge-linedanger text-center w-auto me-1">InActive</span>';
 
                     let imageSrc = item.image
-                        ? `/storage/avatar/${item.image}`
+                        ? `/storage/avatar/${
+                              item.image
+                          }?t=${new Date().getTime()}`
                         : `/assets/img/notfound.png`;
 
                     $("#daftarPegawai").append(`
@@ -49,7 +51,7 @@ $(document).ready(function () {
                                                 </li>
                                                 <li>
                                                     <a href="javascript:void(0);" class="dropdown-item confirm-text mb-0"
-                                                        data-item-id="{{ $item->id }}">
+                                                        data-item-id="${item.id}">
                                                         <i data-feather="trash-2" class="info-img"></i>Delete
                                                     </a>
                                                 </li>
@@ -112,19 +114,30 @@ $(document).ready(function () {
     // Fungsi untuk menangani submit form pegawai
     $("#storePegawai").on("submit", function (event) {
         event.preventDefault(); // Mencegah form submit secara default
+        // Ambil elemen input file
+        const fileInput = $("#image")[0];
+        const file = fileInput.files[0];
 
-        const formData = new FormData(this); // Ambil semua data form, termasuk file
-
+        // Buat objek FormData
+        const formData = new FormData(this);
+        formData.delete("image"); // Hapus field 'image' bawaan form
+        formData.append("image", file); // Tambahkan file baru
         $.ajax({
-            url: "/api/pegawai", // Endpoint Laravel untuk menyimpan pegawai
+            url: "/pegawai", // Endpoint Laravel untuk menyimpan pegawai
             type: "POST",
             data: formData,
             processData: false, // Agar data tidak diubah menjadi string
             contentType: false, // Agar header Content-Type otomatis disesuaikan
             success: function (response) {
-                alert("Pegawai berhasil ditambahkan!");
+                const successtoastExample =
+                    document.getElementById("successToast");
+                const toast = new bootstrap.Toast(successtoastExample);
+                $(".toast-body").text(response.message);
+                toast.show();
                 $("#mdTambahPegawai").modal("hide"); // Tutup modal
                 $("#storePegawai")[0].reset(); // Reset form
+
+                loadPegawai();
             },
             error: function (xhr) {
                 // Tampilkan pesan error dari server
@@ -134,11 +147,186 @@ $(document).ready(function () {
                     for (let key in errors) {
                         errorMessage += `${errors[key][0]}\n`;
                     }
-                    alert(errorMessage);
+                    const dangertoastExamplee =
+                        document.getElementById("dangerToastError");
+                    const toast = new bootstrap.Toast(dangertoastExamplee);
+                    $(".toast-body").text(errorMessage);
+                    toast.show();
                 } else {
-                    alert("Terjadi kesalahan, silakan coba lagi.");
+                    const dangertoastExamplee =
+                        document.getElementById("dangerToastError");
+                    const toast = new bootstrap.Toast(dangertoastExamplee);
+                    $(".toast-body").text(response.message);
+                    toast.show();
                 }
             },
+        });
+    });
+
+    $(document).on("click", ".btn-edit", function () {
+        const pegawaiId = $(this).data("id");
+
+        $.ajax({
+            url: `/pegawai/${pegawaiId}`, // Endpoint untuk mendapatkan data pegawai
+            type: "GET",
+            success: function (response) {
+                // Isi modal dengan data pegawai
+                $("#editid").val(response.data.id);
+                $("#editnip").val(response.data.nip);
+                $("#editnama").val(response.data.nama);
+                $("#editkontak").val(response.data.kontak);
+                $("#editalamat").val(response.data.alamat);
+
+                // Update preview gambar
+                let imageSrc = response.data.image
+                    ? `/storage/avatar/${response.data.image}`
+                    : `/assets/img/notfound.png`;
+                $("#editPreview img").attr("src", imageSrc);
+
+                // Muat opsi jabatan
+                $.ajax({
+                    url: "/jabatan",
+                    type: "GET",
+                    success: function (jabatanResponse) {
+                        let options =
+                            '<option value="">-- Pilih Jabatan --</option>';
+                        jabatanResponse.Data.forEach((item) => {
+                            const selected =
+                                item.id === response.data.jabatan_id
+                                    ? "selected"
+                                    : "";
+                            options += `<option value="${item.id}" ${selected}>${item.jabatan}</option>`;
+                        });
+                        $("#editjabatan").html(options);
+                    },
+                });
+
+                // Update dropdown status sesuai dengan data yang diterima
+                // Cek status dan pilih option yang sesuai menggunakan Select2
+                if (response.data.status == 2) {
+                    $("#editstatus").val(2).trigger("change"); // Pilih option dengan value=2 dan update Select2
+                } else {
+                    $("#editstatus").val(1).trigger("change"); // Pilih option dengan value=1 dan update Select2
+                }
+
+                // Tampilkan modal edit
+                $("#modaledit").modal("show");
+            },
+            error: function () {
+                Swal.fire(
+                    "Gagal!",
+                    "Tidak dapat mengambil data pegawai.",
+                    "error"
+                );
+            },
+        });
+    });
+
+    // Kirim data ke server saat form disubmit
+    $(document).on("submit", "#formEditPegawai", function (e) {
+        e.preventDefault(); // Mencegah form submit secara default
+
+        // Ambil data dari form
+        const dataForm = new FormData();
+        dataForm.append("id", $("#editid").val());
+        dataForm.append("nip", $("#editnip").val());
+        dataForm.append("nama", $("#editnama").val());
+        dataForm.append("kontak", $("#editkontak").val());
+        dataForm.append("alamat", $("#editalamat").val());
+        dataForm.append("status", $("#editstatus").val());
+        dataForm.append("jabatan", $("#editjabatan").val());
+        dataForm.append("_token", $('meta[name="csrf-token"]').attr("content")); // CSRF Token Laravel
+
+        const avatar = $("#editImage")[0].files[0]; // Ambil gambar jika ada
+        if (avatar) {
+            dataForm.append("avatar", avatar);
+        }
+
+        // Kirim data ke server menggunakan AJAX
+        $.ajax({
+            url: `/pegawai/${$("#editid").val()}`, // URL untuk mengupdate data pegawai
+            type: "POST", // Gunakan metode POST (atau PATCH jika route mendukung)
+            data: dataForm, // Gunakan FormData
+            processData: false, // Jangan proses FormData sebagai query string
+            contentType: false, // Jangan set Content-Type secara manual
+            success: function (response) {
+                // Tampilkan toast sukses
+                const successtoastExample =
+                    document.getElementById("successToast");
+                const toast = new bootstrap.Toast(successtoastExample);
+                $(".toast-body").text(response.message);
+                toast.show();
+                $("#modaledit").modal("hide"); // Tutup modal
+                $("#formEditPegawai")[0].reset(); // Reset form
+                loadPegawai();
+            },
+            error: function (xhr) {
+                const errors = xhr.responseJSON.errors;
+                if (errors) {
+                    let errorMessage = "";
+                    for (let key in errors) {
+                        errorMessage += `${errors[key][0]}\n`;
+                    }
+                    const dangertoastExamplee =
+                        document.getElementById("dangerToastError");
+                    const toast = new bootstrap.Toast(dangertoastExamplee);
+                    $(".toast-body").text(errorMessage);
+                    toast.show();
+                }
+            },
+        });
+    });
+
+    $(document).on("click", ".confirm-text", function () {
+        const itemId = $(this).data("item-id");
+
+        Swal.fire({
+            title: "Apakah Anda yakin?",
+            text: "Data ini akan dihapus secara permanen!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Ya, hapus!",
+            cancelButtonText: "Batal",
+            reverseButtons: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Kirim permintaan hapus (gunakan itemId)
+                fetch(`/pegawai/${itemId}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                            "content"
+                        ),
+                    },
+                })
+                    .then((response) => {
+                        if (response.ok) {
+                            Swal.fire(
+                                "Dihapus!",
+                                "Data berhasil dihapus.",
+                                "success"
+                            );
+                            loadPegawai();
+                        } else {
+                            Swal.fire(
+                                "Gagal!",
+                                "Terjadi kesalahan saat menghapus data.",
+                                "error"
+                            );
+                        }
+                    })
+                    .catch((error) => {
+                        Swal.fire(
+                            "Gagal!",
+                            "Terjadi kesalahan dalam penghapusan data.",
+                            "error"
+                        );
+                    });
+            } else {
+                // Jika batal, beri tahu pengguna
+                Swal.fire("Dibatalkan", "Data tidak dihapus.", "info");
+            }
         });
     });
 
@@ -190,59 +378,4 @@ $(document).ready(function () {
         reader.readAsDataURL(file);
     });
     //ini saat input
-
-    document.querySelectorAll(".confirm-text").forEach(function (deleteButton) {
-        deleteButton.addEventListener("click", function () {
-            const itemId = this.getAttribute("data-item-id"); // Ambil ID item dari data-item-id
-
-            // SweetAlert2 untuk konfirmasi
-            Swal.fire({
-                title: "Apakah Anda yakin?",
-                text: "Data ini akan dihapus secara permanen!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Ya, hapus!",
-                cancelButtonText: "Batal",
-                reverseButtons: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Kirim permintaan hapus (gunakan itemId)
-                    fetch(`/pegawai/${itemId}`, {
-                        method: "DELETE",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
-                                "content"
-                            ),
-                        },
-                    })
-                        .then((response) => {
-                            if (response.ok) {
-                                Swal.fire(
-                                    "Dihapus!",
-                                    "Data berhasil dihapus.",
-                                    "success"
-                                ).then(() => location.reload());
-                            } else {
-                                Swal.fire(
-                                    "Gagal!",
-                                    "Terjadi kesalahan saat menghapus data.",
-                                    "error"
-                                );
-                            }
-                        })
-                        .catch((error) => {
-                            Swal.fire(
-                                "Gagal!",
-                                "Terjadi kesalahan dalam penghapusan data.",
-                                "error"
-                            );
-                        });
-                } else {
-                    // Jika batal, beri tahu pengguna
-                    Swal.fire("Dibatalkan", "Data tidak dihapus.", "info");
-                }
-            });
-        });
-    });
 });
