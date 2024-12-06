@@ -13,75 +13,17 @@ class PegawaiController extends Controller
 {
     public function index()
     {
-        $jabatan = Jabatan::where('status', 1)->get();
-        $pegawai = Pegawai::with('jabatan')->get();
-        $count = Pegawai::where('status', 1)->count();
-        return view('pages.pegawai', ['jabatan' => $jabatan, 'count' => $count]);
+        return view('pages.pegawai');
     }
 
     public function getpegawai()
     {
         $pegawai = Pegawai::with('jabatan')->get();
-        return response()->json(['success' => true, 'message' => 'Data Pegawai Ditemukan', 'Data' => $pegawai]);
+        $count   = Pegawai::count();
+        return response()->json(['success' => true, 'message' => 'Data Pegawai Ditemukan', 'Data' => $pegawai, 'Total' => $count]);
     }
 
     public function store(Request $request)
-    {
-        $messages = [
-            'required' => ':attribute wajib di isi !!!',
-            'mimes'    => ':attribute format wajib menggunakan PNG/JPG',
-            'unique'   => ':attribute sudah digunakan'
-        ];
-
-        $credentials = $request->validate([
-            'nip'           =>  'required|unique:pegawai',
-            'nama'          => 'required',
-            'kontak'        => 'required',
-            'jabatan'       => 'required',
-            'alamat'        => 'required',
-            'status'        => 'required',
-            'avatar'        => 'mimes:png,jpg,jpeg',
-        ], $messages);
-
-        if ($request->jabatan == 'Pilih Jabatan') {
-            return redirect('pegawai')->with('errors-message', 'Jabatan Harus Di Pilih');
-        } elseif ($request->status == 'Pilih Status') {
-            return redirect('pegawai')->with('errors-message', 'Status Harus Di Pilih');
-        }
-
-        $newAvatar = '';
-
-        if ($request->file('avatar')) {
-            $extension = $request->file('avatar')->getClientOriginalExtension();
-            $newAvatar = $request->nip . '.' . $extension;
-            $request->file('avatar')->storeAs('Avatar', $newAvatar);
-            $request['avatar'] = $newAvatar;
-        }
-
-        $store = Pegawai::create([
-            'nip'           => $request->nip,
-            'nama'          => $request->nama,
-            'alamat'        => $request->alamat,
-            'kontak'        => $request->kontak,
-            'jabatan_id'    => $request->jabatan,
-            'status'        => $request->status,
-            'image'         => $newAvatar,
-        ]);
-
-        $pegawai_id = Pegawai::where('nip', '=', $request->nip)->first()->id;
-
-        if ($store) {
-            User::create([
-                'pegawai_id' => $pegawai_id,
-                'role_id'    => $request->jabatan,
-                'status'     => $request->status
-            ]);
-        }
-
-        return redirect('pegawai')->with('success-message', 'Data Pegawai Berhasil Disimpan !');
-    }
-
-    public function storePegawai(Request $request)
     {
         $messages = [
             'required' => ':attribute wajib di isi !!!',
@@ -132,7 +74,7 @@ class PegawaiController extends Controller
         return response()->json(['success' => true, 'message' => 'Data Pegawai Berhasil Disimpan']);
     }
 
-    public function getPegawaibyID($id)
+    public function show($id)
     {
         $pegawai = Pegawai::findOrFail($id);
         return response()->json(['success' => true, 'message' => 'Data Pegawai Berhasil Ditemukan', 'data' => $pegawai]);

@@ -11,8 +11,8 @@
                 </div>
                 <ul class="table-top-head">
                     <li>
-                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh"><i data-feather="rotate-ccw"
-                                class="feather-rotate-ccw"></i></a>
+                        <a id="refreshButton" data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh"><i
+                                data-feather="rotate-ccw" class="feather-rotate-ccw"></i></a>
                     </li>
                     <li>
                         <a data-bs-toggle="tooltip" data-bs-placement="top" title="Collapse" id="collapse-header"><i
@@ -30,7 +30,7 @@
                     <div class="search-set mb-0">
                         <div class="total-employees">
                             <h6><i data-feather="users" class="feather-user"></i>Total Pegawai
-                                <span>{{ $count }}</span>
+                                <span id="totalPegawaiAktif"></span>
                             </h6>
                         </div>
                         <div class="search-input">

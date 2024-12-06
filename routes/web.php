@@ -43,8 +43,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('pegawai', [PegawaiController::class, 'index']);
     Route::get('pegawai/getpegawai', [PegawaiController::class, 'getPegawai']);
-    Route::get('pegawai/{id}', [PegawaiController::class, 'getPegawaibyID']);
-    Route::post('pegawai', [PegawaiController::class, 'storePegawai']);
+    Route::get('pegawai/{id}', [PegawaiController::class, 'show']);
+    Route::post('pegawai', [PegawaiController::class, 'store']);
     Route::post('pegawai/{id}', [PegawaiController::class, 'update']);
     Route::delete('pegawai/{id}', [PegawaiController::class, 'delete']);
 

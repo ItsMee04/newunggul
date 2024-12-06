@@ -2,6 +2,15 @@ $(document).ready(function () {
     loadPegawai();
     searchInput();
 
+    $(document).on("click", "#refreshButton", function () {
+        loadPegawai(); // Panggil fungsi untuk memuat ulang data pegawai
+        const successtoastExample = document.getElementById("successToast");
+        const toast = new bootstrap.Toast(successtoastExample);
+        $(".toast-body").text("Data Pegawai Berhasil Direfresh");
+        toast.show();
+    });
+
+    //function load pegawai
     function loadPegawai() {
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
 
@@ -13,6 +22,7 @@ $(document).ready(function () {
             },
             dataType: "json",
             success: function (data) {
+                let pegawaiAktif = data.Total;
                 $("#daftarPegawai").empty(); // Kosongkan daftar sebelumnya
                 $.each(data.Data, function (key, item) {
                     let statusBadge =
@@ -81,6 +91,8 @@ $(document).ready(function () {
                         </div>
                     `);
                 });
+
+                $("#totalPegawaiAktif").text(pegawaiAktif);
             },
             error: function (xhr, status, error) {
                 console.error("Terjadi kesalahan saat memuat data:", error);
@@ -163,6 +175,7 @@ $(document).ready(function () {
         });
     });
 
+    //ketika button edit di tekan
     $(document).on("click", ".btn-edit", function () {
         const pegawaiId = $(this).data("id");
 
@@ -222,6 +235,36 @@ $(document).ready(function () {
         });
     });
 
+    // Menangani perubahan gambar saat memilih file baru
+    $("#editImage").on("change", function (e) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+            // Update preview gambar dengan gambar baru yang dipilih
+            $("#editPreview img").attr("src", event.target.result);
+        };
+
+        if (file) {
+            reader.readAsDataURL(file); // Membaca file sebagai URL data
+        }
+    });
+
+    // Ketika modal ditutup, reset semua field
+    $("#modaledit").on("hidden.bs.modal", function () {
+        // Reset form input (termasuk gambar dan status)
+        $("#formEditPegawai")[0].reset();
+
+        // Reset gambar preview (gambar default)
+        $("#editPreview img").attr("src", "/assets/img/notfound.png");
+
+        // Reset dropdown status jika perlu
+        $("#editstatus").val("").trigger("change"); // Reset select status jika menggunakan Select2 atau lainnya
+
+        // Reset dropdown jabatan jika perlu
+        $("#editjabatan").val("").trigger("change"); // Reset select jabatan jika menggunakan Select2 atau lainnya
+    });
+
     // Kirim data ke server saat form disubmit
     $(document).on("submit", "#formEditPegawai", function (e) {
         e.preventDefault(); // Mencegah form submit secara default
@@ -277,6 +320,7 @@ $(document).ready(function () {
         });
     });
 
+    // ketika button hapus di tekan
     $(document).on("click", ".confirm-text", function () {
         const itemId = $(this).data("item-id");
 
@@ -330,6 +374,7 @@ $(document).ready(function () {
         });
     });
 
+    //function search
     function searchInput() {
         document
             .getElementById("searchInput")
