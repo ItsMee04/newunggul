@@ -25,47 +25,50 @@
                 </div>
             </div>
 
-            <!-- /product list -->
-            <div class="card-body pb-0">
-                <div class="table-top table-top-two table-top-new">
-                    <div class="search-set mb-0">
-                        <div class="total-employees">
-                            <h6><i data-feather="tag" class="feather-user"></i>Total Jenis
-                                <span id="totalUserAktif"></span>
-                            </h6>
-                        </div>
-                        <div class="search-input">
-                            <a href="#" class="btn btn-searchset"><i data-feather="search"
-                                    class="feather-search"></i></a>
-                            <input type="search" id="searchInput" class="form-control">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /product list -->
+            <!-- Always responsive -->
             <div class="row">
-                <div class="col-xl-3">
-                    <div class="card card-bg-secondary">
+                <div class="col-xl-12">
+                    <div class="card-body pb-0">
+
+                    </div>
+                    <div class="card">
+                        <div class="card-header justify-content-between">
+                            <div class="table-top table-top-two table-top-new">
+                                <div class="search-set mb-0">
+                                    <div class="total-employees">
+                                        <h6><i data-feather="tag" class="feather-user"></i>Total Jenis
+                                            <span id="totalJenisAktif"></span>
+                                        </h6>
+                                    </div>
+                                    <div class="search-input">
+                                        <a href="#" class="btn btn-searchset"><i data-feather="search"
+                                                class="feather-search"></i></a>
+                                        <input type="search" id="searchInput" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="card-body">
-                            <div class="d-flex align-items-center w-100">
-                                <div class="me-2">
-                                    <span class="avatar avatar-rounded">
-                                        <img src="assets/img/avatar/avatar-1.jpg" alt="img">
-                                    </span>
-                                </div>
-                                <div class="">
-                                    <div class="fs-15 fw-semibold">Elisha Corner</div>
-                                    <p class="mb-0 text-fixed-white op-7 fs-12">Completed 24 days back</p>
-                                </div>
-                                <div class="ms-auto">
-                                    <a href="javascript:void(0);" class="text-fixed-white"><i
-                                            class="fa-solid fa-ellipsis-vertical"></i></a>
-                                </div>
+                            <div class="table-responsive">
+                                <table class="table text-nowrap">
+                                    <thead>
+                                        <tr>
+
+                                            <th scope="col">Jenis</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="daftarJenis">
+
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- /Always responsive -->
         </div>
     </div>
 
@@ -119,62 +122,4 @@
     <!-- jQuery -->
     <script src="{{ asset('assets') }}/js/jquery-3.7.1.min.js" type="text/javascript"></script>
     <script src="{{ asset('js') }}/jenis.js" type="text/javascript"></script>
-    <style>
-        .card {
-            max-width: 30em;
-            flex-direction: row;
-            background-color: #696969;
-            border: 0;
-            box-shadow: 0 7px 7px rgba(0, 0, 0, 0.18);
-            margin: 3em auto;
-        }
-
-        .card.dark {
-            color: #fff;
-        }
-
-        .card.card.bg-light-subtle .card-title {
-            color: dimgrey;
-        }
-
-        .card img {
-            max-width: 25%;
-            margin: auto;
-            padding: 0.5em;
-            border-radius: 0.7em;
-        }
-
-        .card-body {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .text-section {
-            max-width: 60%;
-        }
-
-        .cta-section {
-            max-width: 40%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            justify-content: space-between;
-        }
-
-        .cta-section .btn {
-            padding: 0.3em 0.5em;
-            /* color: #696969; */
-        }
-
-        .card.bg-light-subtle .cta-section .btn {
-            background-color: #898989;
-            border-color: #898989;
-        }
-
-        @media screen and (max-width: 475px) {
-            .card {
-                font-size: 0.9em;
-            }
-        }
-    </style>
 @endsection

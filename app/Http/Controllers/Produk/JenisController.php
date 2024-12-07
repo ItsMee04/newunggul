@@ -18,7 +18,8 @@ class JenisController extends Controller
     public function getJenis()
     {
         $jenis = Jenis::all();
-        return response()->json(['success' => true, 'message' => 'Data Jenis Ditemukan', 'Data' => $jenis]);
+        $count = Jenis::count();
+        return response()->json(['success' => true, 'message' => 'Data Jenis Ditemukan', 'Data' => $jenis, 'Total' => $count]);
     }
 
     public function store(Request $request)

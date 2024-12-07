@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    laodJenis();
     const imgInput = document.getElementById("image");
     const previewImage = document.getElementById("preview");
 
@@ -72,64 +73,57 @@ $(document).ready(function () {
         });
     });
 
-    // Datatable
-    if ($("#jenisTable").length > 0) {
-        $("#jenisTable").DataTable({
-            ajax: {
-                url: "/jenis/getJenis", // API endpoint untuk mengambil data jenis
-                dataSrc: "Data", // Menyesuaikan dengan respons JSON
+    //function load pegawai
+    function laodJenis() {
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
+
+        $.ajax({
+            url: `jenis/getJenis`, // URL endpoint
+            type: "GET",
+            data: {
+                _token: CSRF_TOKEN,
             },
-            columns: [
-                {
-                    data: null,
-                    render: function (data, type, row, meta) {
-                        return meta.row + 1; // Menampilkan nomor urut
-                    },
-                },
-                { data: "jenis" }, // Menampilkan nama jenis
-                {
-                    data: "status",
-                    render: function (data) {
-                        return data ? "Aktif" : "Tidak Aktif"; // Menampilkan status aktif/tidak
-                    },
-                },
-                {
-                    data: null,
-                    render: function (data, type, row, meta) {
-                        return `
-                        <td class="action-table-data">
-                            <div class="edit-delete-action">
-                                <a class="me-2 edit-icon p-2" data="${data.id}">
-                                    <i data-feather="eye" class="feather-eye"></i>
-                                </a>
-                                <a class="me-2 p-2" href="edit-product.html">
-                                    <i data-feather="edit" class="feather-edit"></i>
-                                </a>
-                                <a class="confirm-text p-2" href="javascript:void(0);" data-id="${data.id}" class="btnDelete">
-                                    <i data-feather="trash-2" class="feather-trash-2"></i>
-                                </a>
-                            </div>
-                        </td>
-                    `;
-                    },
-                },
-            ],
-            bFilter: true,
-            sDom: "fBtlpi",
-            ordering: true,
-            language: {
-                search: " ",
-                sLengthMenu: "_MENU_",
-                searchPlaceholder: "Search",
-                info: "_START_ - _END_ of _TOTAL_ items",
-                paginate: {
-                    next: ' <i class=" fa fa-angle-right"></i>',
-                    previous: '<i class="fa fa-angle-left"></i> ',
-                },
+            dataType: "json",
+            success: function (data) {
+                let jenisAktif = data.Total;
+                $("#daftarJenis").empty(); // Kosongkan daftar sebelumnya
+                $.each(data.Data, function (key, item) {
+                    let statusBadge =
+                        item.status === 1
+                            ? '<span class="badge badge-linesuccess text-center w-auto me-1">Active</span>'
+                            : '<span class="badge badge-linedanger text-center w-auto me-1">InActive</span>';
+
+                    let imageSrc = item.icon
+                        ? `/storage/Icon/${item.icon}?t=${new Date().getTime()}`
+                        : `/assets/img/notfound.png`;
+
+                    $("#daftarJenis").append(`
+                        <tr>
+                            <td>
+                                <div class="productimgname">
+                                    <a href="javascript:void(0);" class="product-img stock-img">
+                                        <img src="${imageSrc}" alt="avatar">
+                                    </a>
+                                    <a href="javascript:void(0);">${item.jenis} </a>
+                                </div>	
+                            </td>
+                            <td>${statusBadge}</td>
+                            <td>
+                                <div class="hstack gap-2 fs-15">
+                                    <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-success"><i
+                                            class="feather-download"></i></a>
+                                    <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-info"><i
+                                            class="feather-edit"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    `);
+                });
+
+                $("#totalJenisAktif").text(jenisAktif);
             },
-            initComplete: (settings, json) => {
-                $(".dataTables_filter").appendTo("#tableSearch");
-                $(".dataTables_filter").appendTo(".search-input");
+            error: function (xhr, status, error) {
+                console.error("Terjadi kesalahan saat memuat data:", error);
             },
         });
     }
