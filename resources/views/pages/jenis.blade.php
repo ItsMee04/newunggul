@@ -28,9 +28,6 @@
             <!-- Always responsive -->
             <div class="row">
                 <div class="col-xl-12">
-                    <div class="card-body pb-0">
-
-                    </div>
                     <div class="card">
                         <div class="card-header justify-content-between">
                             <div class="table-top table-top-two table-top-new">
@@ -51,12 +48,11 @@
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table text-nowrap">
-                                    <thead>
+                                    <thead class="table-primary">
                                         <tr>
-
                                             <th scope="col">Jenis</th>
                                             <th scope="col">Status</th>
-                                            <th scope="col">Action</th>
+                                            <th scope="col">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody id="daftarJenis">

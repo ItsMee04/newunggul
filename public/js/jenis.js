@@ -98,22 +98,21 @@ $(document).ready(function () {
                         : `/assets/img/notfound.png`;
 
                     $("#daftarJenis").append(`
-                        <tr>
-                            <td>
-                                <div class="productimgname">
+                        <tr data-jenis=${item.jenis}>
+                            <th scope="row">
+                            <div class="productimgname">
                                     <a href="javascript:void(0);" class="product-img stock-img">
                                         <img src="${imageSrc}" alt="avatar">
                                     </a>
                                     <a href="javascript:void(0);">${item.jenis} </a>
                                 </div>	
-                            </td>
+                            </th>
                             <td>${statusBadge}</td>
                             <td>
                                 <div class="hstack gap-2 fs-15">
-                                    <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-success"><i
-                                            class="feather-download"></i></a>
-                                    <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-info"><i
-                                            class="feather-edit"></i></a>
+                                    <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-soft-success rounded-pill"><i class="feather-download"></i></a>
+                                    <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-soft-info rounded-pill"><i class="feather-edit"></i></a>
+                                    <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-soft-danger rounded-pill"><i class="feather-trash"></i></a>
                                 </div>
                             </td>
                         </tr>
