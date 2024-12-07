@@ -71,4 +71,66 @@ $(document).ready(function () {
             });
         });
     });
+
+    // Datatable
+    if ($("#jenisTable").length > 0) {
+        $("#jenisTable").DataTable({
+            ajax: {
+                url: "/jenis/getJenis", // API endpoint untuk mengambil data jenis
+                dataSrc: "Data", // Menyesuaikan dengan respons JSON
+            },
+            columns: [
+                {
+                    data: null,
+                    render: function (data, type, row, meta) {
+                        return meta.row + 1; // Menampilkan nomor urut
+                    },
+                },
+                { data: "jenis" }, // Menampilkan nama jenis
+                {
+                    data: "status",
+                    render: function (data) {
+                        return data ? "Aktif" : "Tidak Aktif"; // Menampilkan status aktif/tidak
+                    },
+                },
+                {
+                    data: null,
+                    render: function (data, type, row, meta) {
+                        return `
+                        <td class="action-table-data">
+                            <div class="edit-delete-action">
+                                <a class="me-2 edit-icon p-2" data="${data.id}">
+                                    <i data-feather="eye" class="feather-eye"></i>
+                                </a>
+                                <a class="me-2 p-2" href="edit-product.html">
+                                    <i data-feather="edit" class="feather-edit"></i>
+                                </a>
+                                <a class="confirm-text p-2" href="javascript:void(0);" data-id="${data.id}" class="btnDelete">
+                                    <i data-feather="trash-2" class="feather-trash-2"></i>
+                                </a>
+                            </div>
+                        </td>
+                    `;
+                    },
+                },
+            ],
+            bFilter: true,
+            sDom: "fBtlpi",
+            ordering: true,
+            language: {
+                search: " ",
+                sLengthMenu: "_MENU_",
+                searchPlaceholder: "Search",
+                info: "_START_ - _END_ of _TOTAL_ items",
+                paginate: {
+                    next: ' <i class=" fa fa-angle-right"></i>',
+                    previous: '<i class="fa fa-angle-left"></i> ',
+                },
+            },
+            initComplete: (settings, json) => {
+                $(".dataTables_filter").appendTo("#tableSearch");
+                $(".dataTables_filter").appendTo(".search-input");
+            },
+        });
+    }
 });

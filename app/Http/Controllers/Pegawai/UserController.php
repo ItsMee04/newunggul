@@ -16,6 +16,19 @@ class UserController extends Controller
         return view('pages.user', ['user' => $user, 'count' => $count]);
     }
 
+    public function getUser()
+    {
+        $user = User::with(['pegawai', 'role'])->get();
+        $count   = User::count();
+        return response()->json(['success' => true, 'message' => 'Data Pegawai Ditemukan', 'Data' => $user, 'Total' => $count]);
+    }
+
+    public function show($id)
+    {
+        $user = User::where('id', $id)->with(['pegawai', 'role'])->get();
+        return response()->json(['success' => true, 'message' => 'Data Pegawai Berhasil Ditemukan', 'data' => $user]);
+    }
+
     public function update(Request $request, $id)
     {
 
@@ -29,12 +42,12 @@ class UserController extends Controller
             'password'  => 'required',
         ], $messages);
 
-        User::where('pegawai_id', $id)
+        User::where('id', $id)
             ->update([
                 'email' =>  $request->email,
                 'password'  =>  Hash::make($request->password)
             ]);
 
-        return redirect('user')->with('success-message', 'Data User Berhasil Disimpan');
+        return response()->json(['success' => true, 'message' => "Data User Berhasil Disimpan"]);
     }
 }

@@ -15,6 +15,12 @@ class JenisController extends Controller
         return view('pages.jenis', ['jenis' => $jenis]);
     }
 
+    public function getJenis()
+    {
+        $jenis = Jenis::all();
+        return response()->json(['success' => true, 'message' => 'Data Jenis Ditemukan', 'Data' => $jenis]);
+    }
+
     public function store(Request $request)
     {
         $messages = [

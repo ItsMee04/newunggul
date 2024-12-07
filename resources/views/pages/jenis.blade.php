@@ -26,196 +26,46 @@
             </div>
 
             <!-- /product list -->
-            <div class="card table-list-card">
-                <div class="card-body">
-                    <div class="table-top">
-                        <div class="search-set">
-                            <div class="search-input">
-                                <a href="javascript:void(0);" class="btn btn-searchset"><i data-feather="search"
-                                        class="feather-search"></i></a>
-                            </div>
+            <div class="card-body pb-0">
+                <div class="table-top table-top-two table-top-new">
+                    <div class="search-set mb-0">
+                        <div class="total-employees">
+                            <h6><i data-feather="tag" class="feather-user"></i>Total Jenis
+                                <span id="totalUserAktif"></span>
+                            </h6>
                         </div>
-                    </div>
-                    <!-- /Filter -->
-                    <div class="card mb-0" id="filter_inputs">
-                        <div class="card-body pb-0">
-
+                        <div class="search-input">
+                            <a href="#" class="btn btn-searchset"><i data-feather="search"
+                                    class="feather-search"></i></a>
+                            <input type="search" id="searchInput" class="form-control">
                         </div>
-                    </div>
-                    <!-- /Filter -->
-                    <div class="table-responsive product-list">
-                        <table class="table datanew">
-                            <thead>
-                                <tr>
-                                    <th>No.</th>
-                                    <th>Jenis</th>
-                                    <th>Status</th>
-                                    <th class="no-sort">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($jenis as $item)
-                                    <tr>
-                                        <td>{{ $loop->iteration }} </td>
-                                        <td>
-                                            <div class="productimgname">
-                                                <a href="javascript:void(0);" class="product-img stock-img">
-                                                    @if ($item->icon != null)
-                                                        <img src="{{ asset('storage/icon/' . $item->icon) }}"
-                                                            alt="avatar">
-                                                    @else
-                                                        <img src="{{ asset('assets') }}/img/notfound.png" alt="avatar">
-                                                    @endif
-                                                </a>
-                                                <a href="javascript:void(0);">{{ $item->jenis }} </a>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            @if ($item->status == 1)
-                                                <span class="badge badge-md bg-success"> Active</span>
-                                            @else
-                                                <span class="badge badge-md bg-danger"> InActive</span>
-                                            @endif
-                                        </td>
-                                        <td class="action-table-data">
-                                            <div class="edit-delete-action">
-                                                <a class="me-2 edit-icon  p-2" data-bs-effect="effect-sign"
-                                                    data-bs-toggle="modal" href="#modaldetail{{ $item->id }}">
-                                                    <i data-feather="eye" class="feather-eye"></i>
-                                                </a>
-                                                <a class="me-2 p-2" data-bs-effect="effect-sign" data-bs-toggle="modal"
-                                                    href="#modaledit{{ $item->id }}">
-                                                    <i data-feather="edit" class="feather-edit"></i>
-                                                </a>
-                                                <a class="me-2 p-2 confirm-text" href="javascript:void(0);"
-                                                    data-item-id="{{ $item->id }}">
-                                                    <i data-feather="trash-2" class="feather-trash-2"></i>
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <div class="modal fade" id="modaldetail{{ $item->id }}">
-                                        <div class="modal-dialog modal-dialog-centered text-center" role="document">
-                                            <div class="modal-content modal-content-demo">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">Detail Jenis Produk</h4><button
-                                                        aria-label="Close" class="btn-close"
-                                                        data-bs-dismiss="modal"></button>
-                                                </div>
-                                                <form method="POST" enctype="multipart/form-data">
-                                                    <div class="modal-body text-start">
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Jenis Produk</label>
-                                                            <input type="text" value="{{ $item->jenis }}"
-                                                                class="form-control" readonly>
-                                                        </div>
-                                                        <div class=" mb-3">
-                                                            <div class="new-employee-field">
-                                                                <label class="form-label">Icon</label>
-                                                                <div class="profile-pic-upload">
-                                                                    <div class="profile-pic active-profile">
-                                                                        @if ($item->icon != null)
-                                                                            <img src="{{ asset('storage/icon/' . $item->icon) }}"
-                                                                                alt="avatar">
-                                                                        @else
-                                                                            <img src="{{ asset('assets') }}/img/notfound.jpg"
-                                                                                alt="avatar">
-                                                                        @endif
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Status</label>
-                                                            @if ($item->status == 1)
-                                                                <input type="text" value="Aktif" class="form-control"
-                                                                    readonly>
-                                                            @else
-                                                                <input type="text" value="Tidak Aktif"
-                                                                    class="form-control" readonly>
-                                                            @endif
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-cancel"
-                                                            data-bs-dismiss="modal">Close</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- EDIT JENIS PRODUK -->
-                                    <div class="modal fade" id="modaledit{{ $item->id }}">
-                                        <div class="modal-dialog modal-dialog-centered text-center" role="document">
-                                            <div class="modal-content modal-content-demo">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">Edit Jenis Produk</h4><button
-                                                        aria-label="Close" class="btn-close"
-                                                        data-bs-dismiss="modal"></button>
-                                                </div>
-                                                <form action="jenis/{{ $item->id }}" method="POST"
-                                                    enctype="multipart/form-data">
-                                                    @csrf
-                                                    <div class="modal-body text-start">
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Jenis Produk</label>
-                                                            <input type="text" name="jenis"
-                                                                value="{{ $item->jenis }}" class="form-control">
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <div class="new-employee-field">
-                                                                <label class="form-label">Icon</label>
-                                                                <div class="profile-pic-upload">
-                                                                    <div class="profile-pic active-profile preview2"
-                                                                        id="preview2">
-                                                                        @if ($item->icon != null)
-                                                                            <img src="{{ asset('storage/icon/' . $item->icon) }}"
-                                                                                alt="avatar">
-                                                                        @else
-                                                                            <img src="{{ asset('assets') }}/img/notfound.jpg"
-                                                                                alt="avatar">
-                                                                        @endif
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <input type="file" class="form-control" name="icon"
-                                                                    id="image2">
-                                                            </div>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Status</label>
-                                                            <select class="select" name="status">
-                                                                <option>Pilih Status</option>
-                                                                <option value="1"
-                                                                    @if ($item->status == 1) selected="selected" @endif>
-                                                                    Aktif</option>
-                                                                <option value="2"
-                                                                    @if ($item->status == 2) selected="selected" @endif>
-                                                                    Tidak Aktif</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-cancel"
-                                                            data-bs-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-primary">Save
-                                                            changes</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>
             <!-- /product list -->
+            <div class="row">
+                <div class="col-xl-3">
+                    <div class="card card-bg-secondary">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center w-100">
+                                <div class="me-2">
+                                    <span class="avatar avatar-rounded">
+                                        <img src="assets/img/avatar/avatar-1.jpg" alt="img">
+                                    </span>
+                                </div>
+                                <div class="">
+                                    <div class="fs-15 fw-semibold">Elisha Corner</div>
+                                    <p class="mb-0 text-fixed-white op-7 fs-12">Completed 24 days back</p>
+                                </div>
+                                <div class="ms-auto">
+                                    <a href="javascript:void(0);" class="text-fixed-white"><i
+                                            class="fa-solid fa-ellipsis-vertical"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -269,4 +119,62 @@
     <!-- jQuery -->
     <script src="{{ asset('assets') }}/js/jquery-3.7.1.min.js" type="text/javascript"></script>
     <script src="{{ asset('js') }}/jenis.js" type="text/javascript"></script>
+    <style>
+        .card {
+            max-width: 30em;
+            flex-direction: row;
+            background-color: #696969;
+            border: 0;
+            box-shadow: 0 7px 7px rgba(0, 0, 0, 0.18);
+            margin: 3em auto;
+        }
+
+        .card.dark {
+            color: #fff;
+        }
+
+        .card.card.bg-light-subtle .card-title {
+            color: dimgrey;
+        }
+
+        .card img {
+            max-width: 25%;
+            margin: auto;
+            padding: 0.5em;
+            border-radius: 0.7em;
+        }
+
+        .card-body {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .text-section {
+            max-width: 60%;
+        }
+
+        .cta-section {
+            max-width: 40%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+
+        .cta-section .btn {
+            padding: 0.3em 0.5em;
+            /* color: #696969; */
+        }
+
+        .card.bg-light-subtle .cta-section .btn {
+            background-color: #898989;
+            border-color: #898989;
+        }
+
+        @media screen and (max-width: 475px) {
+            .card {
+                font-size: 0.9em;
+            }
+        }
+    </style>
 @endsection

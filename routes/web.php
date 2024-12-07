@@ -49,9 +49,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('pegawai/{id}', [PegawaiController::class, 'delete']);
 
     Route::get('user', [UserController::class, 'index']);
+    Route::get('user/getUser', [UserController::class, 'getUser']);
+    Route::get('user/{id}', [UserController::class, 'show']);
     Route::post('user/{id}', [UserController::class, 'update']);
 
     Route::get('jenis', [JenisController::class, 'index']);
+    Route::get('jenis/getJenis', [JenisController::class, 'getJenis']);
     Route::post('jenis', [JenisController::class, 'store']);
     Route::post('jenis/{id}', [JenisController::class, 'update']);
     Route::delete('jenis/{id}', [JenisController::class, 'delete']);
