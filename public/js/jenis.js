@@ -98,24 +98,57 @@ $(document).ready(function () {
                         : `/assets/img/notfound.png`;
 
                     $("#daftarJenis").append(`
-                        <tr data-jenis=${item.jenis}>
-                            <th scope="row">
-                            <div class="productimgname">
-                                    <a href="javascript:void(0);" class="product-img stock-img">
-                                        <img src="${imageSrc}" alt="avatar">
+                        <div class="col-md-4 d-flex">
+                            <div class="notes-card notes-card-details w-100">
+                                <div class="notes-card-body">
+                                    <p class="badged medium"><i class="fas fa-circle"></i> Medium</p>
+                                    <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v"></i>
                                     </a>
-                                    <a href="javascript:void(0);">${item.jenis} </a>
-                                </div>	
-                            </th>
-                            <td>${statusBadge}</td>
-                            <td>
-                                <div class="hstack gap-2 fs-15">
-                                    <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-soft-success rounded-pill"><i class="feather-download"></i></a>
-                                    <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-soft-info rounded-pill"><i class="feather-edit"></i></a>
-                                    <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-soft-danger rounded-pill"><i class="feather-trash"></i></a>
+                                    <div class="dropdown-menu notes-menu dropdown-menu-end">
+                                        <a href="#" class="dropdown-item" data-bs-toggle="modal"
+                                            data-bs-target="#edit-note-units"><span><i
+                                                    data-feather="edit"></i></span>Edit</a>
+                                        <a href="#" class="dropdown-item" data-bs-toggle="modal"
+                                            data-bs-target="#delete-note-units"><span><i
+                                                    data-feather="trash-2"></i></span>Delete</a>
+                                        <a href="#" class="dropdown-item"><span><i
+                                                    data-feather="star"></i></span>Not Important</a>
+                                        <a href="#" class="dropdown-item" data-bs-toggle="modal"
+                                            data-bs-target="#view-note-units"><span><i
+                                                    data-feather="eye"></i></span>View</a>
+                                    </div>
                                 </div>
-                            </td>
-                        </tr>
+                                <div class="notes-wrap-content">
+                                    <h4>
+                                        <a href="javascript:void(0);">
+                                            ${item.jenis}
+                                        </a>
+                                    </h4>
+                                    <p class="wrap-cal"><i data-feather="calendar" class="feather-calendar"></i>
+                                        ${item.created_at}</p>
+                                    
+                                </div>
+                                <div class="notes-slider-widget notes-widget-profile">
+                                    <div class="notes-logo">
+                                        <a href="javascript:void(0);">
+                                            <span>
+                                                <img src="${imageSrc}" alt="avatar" class="img-fluid">
+                                            </span>
+                                        </a>
+                                        <div class="d-flex">
+                                            <span class="medium-square"><i class="fas fa-square"></i></span>
+                                            <p class="medium"> ${item.jenis}</p>
+                                        </div>
+                                    </div>
+                                    <div class="notes-star-delete">
+                                        <a href="javascript:void(0);">
+                                            <span><i data-feather="trash-2"></i></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     `);
                 });
 
