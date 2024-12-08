@@ -47,13 +47,19 @@ class JenisController extends Controller
             $request['icon'] = $icon;
         }
 
-        Jenis::create([
+        $jenis = Jenis::create([
             'jenis'  => $request->jenis,
             'icon'   => $icon,
             'status' => $request->status
         ]);
 
-        return redirect('jenis')->with('success-message', 'Data Jenis Berhasil Disimpan');
+        return response()->json(['success' => true, 'message' => "Data Jenis Berhasil Disimpan", 'Data' => $jenis]);
+    }
+
+    public function show($id)
+    {
+        $jenis = Jenis::findOrFail($id);
+        return response()->json(['success' => true, 'message' => 'Data Jenis Berhasil Ditemukan', 'data' => $jenis]);
     }
 
     public function update(Request $request, $id)
@@ -102,7 +108,7 @@ class JenisController extends Controller
                 ]);
         }
 
-        return redirect('jenis')->with('success-message', 'Data Jenis Berhasil Disimpan');
+        return response()->json(['success' => true, 'message' => "Data Jenis Berhasil Disimpan"]);
     }
 
     public function delete($id)

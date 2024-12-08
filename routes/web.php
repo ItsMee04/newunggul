@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('jenis', [JenisController::class, 'index']);
     Route::get('jenis/getJenis', [JenisController::class, 'getJenis']);
+    Route::get('jenis/{id}', [JenisController::class, 'show']);
     Route::post('jenis', [JenisController::class, 'store']);
     Route::post('jenis/{id}', [JenisController::class, 'update']);
     Route::delete('jenis/{id}', [JenisController::class, 'delete']);
