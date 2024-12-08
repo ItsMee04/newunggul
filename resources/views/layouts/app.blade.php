@@ -209,6 +209,11 @@
     <!-- Sweetalert 2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- Sticky-sidebar -->
+    <script src="{{ asset('assets') }}/plugins/theia-sticky-sidebar/ResizeSensor.js" type="text/javascript"></script>
+    <script src="{{ asset('assets') }}/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js" type="text/javascript">
+    </script>
+
     <!-- Custom JS -->
     <script src="{{ asset('assets') }}/js/theme-script.js" type="text/javascript"></script>
     <script src="{{ asset('assets') }}/js/script.js" type="text/javascript"></script>
