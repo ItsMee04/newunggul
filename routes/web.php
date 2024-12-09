@@ -61,6 +61,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('jenis/{id}', [JenisController::class, 'delete']);
 
     Route::get('produk', [ProdukController::class, 'index']);
+    Route::get('produk/getProduk', [ProdukController::class, 'getProduk']);
     Route::post('produk', [ProdukController::class, 'store']);
     Route::post('produk/{id}', [ProdukController::class, 'update']);
     Route::delete('produk/{id}', [ProdukController::class, 'delete']);

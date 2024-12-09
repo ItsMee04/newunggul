@@ -11,8 +11,8 @@
                 </div>
                 <ul class="table-top-head">
                     <li>
-                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh"><i data-feather="rotate-ccw"
-                                class="feather-rotate-ccw"></i></a>
+                        <a id="refreshButton" data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh"><i
+                                data-feather="rotate-ccw" class="feather-rotate-ccw"></i></a>
                     </li>
                     <li>
                         <a data-bs-toggle="tooltip" data-bs-placement="top" title="Collapse" id="collapse-header"><i
@@ -29,8 +29,8 @@
                 <div class="table-top table-top-two table-top-new">
                     <div class="search-set mb-0">
                         <div class="total-employees">
-                            <h6><i data-feather="shopping-bag" class="feather-user"></i>Total Produk
-                                <span>{{ $count }}</span>
+                            <h6><i data-feather="users" class="feather-user"></i>Total Produk
+                                <span id="totalProdukAktif"></span>
                             </h6>
                         </div>
                         <div class="search-input">
@@ -45,8 +45,8 @@
             <div class="pos-products">
                 <div class="tabs_container">
                     <div class="tab_content">
-                        <div class="row">
-                            @foreach ($produk as $item)
+                        <div class="row" id="daftarProduk">
+                            {{-- @foreach ($produk as $item)
                                 <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3 produk-item" data-name="{{ $item->nama }}"
                                     data-harga="{{ $item->harga }}" data-berat="{{ $item->berat }}"
                                     data-kode="{{ $item->kodeproduk }}">
@@ -231,7 +231,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
+                            @endforeach --}}
                         </div>
                     </div>
                 </div>

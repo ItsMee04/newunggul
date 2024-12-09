@@ -35,6 +35,13 @@ class ProdukController extends Controller
         return view('pages.produk', ['produk' => $produk, 'jenis' => $jenis, 'count' => $count]);
     }
 
+    public function getProduk()
+    {
+        $produk = Produk::with('jenis')->get();
+        $count = Produk::count();
+        return response()->json(['success' => true, 'message' => 'Data Produk Berhasil Ditemukan', 'Data' => $produk, 'Total' => $count]);
+    }
+
     public function store(Request $request)
     {
         $messages = [
