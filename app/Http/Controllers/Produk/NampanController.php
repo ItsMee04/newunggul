@@ -19,6 +19,12 @@ class NampanController extends Controller
         return view('pages.nampan', ['nampan' => $nampan, 'jenis' => $jenis]);
     }
 
+    public function getNampan()
+    {
+        $nampan = Nampan::with('jenis')->get();
+        return response()->json(['success' => true, 'message' => 'Data Nampan Berhasil Ditemukan', 'Data' => $nampan]);
+    }
+
     public function store(Request $request)
     {
         $messages = [

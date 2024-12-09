@@ -20,7 +20,7 @@
                     </li>
                 </ul>
                 <div class="page-btn">
-                    <a href="#" class="btn btn-added btn-tambahJenis"><i data-feather="plus-circle"
+                    <a href="#" class="btn btn-added btn-tambahProduk"><i data-feather="plus-circle"
                             class="me-2"></i>TAMBAH
                         PRODUK</a>
                 </div>
@@ -241,7 +241,7 @@
     </div>
 
     <!-- Add Pegawai -->
-    <div class="modal fade" id="mdTambahJenis">
+    <div class="modal fade" id="mdTambahProduk">
         <div class="modal-dialog modal-dialog-centered text-center" role="document">
             <div class="modal-content modal-content-demo">
                 <div class="modal-header">
@@ -319,6 +319,84 @@
         </div>
     </div>
     <!-- /Add Pegawai -->
+
+    <div class="modal fade" id="modaledit">
+        <div class="modal-dialog modal-dialog-centered text-center" role="document">
+            <div class="modal-content modal-content-demo">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Produk</h4><button aria-label="Close" class="btn-close"
+                        data-bs-dismiss="modal"></button>
+                </div>
+                <form id="formEditProduk" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body text-start">
+                        <div class="mb-3">
+                            <label class="form-label">Kode Produk</label>
+                            <input type="text" id="editkodeproduk" class="form-control" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nama</label>
+                            <input type="text" id="editnama" class="form-control" name="nama">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Berat</label>
+                                <input type="text" id="editberat" class="form-control" name="berat">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Karat</label>
+                                <input type="text" id="editkarat" class="form-control" name="karat">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Harga Jual</label>
+                                <input type="text" id="edithargajual" class="form-control" name="hargajual">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Harga Beli</label>
+                                <input type="text" id="edithargabeli" class="form-control" name="hargabeli">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Jenis</label>
+                            <select class="select" name="jenis_id" id="editjenis">
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Keterangan</label>
+                            <textarea class="form-control" id="editketerangan"></textarea>
+                        </div>
+                        <div class=" mb-3">
+                            <div class="new-employee-field">
+                                <label class="form-label">Avatar</label>
+                                <div class="profile-pic-upload">
+                                    <div class="profile-pic active-profile" id="editPreview">
+                                        <img src="" alt="avatar">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <input type="file" class="form-control" name="avatar" id="editImage">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Status</label>
+                            <select class="select" id="editstatus">
+                                <option value="1">Aktif</option>
+                                <option value="2">Tidak Aktif</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save
+                            changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- jQuery -->
     <script src="{{ asset('assets') }}/js/jquery-3.7.1.min.js" type="text/javascript"></script>

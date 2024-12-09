@@ -106,9 +106,15 @@ class ProdukController extends Controller
         return response()->json(['success' => true, 'message' => 'Data Produk Berhasil Disimpan', 'Data' => $data]);
     }
 
+    public function show($id)
+    {
+        $produk = Produk::findOrFail($id);
+        return response()->json(['success' => true, 'message' => 'Data Produk Berhasil Ditemukan', 'data' => $produk]);
+    }
+
     public function update(Request $request, $id)
     {
-        $produk = Produk::where('id', $id)->first();
+        $produk = Produk::where('kodeproduk', $id)->first();
 
         $messages = [
             'required' => ':attribute wajib di isi !!!',
@@ -121,12 +127,9 @@ class ProdukController extends Controller
             'harga_jual'    =>  'integer',
             'harga_beli'    =>  'integer',
             'keterangan'    =>  'string',
-            'berat'         =>  [
-                'required',
-                'regex:/^\d+\.\d{2}$/'
-            ],
+            'berat'         =>  ['required', 'numeric', 'regex:/^\d{1,3}(\.\d{1,2})?$/'],
             'karat'         =>  'required|integer',
-            'image_file'    =>  'nullable|mimes:png,jpg',
+            'avatar'        =>  'nullable|mimes:png,jpg',
             'status'        =>  'required'
         ], $messages);
 
@@ -134,19 +137,19 @@ class ProdukController extends Controller
             return redirect('produk')->with('errors-message', 'Status wajib di isi !!!');
         }
 
-        if ($request->file('image_file')) {
+        if ($request->file('avatar')) {
             $pathavatar     = 'storage/produk/' . $produk->image;
 
             if (File::exists($pathavatar)) {
                 File::delete($pathavatar);
             }
 
-            $extension = $request->file('image_file')->getClientOriginalExtension();
+            $extension = $request->file('avatar')->getClientOriginalExtension();
             $newImage = $produk->kodeproduk . '.' . $extension;
-            $request->file('image_file')->storeAs('produk', $newImage);
+            $request->file('avatar')->storeAs('produk', $newImage);
             $request['image'] = $newImage;
 
-            $updateProduk = Produk::where('id', $id)
+            $updateProduk = Produk::where('kodeproduk', $id)
                 ->update([
                     'nama'              =>  $request->nama,
                     'harga_jual'        =>  $request->hargajual,
@@ -158,7 +161,7 @@ class ProdukController extends Controller
                     'status'            =>  $request->status
                 ]);
         } else {
-            $updateProduk = Produk::where('id', $id)
+            $updateProduk = Produk::where('kodeproduk', $id)
                 ->update([
                     'nama'              =>  $request->nama,
                     'harga_jual'        =>  $request->hargajual,
@@ -170,7 +173,7 @@ class ProdukController extends Controller
                 ]);
         }
 
-        return redirect('produk/' . $produk->nampan_id)->with('success-message', 'Data Produk Berhasil Disimpan');
+        return response()->json(['success' => true, 'message' => 'Data Produk Berhasil Disimpan', 'Data' => $produk]);
     }
 
     public function delete($id)

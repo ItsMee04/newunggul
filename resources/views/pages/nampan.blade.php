@@ -25,119 +25,35 @@
                 </div>
             </div>
 
-            <!-- /product list -->
-            <div class="card table-list-card">
-                <div class="card-body">
-                    <div class="table-top">
-                        <div class="search-set">
-                            <div class="search-input">
-                                <a href="javascript:void(0);" class="btn btn-searchset"><i data-feather="search"
-                                        class="feather-search"></i></a>
+            <div class="row" id="daftarNampan">
+                <div class="col-xxl-4 col-xl-6 col-lg-12 col-sm-6">
+                    <div class="bank-box">
+                        <div class="bank-header">
+                            <div class="bank-name">
+                                <h6>HDFC</h6>
+                                <p>**** **** 1832</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class="system-app-icon">
+                                <img src="assets/img/icons/fb-icon.svg" alt="">
+                            </span>
+                            <div class="bank-info">
+                                <span>Holder Name</span>
+                                <h6>Mathew</h6>
+                            </div>
+                            <div class="edit-delete-action bank-action-btn">
+                                <a class="me-2 p-2" href="#" data-bs-toggle="modal" data-bs-target="#edit-account">
+                                    <i data-feather="edit" class="feather-edit"></i>
+                                </a>
+                                <a class="confirm-text p-2" href="javascript:void(0);">
+                                    <i data-feather="trash-2" class="feather-trash-2"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
-                    <!-- /Filter -->
-                    <div class="card mb-0" id="filter_inputs">
-                        <div class="card-body pb-0">
-                        </div>
-                    </div>
-                    <!-- /Filter -->
-                    <div class="table-responsive product-list">
-                        <table class="table datanew">
-                            <thead>
-                                <tr>
-                                    <th>No.</th>
-                                    <th>Nampan / Baki</th>
-                                    <th>Jenis</th>
-                                    <th>Jumlah Produk</th>
-                                    <th class="no-sort">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($nampan as $item)
-                                    <tr>
-                                        <td>{{ $loop->iteration }} </td>
-                                        <td>
-                                            <a href="nampan/{{ $item->id }}">
-                                                <button type="button" class="btn btn-outline-secondary my-1 me-2">
-                                                    {{ $item->nampan }}
-                                                </button>
-                                            </a>
-                                        </td>
-                                        <td>{{ $item->jenis->jenis }} </td>
-                                        <td>{{ $item->nampan }}</td>
-                                        <td class="action-table-data">
-                                            <div class="edit-delete-action">
-                                                <a class="me-2 p-2" data-bs-effect="effect-sign" data-bs-toggle="modal"
-                                                    href="#modaledit{{ $item->id }}">
-                                                    <i data-feather="edit" class="feather-edit"></i>
-                                                </a>
-                                                <a class="me-2 p-2 confirm-text" href="javascript:void(0);"
-                                                    data-item-id="{{ $item->id }}">
-                                                    <i data-feather="trash-2" class="feather-trash-2"></i>
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <div class="modal fade" id="modaledit{{ $item->id }}">
-                                        <div class="modal-dialog modal-dialog-centered text-center" role="document">
-                                            <div class="modal-content modal-content-demo">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">Edit Nampan Produk</h4><button
-                                                        aria-label="Close" class="btn-close"
-                                                        data-bs-dismiss="modal"></button>
-                                                </div>
-                                                <form action="update-nampan/{{ $item->id }}" method="POST"
-                                                    enctype="multipart/form-data">
-                                                    @csrf
-                                                    <div class="modal-body text-start">
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Jenis Produk</label>
-                                                            <select class="select" name="jenis">
-                                                                <option>Pilih Jenis Produk</option>
-                                                                @foreach ($jenis as $itemjenis)
-                                                                    <option value="{{ $itemjenis->id }}"
-                                                                        @if ($item->jenis_id == $itemjenis->id) selected="selected" @endif>
-                                                                        {{ $itemjenis->jenis }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Nampan / Baki</label>
-                                                            <input type="text" name="nampan"
-                                                                value="{{ $item->nampan }}" class="form-control">
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Status</label>
-                                                            <select class="select" name="status">
-                                                                <option>Pilih Status</option>
-                                                                <option value="1"
-                                                                    @if ($item->status == 1) selected="selected" @endif>
-                                                                    Aktif</option>
-                                                                <option value="2"
-                                                                    @if ($item->status == 2) selected="selected" @endif>
-                                                                    Tidak Aktif</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-cancel"
-                                                            data-bs-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-primary">Save
-                                                            changes</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
             </div>
-            <!-- /product list -->
         </div>
     </div>
 
@@ -187,4 +103,17 @@
     <!-- jQuery -->
     <script src="{{ asset('assets') }}/js/jquery-3.7.1.min.js" type="text/javascript"></script>
     <script src="{{ asset('js') }}/nampan.js" type="text/javascript"></script>
+    <style>
+        .bank-action-btn {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            align-items: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            justify-content: center;
+            -webkit-justify-content: center;
+            -ms-flex-pack: center;
+        }
+    </style>
 @endsection

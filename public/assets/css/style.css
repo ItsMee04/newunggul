@@ -28704,40 +28704,7 @@ textarea {
   font-weight: 500;
 }
 
-.bank-action-btn {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  justify-content: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-}
-.bank-action-btn a {
-  border: 1px solid #f3f6f9;
-  border-radius: 8px;
-}
-.bank-action-btn a svg {
-  width: 14px;
-  height: 14px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  justify-content: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-}
-.bank-action-btn a svg.feather-edit {
-  color: #3577f1;
-}
-.bank-action-btn a svg.feather-trash-2 {
-  color: #FF0000;
-}
+
 
 .storage-icon h6 {
   font-weight: 600;

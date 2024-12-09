@@ -63,12 +63,14 @@ Route::middleware('auth')->group(function () {
     Route::get('produk', [ProdukController::class, 'index']);
     Route::get('produk/getProduk', [ProdukController::class, 'getProduk']);
     Route::post('produk', [ProdukController::class, 'store']);
+    Route::get('produk/{id}', [ProdukController::class, 'show']);
     Route::post('produk/{id}', [ProdukController::class, 'update']);
     Route::delete('produk/{id}', [ProdukController::class, 'delete']);
     Route::get('downloadBarcode/{id}', [ProdukController::class, 'downloadBarcode']);
     Route::get('streamBarcode/{id}', [ProdukController::class, 'streamBarcode']);
 
     Route::get('nampan', [NampanController::class, 'index']);
+    Route::get('nampan/getNampan', [NampanController::class, 'getNampan']);
     Route::post('nampan', [NampanController::class, 'store']);
     Route::get('nampan/{id}', [NampanController::class, 'show']);
     Route::post('update-nampan/{id}', [NampanController::class, 'update']);
