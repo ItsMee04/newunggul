@@ -90,7 +90,7 @@ class ProdukController extends Controller
             $image = $request['image'] = $fileName;
         }
 
-        Produk::create([
+        $data = Produk::create([
             'kodeproduk'        =>  $kodeproduk,
             'jenis_id'          =>  $request->jenis_id,
             'nama'              =>  $request->nama,
@@ -103,7 +103,7 @@ class ProdukController extends Controller
             'status'            =>  $request->status
         ]);
 
-        return redirect('produk')->with('success-message', 'Data Produk Berhasil Disimpan');
+        return response()->json(['success' => true, 'message' => 'Data Produk Berhasil Disimpan', 'Data' => $data]);
     }
 
     public function update(Request $request, $id)

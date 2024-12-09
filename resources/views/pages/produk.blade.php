@@ -20,8 +20,9 @@
                     </li>
                 </ul>
                 <div class="page-btn">
-                    <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#tambahProduk"><i
-                            data-feather="plus-circle" class="me-2"></i>TAMBAH PRODUK</a>
+                    <a href="#" class="btn btn-added btn-tambahJenis"><i data-feather="plus-circle"
+                            class="me-2"></i>TAMBAH
+                        PRODUK</a>
                 </div>
             </div>
 
@@ -240,14 +241,14 @@
     </div>
 
     <!-- Add Pegawai -->
-    <div class="modal fade" id="tambahProduk">
+    <div class="modal fade" id="mdTambahJenis">
         <div class="modal-dialog modal-dialog-centered text-center" role="document">
             <div class="modal-content modal-content-demo">
                 <div class="modal-header">
                     <h4 class="modal-title">Tambah Produk</h4><button aria-label="Close" class="btn-close"
                         data-bs-dismiss="modal"></button>
                 </div>
-                <form action="/produk" method="POST" enctype="multipart/form-data">
+                <form id="storeProduk" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body text-start">
                         <div class="mb-3">
@@ -276,11 +277,8 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Jenis</label>
-                            <select class="select" name="jenis_id">
-                                <option>Pilih Jenis</option>
-                                @foreach ($jenis as $item)
-                                    <option value="{{ $item->id }}"> {{ $item->jenis }}</option>
-                                @endforeach
+                            <select class="select" name="jenis_id" id="jenis">
+
                             </select>
                         </div>
                         <div class="mb-3">

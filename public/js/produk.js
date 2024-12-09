@@ -20,7 +20,7 @@ $(document).ready(function () {
                 _token: CSRF_TOKEN,
             },
             dataType: "json",
-            success: function (data) { 
+            success: function (data) {
                 let produkAktif = data.Total;
                 $("#daftarProduk").empty(); // Kosongkan daftar sebelumnya
                 $.each(data.Data, function (key, item) {
@@ -30,22 +30,23 @@ $(document).ready(function () {
                             : '<span class="badge badge-linedanger text-center w-auto me-1">InActive</span>';
 
                     let imageSrc = item.image
-                        ? `/storage/Produk/${item.image
-                        }?t=${new Date().getTime()}`
+                        ? `/storage/Produk/${
+                              item.image
+                          }?t=${new Date().getTime()}`
                         : `/assets/img/notfound.png`;
 
-                        const formatter = new Intl.NumberFormat("id-ID", {
-                            style:"currency",
-                            currency: "IDR",
-                            minimumFractionDigits:0
-                        });
+                    const formatter = new Intl.NumberFormat("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                        minimumFractionDigits: 0,
+                    });
 
-                        const hargaJual = formatter.format(item.harga_jual)
+                    const hargaJual = formatter.format(item.harga_jual);
 
                     $("#daftarProduk").append(`
-                        <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3 produk-item" data-name="${item.nama }"
-                                    data-harga="${item.harga_jual }" data-berat="${ item.berat }"
-                                    data-kode="${ item.kodeproduk }">
+                        <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3 produk-item" data-name="${item.nama}"
+                                    data-harga="${item.harga_jual}" data-berat="${item.berat}"
+                                    data-kode="${item.kodeproduk}">
                                     <div class="product-info default-cover card">
                                         <div class="dropdown ms-auto pb-3">
                                             <a href="javascript:void(0);" class="btn btn-icon btn-sm btn-light"
@@ -54,18 +55,17 @@ $(document).ready(function () {
                                             </a>
                                             <ul class="dropdown-menu">
                                                 <li>
-                                                    <a class="dropdown-item" href="downloadBarcode/${ item.id }">
+                                                    <a class="dropdown-item" href="downloadBarcode/${item.id}">
                                                         Download Barcode
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item" href="downloadBarcode/${ item.id }">
+                                                    <a class="dropdown-item" href="downloadBarcode/${item.id}">
                                                         Stream Barcode
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item" data-bs-effect="effect-sign"
-                                                        data-bs-toggle="modal" href="#modaledit{{ $item->id }}">
+                                                    <a class="dropdown-item btn-edit" data-id="${item.id}">
                                                         Edit
                                                     </a>
                                                 </li>
@@ -80,19 +80,19 @@ $(document).ready(function () {
                                         <img src="${imageSrc}" width="100px" height="100px" alt="Products">
                                         </a>
                                         <h6 class="cat-name text-center"><a
-                                                href="javascript:void(0);">${ item.jenis.jenis }</a>
+                                                href="javascript:void(0);">${item.jenis.jenis}</a>
                                         </h6>
                                         <h6 class="product-name text-center"><a
-                                                href="javascript:void(0);">${ item.nama }</a></h6>
+                                                href="javascript:void(0);">${item.nama}</a></h6>
                                         <div class="d-flex align-items-center justify-content-between price">
                                             <span>
                                                 <strong>
-                                                    Berat :${ item.berat } </br> Karat :${ item.karat }
+                                                    Berat :${item.berat} </br> Karat :${item.karat}
                                                 </strong>
                                             </span>
                                             <p>
                                                 <strong>
-                                                    Harga : ${ hargaJual }
+                                                    Harga : ${hargaJual}
                                                 </strong>
                                             </p>
                                         </div>
@@ -110,9 +110,80 @@ $(document).ready(function () {
         });
     }
 
+    // Fungsi untuk memuat data jabatan
+    function loadJenis() {
+        $.ajax({
+            url: "/jenis/getJenis", // Endpoint untuk mendapatkan data jabatan
+            type: "GET",
+            success: function (response) {
+                let options = '<option value="">-- Pilih Jenis --</option>';
+                response.Data.forEach((item) => {
+                    options += `<option value="${item.id}">${item.jenis}</option>`;
+                });
+                $("#jenis").html(options); // Masukkan data ke select
+            },
+            error: function () {
+                alert("Gagal memuat data jabatan!");
+            },
+        });
+    }
 
+    $(".btn-tambahJenis").on("click", function () {
+        $("#mdTambahJenis").modal("show");
+        loadJenis();
+    });
 
+    // Fungsi untuk menangani submit form pegawai
+    $("#storeProduk").on("submit", function (event) {
+        event.preventDefault(); // Mencegah form submit secara default
+        // Ambil elemen input file
+        const fileInput = $("#image")[0];
+        const file = fileInput.files[0];
 
+        // Buat objek FormData
+        const formData = new FormData(this);
+        formData.delete("image"); // Hapus field 'image' bawaan form
+        formData.append("image", file); // Tambahkan file baru
+        $.ajax({
+            url: "/produk", // Endpoint Laravel untuk menyimpan pegawai
+            type: "POST",
+            data: formData,
+            processData: false, // Agar data tidak diubah menjadi string
+            contentType: false, // Agar header Content-Type otomatis disesuaikan
+            success: function (response) {
+                const successtoastExample =
+                    document.getElementById("successToast");
+                const toast = new bootstrap.Toast(successtoastExample);
+                $(".toast-body").text(response.message);
+                toast.show();
+                $("#mdTambahJenis").modal("hide"); // Tutup modal
+                $("#storeProduk")[0].reset(); // Reset form
+
+                loadPegawai();
+            },
+            error: function (xhr) {
+                // Tampilkan pesan error dari server
+                const errors = xhr.responseJSON.errors;
+                if (errors) {
+                    let errorMessage = "";
+                    for (let key in errors) {
+                        errorMessage += `${errors[key][0]}\n`;
+                    }
+                    const dangertoastExamplee =
+                        document.getElementById("dangerToastError");
+                    const toast = new bootstrap.Toast(dangertoastExamplee);
+                    $(".toast-body").text(errorMessage);
+                    toast.show();
+                } else {
+                    const dangertoastExamplee =
+                        document.getElementById("dangerToastError");
+                    const toast = new bootstrap.Toast(dangertoastExamplee);
+                    $(".toast-body").text(response.message);
+                    toast.show();
+                }
+            },
+        });
+    });
 
     const imgInput = document.getElementById("image");
     const previewImage = document.getElementById("preview");
