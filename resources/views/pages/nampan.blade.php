@@ -25,35 +25,35 @@
                 </div>
             </div>
 
-            <div class="row" id="daftarNampan">
-                <div class="col-xxl-4 col-xl-6 col-lg-12 col-sm-6">
-                    <div class="bank-box">
-                        <div class="bank-header">
-                            <div class="bank-name">
-                                <h6>HDFC</h6>
-                                <p>**** **** 1832</p>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between">
-                            <span class="system-app-icon">
-                                <img src="assets/img/icons/fb-icon.svg" alt="">
-                            </span>
-                            <div class="bank-info">
-                                <span>Holder Name</span>
-                                <h6>Mathew</h6>
-                            </div>
-                            <div class="edit-delete-action bank-action-btn">
-                                <a class="me-2 p-2" href="#" data-bs-toggle="modal" data-bs-target="#edit-account">
-                                    <i data-feather="edit" class="feather-edit"></i>
-                                </a>
-                                <a class="confirm-text p-2" href="javascript:void(0);">
-                                    <i data-feather="trash-2" class="feather-trash-2"></i>
-                                </a>
+            <!-- /product list -->
+            <div class="card table-list-card">
+                <div class="card-body">
+                    <div class="table-top">
+                        <div class="search-set">
+                            <div class="search-input">
+                                <a href="javascript:void(0);" class="btn btn-searchset"><i data-feather="search"
+                                        class="feather-search"></i></a>
                             </div>
                         </div>
                     </div>
+                    <!-- /Filter -->
+                    <div class="table-responsive product-list">
+                        <table class="table tabelNampan" style="width: 100%">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Nampan</th>
+                                    <th>Status</th>
+                                    <th class="no-sort">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
+            <!-- /product list -->
         </div>
     </div>
 
@@ -103,17 +103,4 @@
     <!-- jQuery -->
     <script src="{{ asset('assets') }}/js/jquery-3.7.1.min.js" type="text/javascript"></script>
     <script src="{{ asset('js') }}/nampan.js" type="text/javascript"></script>
-    <style>
-        .bank-action-btn {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            align-items: center;
-            -webkit-box-align: center;
-            -ms-flex-align: center;
-            justify-content: center;
-            -webkit-justify-content: center;
-            -ms-flex-pack: center;
-        }
-    </style>
 @endsection
