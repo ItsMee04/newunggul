@@ -11,8 +11,8 @@
                 </div>
                 <ul class="table-top-head">
                     <li>
-                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh"><i data-feather="rotate-ccw"
-                                class="feather-rotate-ccw"></i></a>
+                        <a id="refreshButton" data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh"><i
+                                data-feather="rotate-ccw" class="feather-rotate-ccw"></i></a>
                     </li>
                     <li>
                         <a data-bs-toggle="tooltip" data-bs-placement="top" title="Collapse" id="collapse-header"><i
@@ -20,8 +20,9 @@
                     </li>
                 </ul>
                 <div class="page-btn">
-                    <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#tambahNampan"><i
-                            data-feather="plus-circle" class="me-2"></i>TAMBAH NAMPAN / BAKI</a>
+                    <a href="#" class="btn btn-added btn-tambahNampan"><i data-feather="plus-circle"
+                            class="me-2"></i>TAMBAH NAMPAN /
+                        BAKI</a>
                 </div>
             </div>
 
@@ -38,11 +39,12 @@
                     </div>
                     <!-- /Filter -->
                     <div class="table-responsive product-list">
-                        <table class="table tabelNampan" style="width: 100%">
+                        <table class="table tabelNampan table-hover" style="width: 100%">
                             <thead>
                                 <tr>
                                     <th>No.</th>
                                     <th>Nampan</th>
+                                    <th>Jenis</th>
                                     <th>Status</th>
                                     <th class="no-sort">Action</th>
                                 </tr>
@@ -57,33 +59,70 @@
         </div>
     </div>
 
-    <div class="modal fade" id="tambahNampan">
+    <div class="modal fade" id="mdTambahNampan">
         <div class="modal-dialog modal-dialog-centered text-center" role="document">
             <div class="modal-content modal-content-demo">
                 <div class="modal-header">
                     <h4 class="modal-title">Tambah Nampan / Baki</h4><button aria-label="Close" class="btn-close"
                         data-bs-dismiss="modal"></button>
                 </div>
-                <form action="nampan" method="POST" enctype="multipart/form-data">
+                <form id="storeNampan" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body text-start">
                         <div class="mb-3">
                             <label class="form-label">Jenis Produk</label>
-                            <select class="select" name="jenis">
-                                <option>Pilih Jenis Produk</option>
-                                @foreach ($jenis as $item)
-                                    <option value="{{ $item->id }}">
-                                        {{ $item->jenis }}</option>
-                                @endforeach
+                            <select class="select" name="jenis" id="jenis">
                             </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Nama Nampan</label>
-                            <input type="text" name="nampan" class="form-control">
+                            <input type="text" name="nampan" id="nampan" class="form-control">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Status</label>
-                            <select class="select" name="status">
+                            <select class="select" name="status" id="status">
+                                <option>Pilih Status</option>
+                                <option value="1"> Aktif</option>
+                                <option value="2"> Tidak Aktif</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save
+                            changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modaledit">
+        <div class="modal-dialog modal-dialog-centered text-center" role="document">
+            <div class="modal-content modal-content-demo">
+                <div class="modal-header">
+                    <h4 class="modal-title">Tambah Nampan / Baki</h4><button aria-label="Close" class="btn-close"
+                        data-bs-dismiss="modal"></button>
+                </div>
+                <form id="formEditNampan" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body text-start">
+                        <div class="mb-3">
+                            <label class="form-label">ID</label>
+                            <input type="text" name="nampan" id="editid" class="form-control" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Jenis Produk</label>
+                            <select class="select" name="jenis" id="editjenis">
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nama Nampan</label>
+                            <input type="text" name="nampan" id="editnampan" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Status</label>
+                            <select class="select" name="status" id="editstatus">
                                 <option>Pilih Status</option>
                                 <option value="1"> Aktif</option>
                                 <option value="2"> Tidak Aktif</option>

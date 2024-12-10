@@ -51,7 +51,13 @@ class NampanController extends Controller
             'status'    =>  $request->status
         ]);
 
-        return redirect('nampan')->with('success-message', 'Data Nampan Berhasil Disimpan');
+        return response()->json(['success' => true, 'message' => 'Data Nampan Berhasil Disimpan', 'Data' => $storeNampan]);
+    }
+
+    public function getNampanByID($id)
+    {
+        $nampan = Nampan::findOrFail($id);
+        return response()->json(['success' => true, 'message' => 'Data Nampan Berhasil Ditemukan', 'data' => $nampan]);
     }
 
     public function show($id)
@@ -89,7 +95,7 @@ class NampanController extends Controller
                 'status'    =>  $request->status
             ]);
 
-        return redirect('nampan')->with('success-message', 'Data Nampan Berhasil Disimpan');
+        return response()->json(['success' => true, 'message' => 'Data Nampan Berhasil Disimpan']);
     }
 
     public function delete($id)
