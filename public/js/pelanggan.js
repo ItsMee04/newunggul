@@ -91,10 +91,12 @@ $(document).ready(function () {
         }
     }
 
+    //ketika klik button tambah
     $(".btn-tambahPelanggan").on("click", function () {
         $("#mdtambahPelanggan").modal("show");
     });
 
+    //kirim data ke server
     $("#storePelanggan").on("submit", function (event) {
         event.preventDefault(); // Mencegah form submit secara default
         // Ambil elemen input file

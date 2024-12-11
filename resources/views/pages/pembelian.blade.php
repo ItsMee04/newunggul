@@ -13,8 +13,8 @@
                 </div>
                 <ul class="table-top-head">
                     <li>
-                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh"><i data-feather="rotate-ccw"
-                                class="feather-rotate-ccw"></i></a>
+                        <a id="refreshButton" data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh"><i
+                                data-feather="rotate-ccw" class="feather-rotate-ccw"></i></a>
                     </li>
                     <li>
                         <a data-bs-toggle="tooltip" data-bs-placement="top" title="Collapse" id="collapse-header"><i
@@ -22,11 +22,8 @@
                     </li>
                 </ul>
                 <div class="page-btn">
-                    <a class="btn btn-added" data-bs-toggle="modal" href="#tambahPembelian" title="Tambah Pembelian"
-                        id="tambahPembelianButton">
-                        <i data-feather="plus-circle" class="me-2"></i>TAMBAH
-                        PEMBELIAN
-                    </a>
+                    <a class="btn btn-added btn-tambahPembelian"><i data-feather="plus-circle" class="me-2"></i>TAMBAH
+                        PEMBELIAN</a>
                 </div>
             </div>
 
@@ -48,7 +45,7 @@
                     </div>
                     <!-- /Filter -->
                     <div class="table-responsive product-list">
-                        <table class="table  datanew list">
+                        <table class="table pembelianTable table-hover" style="width: 100%">
                             <thead>
                                 <tr>
                                     <th>No.</th>
@@ -61,7 +58,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($pembelian as $item)
+                                {{-- @foreach ($pembelian as $item)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->kodepembelian }} </td>
@@ -89,7 +86,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @endforeach --}}
                             </tbody>
                         </table>
                     </div>
@@ -101,14 +98,14 @@
     </div>
 
     <!-- Add Pegawai -->
-    <div class="modal fade" id="tambahPembelian">
+    <div class="modal fade" id="mdtambahPembelian">
         <div class="modal-dialog modal-dialog-centered text-center" role="document">
             <div class="modal-content modal-content-demo">
                 <div class="modal-header">
                     <h4 class="modal-title">Tambah Pembelian</h4>
                     <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <form action="/pembelian" method="POST" enctype="multipart/form-data" id="formPembelian">
+                <form method="POST" enctype="multipart/form-data" id="storePembelian">
                     @csrf
                     <div class="modal-body text-start">
                         <div class="input-blocks add-products">
@@ -136,11 +133,7 @@
                                     aria-labelledby="pills-home-tab">
                                     <div class="mb-3">
                                         <label class="form-label">Suplier</label>
-                                        <select class="select" name="suplier_id">
-                                            <option>Pilih Suplier</option>
-                                            @foreach ($suplier as $item)
-                                                <option value="{{ $item->id }}"> {{ $item->suplier }}</option>
-                                            @endforeach
+                                        <select class="select" name="suplier_id" id="suplier">
                                         </select>
                                     </div>
                                 </div>
@@ -148,11 +141,7 @@
                                     aria-labelledby="pills-profile-tab">
                                     <div class="mb-3">
                                         <label class="form-label">Pelanggan</label>
-                                        <select class="select" name="pelanggan_id">
-                                            <option>Pilih Pelanggan</option>
-                                            @foreach ($pelanggan as $item)
-                                                <option value="{{ $item->id }}"> {{ $item->nama }}</option>
-                                            @endforeach
+                                        <select class="select" name="pelanggan_id" id="pelanggan">
                                         </select>
                                     </div>
                                 </div>
@@ -173,11 +162,7 @@
                                 <div class="row">
                                     <div class="col-6 mb-3">
                                         <label class="form-label">Jenis</label>
-                                        <select class="form-control" name="jenis_id">
-                                            <option>Pilih Jenis</option>
-                                            @foreach ($jenis as $item)
-                                                <option value="{{ $item->id }}"> {{ $item->jenis }}</option>
-                                            @endforeach
+                                        <select class="select" name="jenis_id" id="jenis">
                                         </select>
                                     </div>
                                     <div class="col-6 mb-3">
@@ -221,47 +206,6 @@
     <!-- /Add Pegawai -->
 
     <!-- jQuery -->
-    <script src="{{asset('assets')}}/js/jquery-3.7.1.min.js" type="754ab5592cf1ed2f16b073bb-text/javascript"></script>
-    <script>
-        $(document).ready(function() {
-            // Trigger ketika modal dibuka
-            $('#tambahPembelian').on('show.bs.modal', function() {
-                Swal.fire({
-                    title: 'Pilih Jenis Pembelian',
-                    input: 'radio',
-                    inputOptions: {
-                        'suplier': 'Pembelian dari Suplier',
-                        'pelanggan': 'Pembelian dari Pelanggan',
-                    },
-                    inputValidator: (value) => {
-                        if (!value) {
-                            return 'Anda harus memilih salah satu!';
-                        }
-                    },
-                    showCancelButton: true,
-                    confirmButtonText: 'Lanjutkan',
-                    cancelButtonText: 'Batal',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        if (result.value === 'suplier') {
-                            $('#formSuplier').show();
-                            $('#formPelanggan').hide();
-                        } else if (result.value === 'pelanggan') {
-                            $('#formPelanggan').show();
-                            $('#formSuplier').hide();
-                        }
-                    } else {
-                        // Tutup modal jika pembatalan dilakukan
-                        $('#tambahPembelian').modal('hide');
-                    }
-                });
-            });
-
-            // Reset modal saat ditutup
-            $('#tambahPembelian').on('hidden.bs.modal', function() {
-                $('#formSuplier, #formPelanggan').hide();
-                $('#formPembelian')[0].reset();
-            });
-        });
-    </script>
+    <script src="{{ asset('assets') }}/js/jquery-3.7.1.min.js" type="text/javascript"></script>
+    <script src="{{ asset('js') }}/pembelian.js" type="text/javascript"></script>
 @endsection

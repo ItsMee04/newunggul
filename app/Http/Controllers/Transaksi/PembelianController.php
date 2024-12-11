@@ -58,6 +58,12 @@ class PembelianController extends Controller
         ]);
     }
 
+    public function getPembelian()
+    {
+        $pembelian  = Pembelian::with(['suplier', 'jenis', 'pelanggan', 'produk'])->get();
+        return response()->json(['success' => true, 'message' => 'Data Pembelian Berhasil Ditemukan', 'Data' => $pembelian]);
+    }
+
     public function store(Request $request)
     {
         $messages = [
