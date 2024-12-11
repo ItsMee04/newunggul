@@ -107,11 +107,11 @@
                     <h4 class="modal-title">Tambah Produk</h4><button aria-label="Close" class="btn-close"
                         data-bs-dismiss="modal"></button>
                 </div>
-                <form id="formTambahNampanProduk" method="POST" enctype="multipart/form-data">
+                <form id="storeTambahProdukNampan" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body text-start">
                         <div class="table-responsive product-list">
-                            <table class="table tabelProdukNampan" style="width: 100%">
+                            <table class="table ProdukNampan" style="width: 100%" id="myTable">
                                 <thead>
                                     <tr>
                                         <th class="no-sort">

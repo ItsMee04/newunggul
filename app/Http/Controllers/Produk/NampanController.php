@@ -76,8 +76,8 @@ class NampanController extends Controller
 
     public function getProdukNampan($id)
     {
-        $nampan       = Nampan::where('id', $id)->first();
-        $produk       = Produk::where('jenis_id', $nampan->jenis_id)->get();
+        $nampan       = Nampan::where('id', $id)->first()->jenis_id;
+        $produk       = Produk::with('jenis')->where('jenis_id', $nampan)->get();
         return response()->json(['success' => true, 'message' => 'Data Nampan Produk Berhasil Ditemukan', 'Data' => $produk]);
     }
 
@@ -129,7 +129,7 @@ class NampanController extends Controller
             ->toArray();
 
         if (!empty($existingProducts)) {
-            return redirect('nampan/' . $id)->with('errors-message', 'Beberapa produk sudah ada.');
+            return response()->json(['success' => false, 'message' => 'Beberapa produk sudah ada.']);
         }
 
         // Tambahkan produk yang belum ada
@@ -143,7 +143,7 @@ class NampanController extends Controller
             ]);
         }
 
-        return redirect('nampan/' . $id)->with('success-message', 'Produk berhasil ditambahkan. !');
+        return response()->json(['success' => true, 'message' => 'Produk berhasil ditambahkan']);
     }
 
     public function nampanDelete($id)
