@@ -11,8 +11,8 @@
                 </div>
                 <ul class="table-top-head">
                     <li>
-                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh"><i data-feather="rotate-ccw"
-                                class="feather-rotate-ccw"></i></a>
+                        <a id="refreshButton" data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh"><i
+                                data-feather="rotate-ccw" class="feather-rotate-ccw"></i></a>
                     </li>
                     <li>
                         <a data-bs-toggle="tooltip" data-bs-placement="top" title="Collapse" id="collapse-header"><i
@@ -20,11 +20,11 @@
                     </li>
                 </ul>
                 <div class="page-btn">
-                    <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#tambahProduk"><i
-                            data-feather="plus-circle" class="me-2"></i>TAMBAH PRODUK</a>
+                    <a class="btn btn-added btn-tambahProduk"><i data-feather="plus-circle" class="me-2"></i>TAMBAH
+                        PRODUK</a>
                 </div>
                 <div class="page-btn import">
-                    <a href="#" onclick="history.back();" class="btn btn-added btn-secondary" data-bs-toggle="modal"
+                    <a onclick="history.back();" class="btn btn-added btn-secondary" data-bs-toggle="modal"
                         data-bs-target="#view-notes"><i data-feather="chevrons-left" class="me-2"></i> Kembali Ke
                         Nampan</a>
                 </div>
@@ -48,7 +48,7 @@
                     </div>
                     <!-- /Filter -->
                     <div class="table-responsive product-list">
-                        <table class="table datanew">
+                        <table class="table tabelNampanProduk table-hover" style="width: 100%">
                             <thead>
                                 <tr>
                                     <th>No.</th>
@@ -61,7 +61,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($nampanProduk as $item)
+                                {{-- @foreach ($nampanProduk as $item)
                                     <tr>
                                         <td>{{ $loop->iteration }} </td>
                                         <td>{{ $item->produk->kodeproduk }} </td>
@@ -90,7 +90,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @endforeach --}}
                             </tbody>
                         </table>
                     </div>
@@ -100,20 +100,18 @@
         </div>
     </div>
 
-    <div class="modal fade" id="tambahProduk">
+    <div class="modal fade" id="mdTambahProduk">
         <div class="modal-dialog modal-lg modal-dialog-centered text-center" role="document">
             <div class="modal-content modal-content-demo">
                 <div class="modal-header">
                     <h4 class="modal-title">Tambah Produk</h4><button aria-label="Close" class="btn-close"
                         data-bs-dismiss="modal"></button>
                 </div>
-                <form action="/produk-nampan/{{ $nampan->id }}" method="POST" enctype="multipart/form-data">
+                <form id="formTambahNampanProduk" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body text-start">
-                        <div class="table-responsive">
-                            <input type="text" id="searchInput" class="form-control col-md-3"
-                                placeholder="Search for names...">
-                            <table class="table datanew" id="myTable">
+                        <div class="table-responsive product-list">
+                            <table class="table tabelProdukNampan" style="width: 100%">
                                 <thead>
                                     <tr>
                                         <th class="no-sort">
@@ -129,7 +127,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($produk as $item)
+                                    {{-- @foreach ($produk as $item)
                                         <tr>
                                             <td>
                                                 <label class="checkboxs">
@@ -150,7 +148,7 @@
                                             </td>
                                             <td>{{ $item->berat }} / grams</td>
                                         </tr>
-                                    @endforeach
+                                    @endforeach --}}
                                 </tbody>
                             </table>
                         </div>

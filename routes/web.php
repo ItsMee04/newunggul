@@ -73,6 +73,8 @@ Route::middleware('auth')->group(function () {
     Route::get('nampan/getNampan', [NampanController::class, 'getNampan']);
     Route::post('nampan', [NampanController::class, 'store']);
     Route::get('nampan/{id}', [NampanController::class, 'show']);
+    route::get('nampan/getNampanProduk/{id}', [NampanController::class, 'getNampanProduk']);
+    route::get('nampan/getProdukNampan/{id}', [NampanController::class, 'getProdukNampan']);
     Route::get('nampan/getNampanByID/{id}', [NampanController::class, 'getNampanByID']);
     Route::post('update-nampan/{id}', [NampanController::class, 'update']);
     Route::delete('delete-nampan/{id}', [NampanController::class, 'delete']);

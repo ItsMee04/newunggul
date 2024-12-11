@@ -68,6 +68,19 @@ class NampanController extends Controller
         return view('pages.nampan-produk', ['nampanProduk' => $nampanProduk, 'nampan' => $nampan, 'produk' => $produk]);
     }
 
+    public function getNampanProduk($id)
+    {
+        $nampanProduk = NampanProduk::with(['nampan', 'produk'])->where('nampan_id', $id)->get();
+        return response()->json(['success' => true, 'message' => 'Data Nampan Produk Berhasil Ditemukan', 'Data' => $nampanProduk]);
+    }
+
+    public function getProdukNampan($id)
+    {
+        $nampan       = Nampan::where('id', $id)->first();
+        $produk       = Produk::where('jenis_id', $nampan->jenis_id)->get();
+        return response()->json(['success' => true, 'message' => 'Data Nampan Produk Berhasil Ditemukan', 'Data' => $produk]);
+    }
+
     public function update(Request $request, $id)
     {
         $messages = [
