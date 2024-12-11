@@ -30,8 +30,14 @@ class PelangganController extends Controller
 
     public function index()
     {
+        return view('pages.pelanggan');
+    }
+
+    public function getPelanggan()
+    {
         $pelanggan = Pelanggan::all();
-        return view('pages.pelanggan', ['pelanggan' => $pelanggan]);
+
+        return response()->json(['success' => true, 'message' => 'Data Pelanggan Berhasil Ditemukan', 'Data' => $pelanggan]);
     }
 
     public function store(Request $request)
@@ -60,7 +66,13 @@ class PelangganController extends Controller
         $request['kodepelanggan'] = $generateCode;
         $pelanggan = Pelanggan::create($request->all());
 
-        return redirect('pelanggan')->with('success-message', 'Data Success Di Simpan !');
+        return response()->json(['success' => true, 'message' => 'Data Pelanggan Berhasil Ditambahkan']);
+    }
+
+    public function show($id)
+    {
+        $pelanggan = Pelanggan::findOrFail($id);
+        return response()->json(['success' => true, 'message' => 'Data Pelanggan Berhasil Ditemukan', 'Data' => $pelanggan]);
     }
 
     public function update(Request $request, $id)
@@ -88,7 +100,7 @@ class PelangganController extends Controller
 
         $pelanggan->update($request->all());
 
-        return redirect('pelanggan')->with('success-message', 'Data Pelanggan Berhasil Disimpan !');
+        return response()->json(['success' => true, 'message' => 'Data Pelanggan Berhasil Disimpan']);
     }
 
     public function delete($id)

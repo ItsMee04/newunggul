@@ -86,7 +86,9 @@ Route::middleware('auth')->group(function () {
     Route::post('scanqr', [ProdukController::class, 'scanqr']);
 
     Route::get('pelanggan', [PelangganController::class, 'index']);
+    Route::get('pelanggan/getPelanggan', [PelangganController::class, 'getPelanggan']);
     Route::post('pelanggan', [PelangganController::class, 'store']);
+    Route::get('pelanggan/{id}', [PelangganController::class, 'show']);
     Route::post('pelanggan/{id}', [PelangganController::class, 'update']);
     Route::delete('pelanggan/{id}', [PelangganController::class, 'delete']);
 

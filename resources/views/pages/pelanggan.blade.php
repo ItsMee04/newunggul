@@ -11,8 +11,8 @@
                 </div>
                 <ul class="table-top-head">
                     <li>
-                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh"><i data-feather="rotate-ccw"
-                                class="feather-rotate-ccw"></i></a>
+                        <a id="refreshButton" data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh"><i
+                                data-feather="rotate-ccw" class="feather-rotate-ccw"></i></a>
                     </li>
                     <li>
                         <a data-bs-toggle="tooltip" data-bs-placement="top" title="Collapse" id="collapse-header"><i
@@ -20,8 +20,8 @@
                     </li>
                 </ul>
                 <div class="page-btn">
-                    <a href="#" class="btn btn-added" data-bs-toggle="modal" data-bs-target="#tambahPelanggan"><i
-                            data-feather="plus-circle" class="me-2"></i>TAMBAH PELANGGAN</a>
+                    <a class="btn btn-added btn-tambahPelanggan"><i data-feather="plus-circle" class="me-2"></i>TAMBAH
+                        PELANGGAN</a>
                 </div>
             </div>
 
@@ -43,7 +43,7 @@
                     </div>
                     <!-- /Filter -->
                     <div class="table-responsive product-list">
-                        <table class="table datanew">
+                        <table class="table tabelPelanggan" style="width: 100%">
                             <thead>
                                 <tr>
                                     <th>No.</th>
@@ -55,7 +55,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($pelanggan as $item)
+                                {{-- @foreach ($pelanggan as $item)
                                     <tr>
                                         <td>{{ $loop->iteration }}.</td>
                                         <td>{{ $item->kodepelanggan }}</td>
@@ -149,74 +149,8 @@
                                         </div>
                                     </div>
 
-                                    <!-- EDIT PEGAWAI -->
-                                    <div class="modal fade" id="modaledit{{ $item->id }}">
-                                        <div class="modal-dialog modal-dialog-centered text-center" role="document">
-                                            <div class="modal-content modal-content-demo">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">Edit Pegawai</h4><button aria-label="Close"
-                                                        class="btn-close" data-bs-dismiss="modal"></button>
-                                                </div>
-                                                <form action="pelanggan/{{ $item->id }}" method="POST"
-                                                    enctype="multipart/form-data">
-                                                    @csrf
-                                                    <div class="modal-body text-start">
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Kode Pelanggan</label>
-                                                            <input type="text" name="nip"
-                                                                value="{{ $item->kodepelanggan }}" class="form-control"
-                                                                readonly>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-6 mb-3">
-                                                                <label class="form-label">NIK</label>
-                                                                <input type="text" name="nik"
-                                                                    value="{{ $item->nik }}" class="form-control">
-                                                            </div>
-                                                            <div class="col-md-6 mb-3">
-                                                                <label class="form-label">Nama</label>
-                                                                <input type="text" name="nama"
-                                                                    value="{{ $item->nama }}" class="form-control">
-                                                            </div>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Kontak</label>
-                                                            <input type="text" name="kontak"
-                                                                value="{{ $item->kontak }}" class="form-control">
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Tanggal</label>
-                                                            <input type="date" name="tanggal"
-                                                                value="{{ $item->tanggal }}" class="form-control">
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Alamat</label>
-                                                            <textarea class="form-control" name="alamat">{{ $item->alamat }}</textarea>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Status</label>
-                                                            <select class="select" name="status">
-                                                                <option>Pilih Status</option>
-                                                                <option value="1"
-                                                                    @if ($item->status == 1) selected="selected" @endif>
-                                                                    Aktif</option>
-                                                                <option value="2"
-                                                                    @if ($item->status == 2) selected="selected" @endif>
-                                                                    Tidak Aktif</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-cancel"
-                                                            data-bs-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-primary">Save
-                                                            changes</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach
+                                    
+                                @endforeach --}}
                             </tbody>
                         </table>
                     </div>
@@ -226,41 +160,41 @@
         </div>
     </div>
 
-    <div class="modal fade" id="tambahPelanggan">
+    <div class="modal fade" id="mdtambahPelanggan">
         <div class="modal-dialog modal-dialog-centered text-center" role="document">
             <div class="modal-content modal-content-demo">
                 <div class="modal-header">
                     <h4 class="modal-title">Tambah Pelanggan</h4><button aria-label="Close" class="btn-close"
                         data-bs-dismiss="modal"></button>
                 </div>
-                <form action="pelanggan" method="POST" enctype="multipart/form-data">
+                <form id="storePelanggan" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body text-start">
                         <div class="row">
                             <div class="col-6 mb-3">
                                 <label class="form-label">NIK</label>
-                                <input type="text" name="nik" class="form-control">
+                                <input type="text" id="nik" name="nik" class="form-control">
                             </div>
                             <div class="col-6 mb-3">
                                 <label class="form-label">Nama</label>
-                                <input type="text" name="nama" class="form-control">
+                                <input type="text" id="nama" name="nama" class="form-control">
                             </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Kontak</label>
-                            <input type="text" name="kontak" class="form-control">
+                            <input type="text" id="kontak" name="kontak" class="form-control">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Tanggal</label>
-                            <input type="date" name="tanggal" class="form-control">
+                            <input type="date" id="tanggal" name="tanggal" class="form-control">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Alamat</label>
-                            <textarea class="form-control" name="alamat"></textarea>
+                            <textarea class="form-control" id="alamat" name="alamat"></textarea>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Status</label>
-                            <select class="select" name="status">
+                            <select class="select" name="status" id="status">
                                 <option>Pilih Status</option>
                                 <option value="1"> Aktif</option>
                                 <option value="2"> Tidak Aktif</option>
@@ -270,6 +204,68 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT PELANGGAN -->
+    <div class="modal fade" id="modaledit">
+        <div class="modal-dialog modal-dialog-centered text-center" role="document">
+            <div class="modal-content modal-content-demo">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Pelanggan</h4><button aria-label="Close" class="btn-close"
+                        data-bs-dismiss="modal"></button>
+                </div>
+                <form id="formEditPelanggan" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body text-start">
+                        <div class="mb-3">
+                            <label class="form-label">ID</label>
+                            <input type="text" id="editid" class="form-control" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Kode Pelanggan</label>
+                            <input type="text" id="editkodepelanggan" class="form-control" readonly>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">NIK</label>
+                                <input type="text" id="editnik" class="form-control">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nama</label>
+                                <input type="text" id="editnama" class="form-control">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Kontak</label>
+                            <input type="text" id="editkontak" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tanggal</label>
+                            <input type="date" id="edittanggal" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Alamat</label>
+                            <textarea class="form-control" id="editalamat"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Status</label>
+                            <select class="select" id="editstatus">
+                                <option>Pilih Status</option>
+                                <option value="1">
+                                    Aktif</option>
+                                <option value="2">
+                                    Tidak Aktif</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save
+                            changes</button>
                     </div>
                 </form>
             </div>
