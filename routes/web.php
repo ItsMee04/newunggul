@@ -122,6 +122,7 @@ Route::middleware('auth')->group(function () {
     Route::post('payment', [POSController::class, 'payment']);
 
     Route::get('order', [OrderController::class, 'index']);
+    Route::get('order/getOrder', [OrderController::class, 'getOrder']);
     Route::get('confirmPayment/{id}', [OrderController::class, 'confirmPayment']);
     Route::get('cancelPayment/{id}', [OrderController::class, 'cancelPayment']);
     Route::get('order/{id}', [OrderController::class, 'detailOrder']);

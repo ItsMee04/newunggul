@@ -12,8 +12,14 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $order = Transaksi::with(['keranjang', 'pelanggan', 'user'])->get();
-        return view('pages.order', ['order' => $order]);
+
+        return view('pages.order');
+    }
+
+    public function getOrder()
+    {
+        $order = Transaksi::with(['keranjang', 'pelanggan', 'user.pegawai'])->get();
+        return response()->json(['success' => true, 'message' => 'Data Order Berhasil Ditemukan', 'Data' => $order]);
     }
 
     public function confirmPayment($id)

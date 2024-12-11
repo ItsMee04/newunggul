@@ -110,7 +110,7 @@ $(document).ready(function () {
                     },
                 },
                 ajax: {
-                    url: `/nampan/getProdukNampan/{id}/${paramNampan}`, // Ganti dengan URL endpoint server Anda
+                    url: `/nampan/getProdukNampan/${paramNampan}`, // Ganti dengan URL endpoint server Anda
                     type: 'GET', // Metode HTTP (GET/POST)
                     dataSrc: 'Data' // Jalur data di response JSON
                 },
@@ -140,7 +140,7 @@ $(document).ready(function () {
                         data: null,
                         render: function (data, type, row) {
                             // Cek apakah data gambar tersedia atau tidak
-                            const imageSrc = row.image ? `/storage/produk/${row.image}` : '/assets/img/notfound.png';
+                            const imageSrc = row.image ? `/storage/avatar/${row.image}` : '/assets/img/notfound.png';
                             return `
                                 <div class="productimgname">
                                     <a href="javascript:void(0);" class="product-img stock-img">

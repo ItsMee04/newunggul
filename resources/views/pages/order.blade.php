@@ -11,8 +11,8 @@
                 </div>
                 <ul class="table-top-head">
                     <li>
-                        <a data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh"><i data-feather="rotate-ccw"
-                                class="feather-rotate-ccw"></i></a>
+                        <a id="refreshButton" data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh"><i
+                                data-feather="rotate-ccw" class="feather-rotate-ccw"></i></a>
                     </li>
                     <li>
                         <a data-bs-toggle="tooltip" data-bs-placement="top" title="Collapse" id="collapse-header"><i
@@ -40,7 +40,7 @@
                     </div>
                     <!-- /Filter -->
                     <div class="table-responsive product-list">
-                        <table class="table datanew">
+                        <table class="table orderTable table-hover" style="width: 100%">
                             <thead>
                                 <tr>
                                     <th>No.</th>
@@ -54,7 +54,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($order as $item)
+                                {{-- @foreach ($order as $item)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->kodetransaksi }}</td>
@@ -101,7 +101,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @endforeach --}}
                             </tbody>
                         </table>
                     </div>
