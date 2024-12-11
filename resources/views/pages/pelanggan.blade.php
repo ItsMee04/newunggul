@@ -43,7 +43,7 @@
                     </div>
                     <!-- /Filter -->
                     <div class="table-responsive product-list">
-                        <table class="table tabelPelanggan" style="width: 100%">
+                        <table class="table tabelPelanggan table-hover" style="width: 100%">
                             <thead>
                                 <tr>
                                     <th>No.</th>
@@ -55,102 +55,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @foreach ($pelanggan as $item)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}.</td>
-                                        <td>{{ $item->kodepelanggan }}</td>
-                                        <td>
-                                            {{ $item->nama }}
-                                        </td>
-                                        <td>{{ $item->alamat }}</td>
-                                        <td>
-                                            @if ($item->status == 1)
-                                                <span class="badge badge-bgsuccess">Aktif</span>
-                                            @else
-                                                <span class="badge badge-bgdanger">Tidak Aktif</span>
-                                            @endif
-                                        </td>
-                                        <td class="action-table-data">
-                                            <div class="edit-delete-action">
-                                                <a class="me-2 edit-icon  p-2" data-bs-effect="effect-sign"
-                                                    data-bs-toggle="modal" href="#modaldetail{{ $item->id }}">
-                                                    <i data-feather="eye" class="feather-eye"></i>
-                                                </a>
-                                                <a class="me-2 p-2" data-bs-effect="effect-sign" data-bs-toggle="modal"
-                                                    href="#modaledit{{ $item->id }}">
-                                                    <i data-feather="edit" class="feather-edit"></i>
-                                                </a>
-                                                <a class="me-2 p-2 confirm-text" href="javascript:void(0);"
-                                                    data-item-id="{{ $item->id }}">
-                                                    <i data-feather="trash-2" class="feather-trash-2"></i>
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    <!-- DETAIL PEGAWAI -->
-                                    <div class="modal fade" id="modaldetail{{ $item->id }}">
-                                        <div class="modal-dialog modal-dialog-centered text-center" role="document">
-                                            <div class="modal-content modal-content-demo">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title">Detail Pelanggan</h4><button aria-label="Close"
-                                                        class="btn-close" data-bs-dismiss="modal"></button>
-                                                </div>
-                                                <form method="POST" enctype="multipart/form-data">
-                                                    <div class="modal-body text-start">
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Kode Pelanggan</label>
-                                                            <input type="text" value="{{ $item->kodepelanggan }}"
-                                                                class="form-control" readonly>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-6 mb-3">
-                                                                <label class="form-label">NIK</label>
-                                                                <input type="text" value="{{ $item->nik }}"
-                                                                    class="form-control" readonly>
-                                                            </div>
-                                                            <div class="col-md-6 mb-3">
-                                                                <label class="form-label">Nama</label>
-                                                                <input type="text" value="{{ $item->nama }}"
-                                                                    class="form-control" readonly>
-                                                            </div>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Kontak</label>
-                                                            <input type="text" value="{{ $item->kontak }}"
-                                                                class="form-control" readonly>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Tanggal</label>
-                                                            <input type="text" value="{{ $item->tanggal }}"
-                                                                class="form-control" readonly>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Alamat</label>
-                                                            <textarea class="form-control" readonly>{{ $item->alamat }}</textarea>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Status</label>
-                                                            @if ($item->status == 1)
-                                                                <input type="text" value="Aktif" class="form-control"
-                                                                    readonly>
-                                                            @else
-                                                                <input type="text" value="Tidak Aktif"
-                                                                    class="form-control" readonly>
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-cancel"
-                                                            data-bs-dismiss="modal">Close</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    
-                                @endforeach --}}
                             </tbody>
                         </table>
                     </div>

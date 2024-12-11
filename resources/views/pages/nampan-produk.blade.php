@@ -127,28 +127,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- @foreach ($produk as $item)
-                                        <tr>
-                                            <td>
-                                                <label class="checkboxs">
-                                                    <input type="checkbox" name="items[]" value="{{ $item->id }}">
-                                                    <span class="checkmarks"></span>
-                                                </label>
-                                            </td>
-                                            <td>{{ $loop->iteration }}.</td>
-                                            <td><span>{{ $item->kodeproduk }}</span></td>
-                                            <td>
-                                                <div class="productimgname">
-                                                    <a href="javascript:void(0);" class="product-img stock-img">
-                                                        <img src="{{ asset('storage/produk/' . $item->image) }}"
-                                                            alt="product">
-                                                    </a>
-                                                    <a href="javascript:void(0);">{{ $item->nama }}</a>
-                                                </div>
-                                            </td>
-                                            <td>{{ $item->berat }} / grams</td>
-                                        </tr>
-                                    @endforeach --}}
                                 </tbody>
                             </table>
                         </div>

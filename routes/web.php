@@ -93,11 +93,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('pelanggan/{id}', [PelangganController::class, 'delete']);
 
     Route::get('suplier', [SuplierController::class, 'index']);
+    Route::get('suplier/getSuplier', [SuplierController::class, 'getSuplier']);
     Route::post('suplier', [SuplierController::class, 'store']);
+    Route::get('suplier/{id}', [SuplierController::class, 'show']);
     Route::post('suplier/{id}', [SuplierController::class, 'update']);
     Route::delete('suplier/{id}', [SuplierController::class, 'delete']);
 
     Route::get('diskon', [DiskonController::class, 'index']);
+    Route::get('diskon/getDiskon', [DiskonController::class, 'getDiskon']);
+    Route::get('diskon/{id}', [DiskonController::class, 'show']);
     Route::post('diskon', [DiskonController::class, 'store']);
     Route::post('diskon/{id}', [DiskonController::class, 'update']);
     Route::delete('diskon/{id}', [DiskonController::class, 'delete']);

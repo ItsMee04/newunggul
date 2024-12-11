@@ -1,6 +1,101 @@
 $(document).ready(function () {
-    laodJenis();
-    searchJenis();
+    loadJenis();
+
+    $(document).on("click", "#refreshButton", function () {
+        if (jenisTable) {
+            jenisTable.ajax.reload(); // Reload data dari server
+        }
+        const successtoastExample = document.getElementById("successToast");
+        const toast = new bootstrap.Toast(successtoastExample);
+        $(".toast-body").text("Data Suplier Berhasil Direfresh");
+        toast.show();
+    });
+
+    function loadJenis() {
+        // Datatable
+        if ($('.jenisTable').length > 0) {
+            jenisTable = $('.jenisTable').DataTable({
+                "scrollX": false, // Jangan aktifkan scroll horizontal secara paksa
+                "bFilter": true,
+                "sDom": 'fBtlpi',
+                "ordering": true,
+                "language": {
+                    search: ' ',
+                    sLengthMenu: '_MENU_',
+                    searchPlaceholder: "Search",
+                    info: "_START_ - _END_ of _TOTAL_ items",
+                    paginate: {
+                        next: ' <i class=" fa fa-angle-right"></i>',
+                        previous: '<i class="fa fa-angle-left"></i> '
+                    },
+                },
+                ajax: {
+                    url: `jenis/getJenis`, // Ganti dengan URL endpoint server Anda
+                    type: 'GET', // Metode HTTP (GET/POST)
+                    dataSrc: 'Data' // Jalur data di response JSON
+                },
+                columns: [
+                    {
+                        data: null, // Kolom nomor urut
+                        render: function (data, type, row, meta) {
+                            return meta.row + 1; // Nomor urut dimulai dari 1
+                        },
+                        orderable: false,
+                    },
+                    {
+                        data: null,
+                        render: function (data, type, row) {
+                            // Cek apakah data gambar tersedia atau tidak
+                            const imageSrc = row.icon ? `/storage/icon/${row.icon}` : '/assets/img/notfound.png';
+                            return `
+                                <div class="productimgname">
+                                    <a href="javascript:void(0);" class="product-img stock-img">
+                                        <img src="${imageSrc}" alt="product">
+                                    </a>
+                                    <a href="javascript:void(0);">${row.jenis}</a>
+                                </div>
+                            `;
+                        },
+                    },
+                    {
+                        data: 'status',
+                        render: function (data, type, row) {
+                            // Menampilkan badge sesuai dengan status
+                            if (data == 1) {
+                                return `<span class="badge badge-sm bg-outline-success"> Active</span>`;
+                            } else if (data == 2) {
+                                return `<span class="badge badge-sm bg-outline-danger"> Inactive</span>`;
+                            } else {
+                                return `<span class="badge badge-sm bg-outline-secondary"> Unknown</span>`;
+                            }
+                        }
+                    },
+                    {
+                        data: null,        // Kolom aksi
+                        orderable: false,  // Aksi tidak perlu diurutkan
+                        className: "action-table-data",
+                        render: function (data, type, row, meta) {
+                            return `
+                            <div class="edit-delete-action">
+                                <a class="me-2 p-2 btn-edit" data-id="${row.id}">
+                                    <i data-feather="edit" class="feather-edit"></i>
+                                </a>
+                                <a class="confirm-text p-2" data-id="${row.id}">
+                                    <i data-feather="trash-2" class="feather-trash-2"></i>
+                                </a>
+                            </div>
+                        `;
+                        }
+                    }
+                ],
+                initComplete: (settings, json) => {
+                    $('.dataTables_filter').appendTo('#tableSearch');
+                    $('.dataTables_filter').appendTo('.search-input');
+
+                },
+            });
+        }
+    }
 
     const imgInput = document.getElementById("image");
     const previewImage = document.getElementById("preview");
@@ -20,145 +115,12 @@ $(document).ready(function () {
         reader.readAsDataURL(file);
     });
 
-    $(document).on("click", ".confirm-text", function () {
-        const itemId = $(this).data("item-id"); // Ambil ID produk dari atribut data-id
-
-            // // SweetAlert2 untuk konfirmasi
-            Swal.fire({
-                title: "Apakah Anda yakin?",
-                text: "Data ini akan dihapus secara permanen!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Ya, hapus!",
-                cancelButtonText: "Batal",
-                reverseButtons: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Kirim permintaan hapus (gunakan itemId)
-                    fetch(`/jenis/${itemId}`, {
-                        method: "DELETE",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
-                                "content"
-                            ),
-                        },
-                    })
-                        .then((response) => {
-                            if (response.ok) {
-                                Swal.fire(
-                                    "Dihapus!",
-                                    "Data berhasil dihapus.",
-                                    "success"
-                                );
-                                laodJenis();
-                            } else {
-                                Swal.fire(
-                                    "Gagal!",
-                                    "Terjadi kesalahan saat menghapus data.",
-                                    "error"
-                                );
-                            }
-                        })
-                        .catch((error) => {
-                            Swal.fire(
-                                "Gagal!",
-                                "Terjadi kesalahan dalam penghapusan data.",
-                                "error"
-                            );
-                        });
-                } else {
-                    // Jika batal, beri tahu pengguna
-                    Swal.fire("Dibatalkan", "Data tidak dihapus.", "info");
-                }
-        });
-    })
-
-    $(document).on("click", "#refreshButton", function () {
-        laodJenis(); // Panggil fungsi untuk memuat ulang data pegawai
-        const successtoastExample = document.getElementById("successToast");
-        const toast = new bootstrap.Toast(successtoastExample);
-        $(".toast-body").text("Data Jenis Berhasil Direfresh");
-        toast.show();
-    });
-
-    //function load pegawai
-    function laodJenis() {
-        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
-
-        $.ajax({
-            url: `jenis/getJenis`, // URL endpoint
-            type: "GET",
-            data: {
-                _token: CSRF_TOKEN,
-            },
-            dataType: "json",
-            success: function (data) {
-                let jenisAktif = data.Total;
-                $("#daftarJenis").empty(); // Kosongkan daftar sebelumnya
-                $.each(data.Data, function (key, item) {
-                    let statusBadge =
-                        item.status === 1
-                            ? '<span class="badge badge-linesuccess text-center w-auto me-1">Active</span>'
-                            : '<span class="badge badge-linedanger text-center w-auto me-1">InActive</span>';
-
-                    let imageSrc = item.icon
-                        ? `/storage/Icon/${item.icon}?t=${new Date().getTime()}`
-                        : `/assets/img/notfound.png`;
-
-                    $("#daftarJenis").append(`
-                        <div class="col-md-4 d-flex">
-                            <div class=" notes-card notes-card-details w-100 employee-item" data-name="${item.jenis}">
-                                <div class="notes-card-body">
-                                    ${statusBadge}
-                                    <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </a>
-                                    <div class="dropdown-menu notes-menu dropdown-menu-end">
-                                        <a href="#" class="dropdown-item btn-edit" data-id="${item.id}"><span><i
-                                                    data-feather="edit"></i></span>Edit</a>
-                                        <a class="dropdown-item confirm-text " data-item-id="${item.id}"><span><i
-                                                    data-feather="trash-2"></i></span>Delete</a>
-                                    </div>
-                                </div>
-                                <div class="notes-wrap-content">
-                                    <h4>
-                                        <a href="javascript:void(0);">
-                                            ${item.jenis}
-                                        </a>
-                                    </h4>
-                                    
-                                </div>
-                                <div class="notes-slider-widget notes-widget-profile">
-                                    <div class="notes-logo">
-                                        <a href="javascript:void(0);">
-                                            <span>
-                                                <img src="${imageSrc}" alt="avatar" class="img-fluid">
-                                            </span>
-                                        </a>
-                                        <div class="d-flex">
-                                            <span class="medium-square"><i class="fas fa-square"></i></span>
-                                            <p class="medium"> ${item.jenis}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `);
-                });
-
-                $("#totalJenisAktif").text(jenisAktif);
-            },
-            error: function (xhr, status, error) {
-                console.error("Terjadi kesalahan saat memuat data:", error);
-            },
-        });
-    }
-
+    //ketika button tambah di tekan
     $(".btn-tambahJenis").on("click", function () {
         $("#mdTambahjenis").modal("show");
     });
 
+    //kirim data ke server
     $("#storeJenis").on("submit", function (event) {
         event.preventDefault(); // Mencegah form submit secara default
         // Ambil elemen input file
@@ -184,7 +146,7 @@ $(document).ready(function () {
                 $("#mdTambahjenis").modal("hide"); // Tutup modal
                 $("#storeJenis")[0].reset(); // Reset form
 
-                laodJenis();
+                jenisTable.ajax.reload(); // Reload data dari server
             },
             error: function (xhr) {
                 // Tampilkan pesan error dari server
@@ -276,7 +238,7 @@ $(document).ready(function () {
         $("#editstatus").val("").trigger("change"); // Reset select status jika menggunakan Select2 atau lainnya
     });
 
-    // Kirim data ke server saat form disubmit
+    // // Kirim data ke server saat form disubmit
     $(document).on("submit", "#formEditJenis", function (e) {
         e.preventDefault(); // Mencegah form submit secara default
 
@@ -308,7 +270,7 @@ $(document).ready(function () {
                 toast.show();
                 $("#modaledit").modal("hide"); // Tutup modal
                 $("#formEditJenis")[0].reset(); // Reset form
-                laodJenis();
+                jenisTable.ajax.reload(); // Reload data dari server
             },
             error: function (xhr) {
                 const errors = xhr.responseJSON.errors;
@@ -327,27 +289,58 @@ $(document).ready(function () {
         });
     });
 
-    //function search
-    function searchJenis() {
-        document
-            .getElementById("searchInput")
-            .addEventListener("input", function () {
-                const searchValue = this.value.toLowerCase();
-                const employeeItems =
-                    document.querySelectorAll(".employee-item");
+    $(document).on("click", ".confirm-text", function () {
+        const itemId = this.getAttribute("data-id"); // Ambil ID item dari data-item-id
 
-                employeeItems.forEach((item) => {
-                    const name = item.getAttribute("data-name").toLowerCase();
+        // // SweetAlert2 untuk konfirmasi
+        Swal.fire({
+            title: "Apakah Anda yakin?",
+            text: "Data ini akan dihapus secara permanen!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Ya, hapus!",
+            cancelButtonText: "Batal",
+            reverseButtons: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Kirim permintaan hapus (gunakan itemId)
+                fetch(`/jenis/${itemId}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                            "content"
+                        ),
+                    },
+                })
+                    .then((response) => {
+                        if (response.ok) {
+                            Swal.fire(
+                                "Dihapus!",
+                                "Data berhasil dihapus.",
+                                "success"
+                            );
+                            jenisTable.ajax.reload(); // Reload data dari server
+                        } else {
+                            Swal.fire(
+                                "Gagal!",
+                                "Terjadi kesalahan saat menghapus data.",
+                                "error"
+                            );
+                        }
+                    })
+                    .catch((error) => {
+                        Swal.fire(
+                            "Gagal!",
+                            "Terjadi kesalahan dalam penghapusan data.",
+                            "error"
+                        );
+                    });
+            } else {
+                // Jika batal, beri tahu pengguna
+                Swal.fire("Dibatalkan", "Data tidak dihapus.", "info");
+            }
+        });
+    })
 
-                    // Check if search value matches any attribute
-                    if (
-                        name.includes(searchValue)
-                    ) {
-                        item.style.display = ""; // Show
-                    } else {
-                        item.style.display = "none"; // Hide
-                    }
-                });
-            });
-    }
 });

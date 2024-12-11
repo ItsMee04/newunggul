@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    loadPegawai();
+    loadPelanggan();
 
     $(document).on("click", "#refreshButton", function () {
         if (pelangganTable) {
@@ -11,7 +11,7 @@ $(document).ready(function () {
         toast.show();
     });
 
-    function loadPegawai() {
+    function loadPelanggan() {
         // Datatable
         if ($('.tabelPelanggan').length > 0) {
             pelangganTable = $('.tabelPelanggan').DataTable({

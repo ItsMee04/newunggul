@@ -10,8 +10,14 @@ class DiskonController extends Controller
 {
     public function index()
     {
+
+        return view('pages.diskon');
+    }
+
+    public function getDiskon()
+    {
         $diskon = Diskon::all();
-        return view('pages.diskon', ['diskon' => $diskon]);
+        return response()->json(['success' => true, 'message' => 'Data Diskon Berhasil Ditemukan', 'Data' => $diskon]);
     }
 
     public function store(Request $request)
@@ -34,7 +40,13 @@ class DiskonController extends Controller
 
         $diskon = Diskon::create($request->all());
 
-        return redirect('diskon')->with('success-message', 'Data Promo Berhasil Disimpan');
+        return response()->json(['success' => true, 'message' => 'Data Diskon Berhasil Ditemukan']);
+    }
+
+    public function show($id)
+    {
+        $diskon = Diskon::findOrFail($id);
+        return response()->json(['success' => true, 'message' => 'Data Diskon Berhasil Ditemukan', 'Data' => $diskon]);
     }
 
     public function update(Request $request, $id)
@@ -59,7 +71,7 @@ class DiskonController extends Controller
 
         $diskon->update($request->all());
 
-        return redirect('diskon')->with('success-message', 'Data Promo Berhasil Disimpan');
+        return response()->json(['success' => true, 'message' => 'Data Diskon Berhasil Disimpan']);
     }
 
     public function delete($id)

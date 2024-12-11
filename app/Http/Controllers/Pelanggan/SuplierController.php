@@ -30,8 +30,13 @@ class SuplierController extends Controller
 
     public function index()
     {
+        return view('pages.suplier');
+    }
+
+    public function getSuplier()
+    {
         $suplier = Suplier::all();
-        return view('pages.suplier', ['suplier' => $suplier]);
+        return response()->json(['success' => true, 'message' => 'Data Suplier Berhasil Ditemukan', 'Data' => $suplier]);
     }
 
     public function store(Request $request)
@@ -58,7 +63,13 @@ class SuplierController extends Controller
         $request['kodesuplier'] = $generateCode;
         $suplier = Suplier::create($request->all());
 
-        return redirect('suplier')->with('success-message', 'Data Suplier Berhasil Disimpan');
+        return response()->json(['success' => true, 'message' => 'Data Suplier Berhasil Disimpan']);
+    }
+
+    public function show($id)
+    {
+        $suplier = Suplier::findOrFail($id);
+        return response()->json(['success' => true, 'message' => 'Data Suplier Berhasil Ditemukan', 'Data' => $suplier]);
     }
 
     public function update(Request $request, $id)
@@ -83,7 +94,7 @@ class SuplierController extends Controller
         $suplier = Suplier::findOrFail($id);
 
         $suplier->update($request->all());
-        return redirect('suplier')->with('success-message', 'Data Suplier Berhasil Disimpan');
+        return response()->json(['success' => true, 'message' => 'Data Suplier Berhasil Disimpan']);
     }
 
     public function delete($id)

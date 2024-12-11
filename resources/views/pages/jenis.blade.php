@@ -26,36 +26,40 @@
                 </div>
             </div>
 
-            <div class="card-body pb-1">
-                <div class="table-top table-top-two table-top-new">
-                    <div class="search-set mb-0">
-                        <div class="total-employees">
-                            <h6><i data-feather="users" class="feather-user"></i>Total Jenis
-                                <span id="totalJenisAktif"></span>
-                            </h6>
-                        </div>
-                        <div class="search-input">
-                            <a class="btn btn-searchset"><i data-feather="search" class="feather-search"></i></a>
-                            <input type="search" id="searchInput" class="form-control">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-xl-12 budget-role-notes">
-                    <div class="tab-content" id="v-pills-tabContent">
-                        <div class="tab-pane fade active show" id="v-pills-profile" role="tabpanel"
-                            aria-labelledby="v-pills-profile-tab">
-                            <div class="section-card-body" id="notes-trash">
-                                <div class="row" id="daftarJenis">
-
-                                </div>
+            <!-- /product list -->
+            <div class="card table-list-card">
+                <div class="card-body">
+                    <div class="table-top">
+                        <div class="search-set">
+                            <div class="search-input">
+                                <a href="javascript:void(0);" class="btn btn-searchset"><i data-feather="search"
+                                        class="feather-search"></i></a>
                             </div>
                         </div>
                     </div>
+                    <!-- /Filter -->
+                    <div class="card mb-0" id="filter_inputs">
+                        <div class="card-body pb-0">
+                        </div>
+                    </div>
+                    <!-- /Filter -->
+                    <div class="table-responsive product-list">
+                        <table class="table jenisTable table-hover" style="width: 100%">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Jenis</th>
+                                    <th>Status</th>
+                                    <th class="no-sort">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
+            <!-- /product list -->
         </div>
     </div>
 
