@@ -113,11 +113,13 @@ $(document).ready(function () {
         });
     }
 
+    //ketika button tambah di tekan
     $(".btn-tambahNampan").on("click", function () {
         $("#mdTambahNampan").modal("show");
         loadJenis();
     });
 
+    //kirim data ke serve
     $("#storeNampan").on("submit", function (event) {
         event.preventDefault(); // Mencegah form submit secara default
         // Ambil elemen input file

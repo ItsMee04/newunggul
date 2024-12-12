@@ -238,6 +238,13 @@ $(document).ready(function () {
         $("#editstatus").val("").trigger("change"); // Reset select status jika menggunakan Select2 atau lainnya
     });
 
+    // Ketika modal ditutup, reset semua field
+    $("#mdTambahjenis").on("hidden.bs.modal", function () {
+        // Reset gambar preview
+        $("#storeJenis")[0].reset();
+        $("#preview").empty();
+    });
+
     // // Kirim data ke server saat form disubmit
     $(document).on("submit", "#formEditJenis", function (e) {
         e.preventDefault(); // Mencegah form submit secara default

@@ -97,12 +97,12 @@
         </div>
     </div>
 
-    <!-- Add Pegawai -->
+    <!-- MODAL TAMBAH PEMBELIAN -->
     <div class="modal fade" id="mdtambahPembelian">
         <div class="modal-dialog modal-dialog-centered text-center" role="document">
             <div class="modal-content modal-content-demo">
                 <div class="modal-header">
-                    <h4 class="modal-title">Tambah Pembelian</h4>
+                    <h4 class="modal-title">TAMBAH PEMBELIAN</h4>
                     <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <form method="POST" enctype="multipart/form-data" id="storePembelian">
@@ -133,7 +133,7 @@
                                     aria-labelledby="pills-home-tab">
                                     <div class="mb-3">
                                         <label class="form-label">Suplier</label>
-                                        <select class="select" name="suplier_id" id="suplier">
+                                        <select class="select" name="suplier_id" id="suplier_id">
                                         </select>
                                     </div>
                                 </div>
@@ -141,22 +141,22 @@
                                     aria-labelledby="pills-profile-tab">
                                     <div class="mb-3">
                                         <label class="form-label">Pelanggan</label>
-                                        <select class="select" name="pelanggan_id" id="pelanggan">
+                                        <select class="select" name="pelanggan_id" id="pelanggan_id">
                                         </select>
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Nama Produk</label>
-                                    <input type="text" name="nama" class="form-control">
+                                    <input type="text" name="nama" id="nama" class="form-control">
                                 </div>
                                 <div class="row">
                                     <div class="col-6 mb-3">
                                         <label class="form-label">Berat</label>
-                                        <input type="text" name="berat" class="form-control">
+                                        <input type="text" name="berat" id="berat" class="form-control">
                                     </div>
                                     <div class="col-6 mb-3">
                                         <label class="form-label">Karat</label>
-                                        <input type="text" name="karat" class="form-control">
+                                        <input type="text" name="karat" id="karat" class="form-control">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -167,12 +167,12 @@
                                     </div>
                                     <div class="col-6 mb-3">
                                         <label class="form-label">Harga Beli</label>
-                                        <input type="text" name="harga_beli" class="form-control">
+                                        <input type="text" name="harga_beli" id="hargabeli" class="form-control">
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Kondisi Fisik</label>
-                                    <select class="form-control" name="kondisi">
+                                    <select class="select" name="kondisi" id="kondisi">
                                         <option selected> Pilih Kondisi</option>
                                         <option value="baik">Baik</option>
                                         <option value="kusam">Kusam</option>
@@ -181,15 +181,83 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Keterangan</label>
-                                    <textarea class="form-control" rows="4" name="keterangan"></textarea>
+                                    <textarea class="form-control" rows="4" name="keterangan" id="keterangan"></textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Status</label>
-                                    <select class="form-control" name="status">
+                                    <select class="form-control" name="status" id="status">
                                         <option>Pilih Status</option>
                                         <option value="1">Aktif</option>
                                         <option value="2">Tidak Aktif</option>
                                     </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Form Tambahan -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- /MODAL TAMBAH PEMBELIAN-->
+
+    <!-- MODAL DETAIL PEMBELIAN -->
+    <div class="modal fade" id="modalDetail">
+        <div class="modal-dialog modal-dialog-centered text-center" role="document">
+            <div class="modal-content modal-content-demo">
+                <div class="modal-header">
+                    <h4 class="modal-title text-center">DETAIL PEMBELIAN</h4>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form method="POST" enctype="multipart/form-data" id="storePembelian">
+                    @csrf
+                    <div class="modal-body text-start">
+                        <div class="input-blocks add-products">
+                            <div class="tab-content" id="pills-tabContent">
+                                <div class="mb-3">
+                                    <label class="form-label">Penjual</label>
+                                    <input type="text" id="detailPenjual" class="form-control" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Nama Produk</label>
+                                    <input type="text" name="nama" id="detailNama" class="form-control">
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label">Berat</label>
+                                        <input type="text" name="berat" id="detailBerat" class="form-control">
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label">Karat</label>
+                                        <input type="text" name="karat" id="detailKarat" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label">Jenis</label>
+                                        <input type="text" name="karat" id="detailJenis" class="form-control">
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label">Harga Beli</label>
+                                        <input type="text" name="harga_beli" id="detailHargabeli"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Kondisi Fisik</label>
+                                    <input type="text" name="karat" id="detailKondisi" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Keterangan</label>
+                                    <textarea class="form-control" rows="4" name="keterangan" id="detailKeterangan"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Status</label>
+                                    <input type="text" name="karat" id="detailStatus" class="form-control">
                                 </div>
                             </div>
                         </div>

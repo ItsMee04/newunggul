@@ -160,6 +160,7 @@ $(document).ready(function () {
                 $("#storeProduk")[0].reset(); // Reset form
 
                 loadProduk();
+                $("#preview").empty();
             },
             error: function (xhr) {
                 // Tampilkan pesan error dari server
@@ -269,6 +270,19 @@ $(document).ready(function () {
 
         // Reset gambar preview (gambar default)
         $("#editPreview img").attr("src", "/assets/img/notfound.png");
+
+        // Reset dropdown status jika perlu
+        $("#editstatus").val("").trigger("change"); // Reset select status jika menggunakan Select2 atau lainnya
+
+        // Reset dropdown jabatan jika perlu
+        $("#editjenis").val("").trigger("change"); // Reset select jabatan jika menggunakan Select2 atau lainnya
+    });
+
+    $("#mdTambahProduk").on("hidden.bs.modal", function () {
+        // Reset form input (termasuk gambar dan status)
+        $("#storeProduk")[0].reset();
+
+        $("#preview").empty();
 
         // Reset dropdown status jika perlu
         $("#editstatus").val("").trigger("change"); // Reset select status jika menggunakan Select2 atau lainnya

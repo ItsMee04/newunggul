@@ -129,7 +129,7 @@ $(document).ready(function () {
                 response.Data.forEach((item) => {
                     options += `<option value="${item.id}">${item.suplier}</option>`;
                 });
-                $("#suplier").html(options); // Masukkan data ke select
+                $("#suplier_id").html(options); // Masukkan data ke select
             },
             error: function () {
                 alert("Gagal memuat data jabatan!");
@@ -147,7 +147,7 @@ $(document).ready(function () {
                 response.Data.forEach((item) => {
                     options += `<option value="${item.id}">${item.nama}</option>`;
                 });
-                $("#pelanggan").html(options); // Masukkan data ke select
+                $("#pelanggan_id").html(options); // Masukkan data ke select
             },
             error: function () {
                 alert("Gagal memuat data jabatan!");
@@ -161,4 +161,84 @@ $(document).ready(function () {
         loadSuplier();
         loadPelanggan();
     });
+
+    $("#storePembelian").on("submit", function (event) {
+        event.preventDefault(); // Mencegah form submit secara default
+        // Ambil elemen input file
+
+        // Buat objek FormData
+        const formData = new FormData(this);
+        $.ajax({
+            url: "/pembelian", // Endpoint Laravel untuk menyimpan pegawai
+            type: "POST",
+            data: formData,
+            processData: false, // Agar data tidak diubah menjadi string
+            contentType: false, // Agar header Content-Type otomatis disesuaikan
+            success: function (response) {
+                const successtoastExample =
+                    document.getElementById("successToast");
+                const toast = new bootstrap.Toast(successtoastExample);
+                $(".toast-body").text(response.message);
+                toast.show();
+                $("#mdtambahPembelian").modal("hide"); // Tutup modal
+                $("#storePembelian")[0].reset(); // Reset form
+
+                pembelianTable.ajax.reload(); // Reload data dari server
+            },
+            error: function (xhr) {
+                // Tampilkan pesan error dari server
+                const errors = xhr.responseJSON.errors;
+                if (errors) {
+                    let errorMessage = "";
+                    for (let key in errors) {
+                        errorMessage += `${errors[key][0]}\n`;
+                    }
+                    const dangertoastExamplee =
+                        document.getElementById("dangerToastError");
+                    const toast = new bootstrap.Toast(dangertoastExamplee);
+                    $(".toast-body").text(errorMessage);
+                    toast.show();
+                } else {
+                    const dangertoastExamplee =
+                        document.getElementById("dangerToastError");
+                    const toast = new bootstrap.Toast(dangertoastExamplee);
+                    $(".toast-body").text(response.message);
+                    toast.show();
+                }
+            },
+        });
+    });
+
+    //ketika button edit di tekan
+    $(document).on("click", ".btn-detail", function () {
+        const pembelianID = $(this).data("id");
+
+        $.ajax({
+            url: `/pembelian/${pembelianID}`, // Endpoint untuk mendapatkan data pegawai
+            type: "GET",
+            success: function (response) {
+                // Isi modal dengan data pembelian
+                // $("#detailPenjual").val(response.Data.id);
+                $("#detailNama").val(response.Data[0].produk.nama);
+                $("#detailBerat").val(response.Data[0].produk.berat);
+                $("#detailKarat").val(response.Data[0].produk.karat);
+                $("#detailJenis").val(response.Data[0].produk.jenis);
+                $("#detailHargabeli").val(response.Data[0].produk.harga_beli);
+                $("#detailKondisi").val(response.Data[0].kondisi);
+                $("#detailKeterangan").val(response.Data[0].produk.keterangan);
+                $("#detailKeterangan").val(response.Data[0].status);
+
+                // Tampilkan modal edit
+                $("#modalDetail").modal("show");
+            },
+            error: function () {
+                Swal.fire(
+                    "Gagal!",
+                    "Tidak dapat mengambil data pegawai.",
+                    "error"
+                );
+            },
+        });
+    });
+
 });

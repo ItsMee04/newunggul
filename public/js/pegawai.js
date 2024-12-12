@@ -148,7 +148,7 @@ $(document).ready(function () {
                 toast.show();
                 $("#mdTambahPegawai").modal("hide"); // Tutup modal
                 $("#storePegawai")[0].reset(); // Reset form
-
+                $("#preview").empty();
                 loadPegawai();
             },
             error: function (xhr) {
@@ -264,7 +264,14 @@ $(document).ready(function () {
         // Reset dropdown jabatan jika perlu
         $("#editjabatan").val("").trigger("change"); // Reset select jabatan jika menggunakan Select2 atau lainnya
     });
-
+    
+    // Ketika modal ditutup, reset semua field
+    $("#mdTambahPegawai").on("hidden.bs.modal", function () {
+        // Reset form input (termasuk gambar dan status)
+        $("#storePegawai")[0].reset();
+        // Reset gambar preview (gambar default)
+        $("#preview").empty();
+    });
     // Kirim data ke server saat form disubmit
     $(document).on("submit", "#formEditPegawai", function (e) {
         e.preventDefault(); // Mencegah form submit secara default

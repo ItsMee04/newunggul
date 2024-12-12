@@ -86,14 +86,15 @@ class PembelianController extends Controller
         ], $messages);
 
 
-        if ($request->suplier_id != "Pilih Suplier" || $request->pelanggan_id == "Pilih Pelanggan") {
+        if ($request->suplier_id != "" || $request->pelanggan_id == "") {
             $request['pelanggan_id'] = null;
-        } elseif ($request->suplier_id == 'Pilih Suplier' || $request->pelanggan_id != "Pilih Pelanggan") {
+        } elseif ($request->suplier_id == '' || $request->pelanggan_id != "") {
             $request['suplier_id'] = null;
         }
 
         $request['kodepembelian']   = $this->generateCodeTransaksi();
         $request['kodeproduk']      = $this->produkController->generateKode();
+        $request['tanggal']         = Carbon::today()->format('Y-m-d');
 
         $content = QrCode::format('png')->size(300)->generate($request['kodeproduk']); // Ini menghasilkan data PNG sebagai string
 
@@ -122,11 +123,17 @@ class PembelianController extends Controller
                 'pelanggan_id'  => $request['pelanggan_id'],
                 'kodeproduk'    => $request['kodeproduk'],
                 'kondisi'       => $request['kondisi'],
-                'tanggal'       => Carbon::today()->format('Y-m-d'),
+                'tanggal'       => $request['tanggal'],
                 'status'        => $request['status']
             ]);
         }
 
-        return redirect('pembelian')->with('success-message', 'Data Pembelian Berhasil Disimpan');
+        return response()->json(['success' => true, 'message' => 'Data Pembelian Berhasil Disimpan']);
+    }
+
+    public function show($id)
+    {
+        $pembelian = Pembelian::where('id', $id)->with(['pelanggan', 'suplier', 'produk.jenis'])->get();
+        return response()->json(['success' => true, 'message' => 'Data Pembelian Berhasil Ditemukan', 'Data' => $pembelian]);
     }
 }
