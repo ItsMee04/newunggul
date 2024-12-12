@@ -208,8 +208,15 @@ $(document).ready(function () {
             },
         });
     });
+    function formatToIDR(amount) {
+        return new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0
+        }).format(amount);
+    }
 
-    //ketika button edit di tekan
+    //ketika button deetail di tekan
     $(document).on("click", ".btn-detail", function () {
         const pembelianID = $(this).data("id");
 
@@ -218,15 +225,37 @@ $(document).ready(function () {
             type: "GET",
             success: function (response) {
                 // Isi modal dengan data pembelian
-                // $("#detailPenjual").val(response.Data.id);
+                const pembelian = response.Data[0]; // Ambil data pertama
+                let namaPenjual;
+                if (pembelian.suplier_id !== null && pembelian.suplier) {
+                    namaPenjual = pembelian.suplier.suplier; // Nama suplier jika suplier_id tidak null
+                } else if (pembelian.pelanggan_id !== null && pembelian.pelanggan) {
+                    namaPenjual = pembelian.pelanggan.nama; // Nama pelanggan jika suplier_id null
+                } else {
+                    namaPenjual = "Tidak Diketahui"; // Default jika keduanya null
+                }
+
+                let statusText;
+                if (pembelian.status === 1) {
+                    statusText = "Aktif";
+                } else if (pembelian.status === 2) {
+                    statusText = "Pending";
+                } else {
+                    statusText = "Tidak Diketahui"; // Default jika status tidak sesuai
+                }
+
+                const hargaBeliFormatted = formatToIDR(pembelian.produk?.harga_beli || 0);
+
+                $("#detailPenjual").val(namaPenjual);
+                $("#detailKodepembelian").val(response.Data[0].kodepembelian);
                 $("#detailNama").val(response.Data[0].produk.nama);
                 $("#detailBerat").val(response.Data[0].produk.berat);
                 $("#detailKarat").val(response.Data[0].produk.karat);
-                $("#detailJenis").val(response.Data[0].produk.jenis);
-                $("#detailHargabeli").val(response.Data[0].produk.harga_beli);
+                $("#detailJenis").val(response.Data[0].produk.jenis.jenis);
+                $("#detailHargabeli").val(hargaBeliFormatted);
                 $("#detailKondisi").val(response.Data[0].kondisi);
                 $("#detailKeterangan").val(response.Data[0].produk.keterangan);
-                $("#detailKeterangan").val(response.Data[0].status);
+                $("#detailStatus").val(statusText);
 
                 // Tampilkan modal edit
                 $("#modalDetail").modal("show");
@@ -240,5 +269,242 @@ $(document).ready(function () {
             },
         });
     });
+
+    //ketika button edit di tekan
+    $(document).on("click", ".btn-edit", function () {
+        const pembelianID = $(this).data("id");
+
+        $.ajax({
+            url: `/pembelian/${pembelianID}`, // Endpoint untuk mendapatkan data pegawai
+            type: "GET",
+            success: function (response) {
+                // Isi modal dengan data pegawai
+                if (response.success && response.Data && response.Data.length > 0) {
+                    const pembelian = response.Data[0]; // Mengambil data pertama dari array
+                    // Pilih Suplier atau Pelanggan berdasarkan ID
+                    if (pembelian.suplier_id !== null) {
+                        // Tambahkan kelas active pada Suplier tab dan radio button
+                        $("#editpills-home-tab").addClass("active");
+                        $("#editpills-home").addClass("show active"); // Tampilkan tab Suplier
+
+                        // Sembunyikan tab Pelanggan
+                        $("#editpills-profile").removeClass("show active");
+
+                        // Isi dropdown Suplier
+                        $.ajax({
+                            url: "/suplier/getSuplier",
+                            type: "GET",
+                            success: function (jabatanResponse) {
+                                let options =
+                                    '<option value="">-- Pilih Suplier --</option>';
+                                jabatanResponse.Data.forEach((item) => {
+                                    const selected =
+                                        item.id === pembelian.suplier_id
+                                            ? "selected"
+                                            : "";
+                                    options += `<option value="${item.id}" ${selected}>${item.suplier}</option>`;
+                                });
+                                $("#editsuplier_id").html(options);
+                            },
+                        });
+
+                        // Isi dropdown Pelanggan
+                        $.ajax({
+                            url: "/pelanggan/getPelanggan",
+                            type: "GET",
+                            success: function (jabatanResponse) {
+                                let options =
+                                    '<option value="">-- Pilih Pelanggan --</option>';
+                                jabatanResponse.Data.forEach((item) => {
+                                    const selected =
+                                        item.id === pembelian.pelanggan_id
+                                            ? "selected"
+                                            : "";
+                                    options += `<option value="${item.id}" ${selected}>${item.nama}</option>`;
+                                });
+                                $("#editpelanggan_id").html(options);
+                            },
+                        });
+
+                    } else if (pembelian.pelanggan_id !== null) {
+                        // Tambahkan kelas active pada Pelanggan tab dan radio button
+                        $("#editpills-profile-tab").addClass("active");
+                        $("#editpills-profile").addClass("show active"); // Tampilkan tab Pelanggan
+
+                        // Sembunyikan tab Suplier
+                        $("#editpills-home").removeClass("show active");
+
+                        // Isi dropdown Pelanggan
+                        $.ajax({
+                            url: "/pelanggan/getPelanggan",
+                            type: "GET",
+                            success: function (jabatanResponse) {
+                                let options =
+                                    '<option value="">-- Pilih Pelanggan --</option>';
+                                jabatanResponse.Data.forEach((item) => {
+                                    const selected =
+                                        item.id === pembelian.pelanggan_id
+                                            ? "selected"
+                                            : "";
+                                    options += `<option value="${item.id}" ${selected}>${item.nama}</option>`;
+                                });
+                                $("#editpelanggan_id").html(options);
+                            },
+                        });
+
+                        // Isi dropdown Suplier
+                        $.ajax({
+                            url: "/suplier/getSuplier",
+                            type: "GET",
+                            success: function (jabatanResponse) {
+                                let options =
+                                    '<option value="">-- Pilih Suplier --</option>';
+                                jabatanResponse.Data.forEach((item) => {
+                                    const selected =
+                                        item.id === pembelian.suplier_id
+                                            ? "selected"
+                                            : "";
+                                    options += `<option value="${item.id}" ${selected}>${item.suplier}</option>`;
+                                });
+                                $("#editsuplier_id").html(options);
+                            },
+                        });
+                    }
+
+                    // // Muat opsi jabatan
+                    $.ajax({
+                        url: "/jenis/getJenis",
+                        type: "GET",
+                        success: function (jabatanResponse) {
+                            let options =
+                                '<option value="">-- Pilih Jenis --</option>';
+                            jabatanResponse.Data.forEach((item) => {
+                                const selected =
+                                    item.id === pembelian.produk?.jenis_id || ""
+                                        ? "selected"
+                                        : "";
+                                options += `<option value="${item.id}" ${selected}>${item.jenis}</option>`;
+                            });
+                            $("#editjenis").html(options);
+                        },
+                    });
+
+                    // Mengisi data produk
+                    $("#editnama").val(pembelian.produk?.nama || "");
+                    $("#editberat").val(pembelian.produk?.berat || "");
+                    $("#editkarat").val(pembelian.produk?.karat || "");
+
+                    $("#edithargabeli").val(pembelian.produk?.harga_beli);
+                    $("#editkondisi").val(pembelian.kondisi || "").trigger("change");
+                    $("#editketerangan").val(pembelian.produk?.keterangan || "");
+                    $("#editid").val(pembelian.id);
+
+                    // Status pembelian
+                    const statusText = pembelian.status === 1 ? "Aktif" : "Pending";
+                    $("#editstatus").val(pembelian.status || "").trigger("change");
+
+                } else {
+                    console.error("Data tidak valid atau tidak ditemukan.");
+                }
+
+                // Tampilkan modal
+                $("#modaledit").modal("show");
+            },
+            error: function () {
+                Swal.fire(
+                    "Gagal!",
+                    "Tidak dapat mengambil data pegawai.",
+                    "error"
+                );
+            },
+        });
+    });
+
+    $("#modaledit").on("hidden.bs.modal", function () {
+        // Reset form input di dalam modaledit
+        $("#formEditPembelian")[0].reset();
+
+        $("#editjenis").val("").trigger("change"); // Reset dropdown Jenis Produk
+        $("#editstatus").val("").trigger("change"); // Reset dropdown Status
+        $("#editsuplier_id").val("").trigger("change"); // Reset dropdown Jenis Produk
+        $("#editpelanggan_id").val("").trigger("change"); // Reset dropdown Jenis Produk
+
+
+        // Menghapus class active pada tab dan radio button
+        $("#editpills-home-tab").removeClass("active");
+        $("#editpills-profile-tab").removeClass("active");
+        $("#editpills-home").removeClass("show active");
+        $("#editpills-profile").removeClass("show active");
+    });
+
+    // Kirim data ke server saat form disubmit
+    $(document).on("submit", "#formEditPembelian", function (e) {
+        e.preventDefault(); // Mencegah form submit secara default
+
+        // Ambil data dari form
+        const dataForm = new FormData();
+
+        // Cek apakah pelanggan_id atau suplier_id yang diisi
+        const pelangganId = $("#editpelanggan_id").val();
+        const suplierId = $("#editsuplier_id").val();
+
+        if (pelangganId) {
+            // Jika pelanggan_id diisi, tambahkan ke FormData
+            dataForm.append("pelanggan_id", pelangganId);
+            dataForm.append("suplier_id", '');
+        } else if (suplierId) {
+            // Jika suplier_id diisi, tambahkan ke FormData
+            dataForm.append("suplier_id", suplierId);
+            dataForm.append("pelanggan_id", '');
+        } 
+
+        
+        dataForm.append("id", $("#editid").val());
+        dataForm.append("nama", $("#editnama").val());
+        dataForm.append("berat", $("#editberat").val());
+        dataForm.append("karat", $("#editkarat").val());
+        dataForm.append("jenis_id", $("#editjenis").val());
+        dataForm.append("harga_beli", $("#edithargabeli").val());
+        dataForm.append("kondisi", $("#editkondisi").val());
+        dataForm.append("keterangan", $("#editketerangan").val());
+        dataForm.append("status", $("#editstatus").val());
+        dataForm.append("_token", $('meta[name="csrf-token"]').attr("content")); // CSRF Token Laravel
+
+        
+        // Kirim data ke server menggunakan AJAX
+        $.ajax({
+            url: `/pembelian/${$("#editid").val()}`, // URL untuk mengupdate data pegawai
+            type: "POST", // Gunakan metode POST (atau PATCH jika route mendukung)
+            data: dataForm, // Gunakan FormData
+            processData: false, // Jangan proses FormData sebagai query string
+            contentType: false, // Jangan set Content-Type secara manual
+            success: function (response) {
+                // Tampilkan toast sukses
+                const successtoastExample =
+                    document.getElementById("successToast");
+                const toast = new bootstrap.Toast(successtoastExample);
+                $(".toast-body").text(response.message);
+                toast.show();
+                $("#modaledit").modal("hide"); // Tutup modal
+                $("#formEditPembelian")[0].reset(); // Reset form
+                pembelianTable.ajax.reload(); // Reload data dari server
+            },
+            error: function (xhr) {
+                const errors = xhr.responseJSON.errors;
+                if (errors) {
+                    let errorMessage = "";
+                    for (let key in errors) {
+                        errorMessage += `${errors[key][0]}\n`;
+                    }
+                    const dangertoastExamplee =
+                        document.getElementById("dangerToastError");
+                    const toast = new bootstrap.Toast(dangertoastExamplee);
+                    $(".toast-body").text(errorMessage);
+                    toast.show();
+                }
+            },
+        });
+    });
+
 
 });

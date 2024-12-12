@@ -136,4 +136,51 @@ class PembelianController extends Controller
         $pembelian = Pembelian::where('id', $id)->with(['pelanggan', 'suplier', 'produk.jenis'])->get();
         return response()->json(['success' => true, 'message' => 'Data Pembelian Berhasil Ditemukan', 'Data' => $pembelian]);
     }
+
+    public function update(Request $request, $id)
+    {
+        $messages = [
+            'required' => ':attribute wajib di isi !!!',
+            'integer'  => ':attribute format wajib menggunakan angka',
+            'mimes'    => ':attribute format wajib menggunakan PNG/JPG'
+        ];
+
+        $credentials = $request->validate([
+            'nama'          =>  'required',
+            'jenis_id'      =>  'required|' . Rule::in(Jenis::where('status', 1)->pluck('id')),
+            'harga_beli'    =>  'integer',
+            'keterangan'    =>  'string',
+            'berat'         =>  [
+                'required',
+                'regex:/^\d+\.\d{1}$/'
+            ],
+            'karat'         =>  'required|integer',
+            'status'        =>  'required'
+        ], $messages);
+
+        $kodeproduk = Pembelian::where('id', $id)->first()->kodeproduk;
+
+        $pembelian = Pembelian::findOrFail($id);
+
+        $request['suplier_id'] = $request->input('suplier_id') ?: NULL;
+        $request['pelanggan_id'] = $request->input('pelanggan_id') ?: NULL;
+
+        $pembelian->update($request->all());
+
+        if ($pembelian) {
+            Produk::where('kodeproduk', $kodeproduk)
+                ->update([
+                    'jenis_id'      => $request->jenis_id,
+                    'nama'          => $request->nama,
+                    'harga_jual'    => 0,
+                    'harga_beli'    => $request->harga_beli,
+                    'keterangan'    => $request->keterangan,
+                    'berat'         => $request->berat,
+                    'karat'         => $request->karat,
+                    'status'        => 2
+                ]);
+        }
+
+        return response()->json(['success' => true, 'message' => 'Data Pembelian Berhasil Disimpan', 'data' => $request]);
+    }
 }

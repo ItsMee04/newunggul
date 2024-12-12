@@ -219,45 +219,54 @@
                         <div class="input-blocks add-products">
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="mb-3">
+                                    <label class="form-label">Kode Pembelian</label>
+                                    <input type="text" id="detailKodepembelian" class="form-control" readonly>
+                                </div>
+                                <div class="mb-3">
                                     <label class="form-label">Penjual</label>
                                     <input type="text" id="detailPenjual" class="form-control" readonly>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Nama Produk</label>
-                                    <input type="text" name="nama" id="detailNama" class="form-control">
+                                    <input type="text" name="nama" id="detailNama" class="form-control" readonly>
                                 </div>
                                 <div class="row">
                                     <div class="col-6 mb-3">
                                         <label class="form-label">Berat</label>
-                                        <input type="text" name="berat" id="detailBerat" class="form-control">
+                                        <input type="text" name="berat" id="detailBerat" class="form-control"
+                                            readonly>
                                     </div>
                                     <div class="col-6 mb-3">
                                         <label class="form-label">Karat</label>
-                                        <input type="text" name="karat" id="detailKarat" class="form-control">
+                                        <input type="text" name="karat" id="detailKarat" class="form-control"
+                                            readonly>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-6 mb-3">
                                         <label class="form-label">Jenis</label>
-                                        <input type="text" name="karat" id="detailJenis" class="form-control">
+                                        <input type="text" name="karat" id="detailJenis" class="form-control"
+                                            readonly>
                                     </div>
                                     <div class="col-6 mb-3">
                                         <label class="form-label">Harga Beli</label>
                                         <input type="text" name="harga_beli" id="detailHargabeli"
-                                            class="form-control">
+                                            class="form-control" readonly>
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Kondisi Fisik</label>
-                                    <input type="text" name="karat" id="detailKondisi" class="form-control">
+                                    <input type="text" name="karat" id="detailKondisi" class="form-control"
+                                        readonly>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Keterangan</label>
-                                    <textarea class="form-control" rows="4" name="keterangan" id="detailKeterangan"></textarea>
+                                    <textarea class="form-control" rows="4" name="keterangan" id="detailKeterangan" readonly></textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Status</label>
-                                    <input type="text" name="karat" id="detailStatus" class="form-control">
+                                    <input type="text" name="karat" id="detailStatus" class="form-control"
+                                        readonly>
                                 </div>
                             </div>
                         </div>
@@ -271,7 +280,121 @@
             </div>
         </div>
     </div>
-    <!-- /Add Pegawai -->
+    <!-- /MODAL DETAIL PEMBELIAN -->
+
+    <!-- MODAL EDIT PEMBELIAN -->
+    <div class="modal fade" id="modaledit">
+        <div class="modal-dialog modal-dialog-centered text-center" role="document">
+            <div class="modal-content modal-content-demo">
+                <div class="modal-header">
+                    <h4 class="modal-title">EDIT PEMBELIAN</h4>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form method="POST" enctype="multipart/form-data" id="formEditPembelian">
+                    @csrf
+                    <div class="modal-body text-start">
+                        <div class="input-blocks add-products">
+                            <div class="mb-3">
+                                <label class="form-label">ID</label>
+                                <input type="text" name="id" id="editid" class="form-control">
+                            </div>
+                            <label class="d-block">Pembelian Dari</label>
+                            <div class="single-pill-product mb-3">
+                                <ul class="nav nav-pills" id="editpills-tab1" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <span class="custom_radio me-4 mb-0" id="editpills-home-tab"
+                                            data-bs-toggle="pill" data-bs-target="#editpills-home" role="tab"
+                                            aria-controls="editpills-home" aria-selected="true">
+                                            <input type="radio" id="editsuplier" class="form-control"
+                                                name="editsuplier">
+                                            <span class="checkmark"></span> Suplier</span>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <span class="custom_radio me-2 mb-0" id="editpills-profile-tab"
+                                            data-bs-toggle="pill" data-bs-target="#editpills-profile" role="tab"
+                                            aria-controls="pills-profile" aria-selected="false">
+                                            <input type="radio" id="editpelanggan" class="form-control"
+                                                name="editpelanggan">
+                                            <span class="checkmark"></span> Pelanggan</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tab-content" id="editpills-tabContent">
+                                <div class="tab-pane fade show" id="editpills-home" role="tabpanel"
+                                    aria-labelledby="editpills-home-tab">
+                                    <div class="mb-3">
+                                        <label class="form-label">Suplier</label>
+                                        <select class="select" name="suplier_id" id="editsuplier_id">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="editpills-profile" role="tabpanel"
+                                    aria-labelledby="editpills-profile-tab">
+                                    <div class="mb-3">
+                                        <label class="form-label">Pelanggan</label>
+                                        <select class="select" name="pelanggan_id" id="editpelanggan_id">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Nama Produk</label>
+                                    <input type="text" name="nama" id="editnama" class="form-control">
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label">Berat</label>
+                                        <input type="text" name="berat" id="editberat" class="form-control">
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label">Karat</label>
+                                        <input type="text" name="karat" id="editkarat" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label">Jenis</label>
+                                        <select class="select" name="jenis_id" id="editjenis">
+                                        </select>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label">Harga Beli</label>
+                                        <input type="text" name="harga_beli" id="edithargabeli" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Kondisi Fisik</label>
+                                    <select class="select" name="kondisi" id="editkondisi">
+                                        <option selected> Pilih Kondisi</option>
+                                        <option value="baik">Baik</option>
+                                        <option value="kusam">Kusam</option>
+                                        <option value="rusak">Rusak</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Keterangan</label>
+                                    <textarea class="form-control" rows="4" name="keterangan" id="editketerangan"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Status</label>
+                                    <select class="form-control" name="status" id="editstatus">
+                                        <option>Pilih Status</option>
+                                        <option value="1">Aktif</option>
+                                        <option value="2">Tidak Aktif</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Form Tambahan -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- /MODAL EDIT PEMBELIAN-->
 
     <!-- jQuery -->
     <script src="{{ asset('assets') }}/js/jquery-3.7.1.min.js" type="text/javascript"></script>
