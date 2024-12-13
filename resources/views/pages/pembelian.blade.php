@@ -54,6 +54,7 @@
                                     <th>Nama Produk</th>
                                     <th>Berat </th>
                                     <th>Tanggal </th>
+                                    <th>Status </th>
                                     <th>Action</th>
                                 </tr>
                             </thead>

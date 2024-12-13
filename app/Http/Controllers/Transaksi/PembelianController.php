@@ -183,4 +183,33 @@ class PembelianController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Data Pembelian Berhasil Disimpan', 'data' => $request]);
     }
+
+    public function confirmPaymentPembelian($id)
+    {
+        $pembelian  = Pembelian::where('id', $id)
+            ->update([
+                'status' => 2,
+            ]);
+
+        return response()->json(['success' => true, 'message' => 'Pembayaran Di Konfirmasi']);
+    }
+
+    public function cancelPaymentPembelian($id)
+    {
+        $kodeproduk = Pembelian::where('id', $id)->first()->kodeproduk;
+
+        $pembelian  = Pembelian::where('id', $id)
+            ->update([
+                'status' => 0,
+            ]);
+
+        if ($pembelian) {
+            Produk::where('kodeproduk', $kodeproduk)
+                ->update([
+                    'status' => 0,
+                ]);
+        }
+
+        return response()->json(['success' => true, 'message' => 'Pembayaran Di Konfirmasi']);
+    }
 }

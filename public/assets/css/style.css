@@ -24231,6 +24231,11 @@ table tbody td.action-table-data a .feather-edit {
   width: 14px;
   height: 14px;
 }
+table tbody td.action-table-data a .feather-edit-2 {
+  color: #12db47;
+  width: 14px;
+  height: 14px;
+}
 table tbody td.action-table-data a .action-edit {
   color: #5B6670;
   width: 14px;

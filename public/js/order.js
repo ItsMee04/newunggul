@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     loadOrder();
 
     $(document).on("click", "#refreshButton", function () {
@@ -13,26 +12,26 @@ $(document).ready(function () {
     });
 
     function loadOrder() {
-        if ($('.orderTable').length > 0) {
-            orderTable = $('.orderTable').DataTable({
-                "scrollX": false, // Jangan aktifkan scroll horizontal secara paksa
-                "bFilter": true,
-                "sDom": 'fBtlpi',
-                "ordering": true,
-                "language": {
-                    search: ' ',
-                    sLengthMenu: '_MENU_',
+        if ($(".orderTable").length > 0) {
+            orderTable = $(".orderTable").DataTable({
+                scrollX: false, // Jangan aktifkan scroll horizontal secara paksa
+                bFilter: true,
+                sDom: "fBtlpi",
+                ordering: true,
+                language: {
+                    search: " ",
+                    sLengthMenu: "_MENU_",
                     searchPlaceholder: "Search",
                     info: "_START_ - _END_ of _TOTAL_ items",
                     paginate: {
                         next: ' <i class=" fa fa-angle-right"></i>',
-                        previous: '<i class="fa fa-angle-left"></i> '
+                        previous: '<i class="fa fa-angle-left"></i> ',
                     },
                 },
                 ajax: {
                     url: `/order/getOrder`, // Ganti dengan URL endpoint server Anda
-                    type: 'GET', // Metode HTTP (GET/POST)
-                    dataSrc: 'Data' // Jalur data di response JSON
+                    type: "GET", // Metode HTTP (GET/POST)
+                    dataSrc: "Data", // Jalur data di response JSON
                 },
                 columns: [
                     {
@@ -43,29 +42,31 @@ $(document).ready(function () {
                         orderable: false,
                     },
                     {
-                        data: 'kodetransaksi'
+                        data: "kodetransaksi",
                     },
                     {
-                        data: 'keranjang_id'
+                        data: "keranjang_id",
                     },
                     {
-                        data: 'pelanggan.nama'
+                        data: "pelanggan.nama",
                     },
                     {
-                        data: 'total',
+                        data: "total",
                         render: function (data) {
-                            return new Intl.NumberFormat('id-ID', {
-                                style: 'currency',
-                                currency: 'IDR',
-                                minimumFractionDigits: 0
+                            return new Intl.NumberFormat("id-ID", {
+                                style: "currency",
+                                currency: "IDR",
+                                minimumFractionDigits: 0,
                             }).format(data);
-                        }
+                        },
                     },
                     {
                         data: null,
                         render: function (data, type, row) {
                             // Cek apakah data gambar tersedia atau tidak
-                            const imageSrc = row.user.pegawai.image ? `/storage/avatar/${row.user.pegawai.image}` : '/assets/img/notfound.png';
+                            const imageSrc = row.user.pegawai.image
+                                ? `/storage/avatar/${row.user.pegawai.image}`
+                                : "/assets/img/notfound.png";
                             return `
                                 <div class="productimgname">
                                     <a href="javascript:void(0);" class="product-img stock-img">
@@ -77,7 +78,7 @@ $(document).ready(function () {
                         },
                     },
                     {
-                        data: 'status',
+                        data: "status",
                         render: function (data, type, row) {
                             // Menampilkan badge sesuai dengan status
                             if (data == 1) {
@@ -87,11 +88,11 @@ $(document).ready(function () {
                             } else {
                                 return `<span class="badge badge-sm bg-outline-danger"> CANCELED</span>`;
                             }
-                        }
+                        },
                     },
                     {
-                        data: null,        // Kolom aksi
-                        orderable: false,  // Aksi tidak perlu diurutkan
+                        data: null, // Kolom aksi
+                        orderable: false, // Aksi tidak perlu diurutkan
                         className: "action-table-data",
                         render: function (data, type, row, meta) {
                             if (row.status === 1) {
@@ -121,22 +122,19 @@ $(document).ready(function () {
                                     </div>
                                 `;
                             }
-                        }
-                    }
+                        },
+                    },
                 ],
                 initComplete: (settings, json) => {
-                    $('.dataTables_filter').appendTo('#tableSearch');
-                    $('.dataTables_filter').appendTo('.search-input');
-
+                    $(".dataTables_filter").appendTo("#tableSearch");
+                    $(".dataTables_filter").appendTo(".search-input");
                 },
                 drawCallback: function () {
                     feather.replace(); // Inisialisasi ulang Feather Icons
-                }
+                },
             });
         }
     }
-
-
 
     initPaymentHandler();
     function initPaymentHandler() {
