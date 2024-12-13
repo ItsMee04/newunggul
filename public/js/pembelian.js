@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     loadPembelian();
 
     $(document).on("click", "#refreshButton", function () {
@@ -14,26 +13,26 @@ $(document).ready(function () {
 
     function loadPembelian() {
         // Datatable
-        if ($('.pembelianTable').length > 0) {
-            pembelianTable = $('.pembelianTable').DataTable({
-                "scrollX": false, // Jangan aktifkan scroll horizontal secara paksa
-                "bFilter": true,
-                "sDom": 'fBtlpi',
-                "ordering": true,
-                "language": {
-                    search: ' ',
-                    sLengthMenu: '_MENU_',
+        if ($(".pembelianTable").length > 0) {
+            pembelianTable = $(".pembelianTable").DataTable({
+                scrollX: false, // Jangan aktifkan scroll horizontal secara paksa
+                bFilter: true,
+                sDom: "fBtlpi",
+                ordering: true,
+                language: {
+                    search: " ",
+                    sLengthMenu: "_MENU_",
                     searchPlaceholder: "Search",
                     info: "_START_ - _END_ of _TOTAL_ items",
                     paginate: {
                         next: ' <i class=" fa fa-angle-right"></i>',
-                        previous: '<i class="fa fa-angle-left"></i> '
+                        previous: '<i class="fa fa-angle-left"></i> ',
                     },
                 },
                 ajax: {
-                    url: 'pembelian/getPembelian', // Ganti dengan URL endpoint server Anda
-                    type: 'GET', // Metode HTTP (GET/POST)
-                    dataSrc: 'Data' // Jalur data di response JSON
+                    url: "pembelian/getPembelian", // Ganti dengan URL endpoint server Anda
+                    type: "GET", // Metode HTTP (GET/POST)
+                    dataSrc: "Data", // Jalur data di response JSON
                 },
                 columns: [
                     {
@@ -44,7 +43,7 @@ $(document).ready(function () {
                         orderable: false,
                     },
                     {
-                        data: 'kodepembelian'
+                        data: "kodepembelian",
                     },
                     {
                         data: null, // Kolom yang memuat data pelanggan atau suplier
@@ -55,22 +54,22 @@ $(document).ready(function () {
                             } else if (row.pelanggan_id === null) {
                                 return row.suplier.suplier; // Jika `pelanggan_id` null, tampilkan nama suplier
                             } else {
-                                return '-'; // Jika keduanya tidak ada, tampilkan tanda "-"
+                                return "-"; // Jika keduanya tidak ada, tampilkan tanda "-"
                             }
-                        }
+                        },
                     },
                     {
-                        data: 'produk.nama'
+                        data: "produk.nama",
                     },
                     {
-                        data: 'produk.berat'
+                        data: "produk.berat",
                     },
                     {
-                        data: 'tanggal'
-                    },     // Kolom Nama
+                        data: "tanggal",
+                    }, // Kolom Nama
                     {
-                        data: null,        // Kolom aksi
-                        orderable: false,  // Aksi tidak perlu diurutkan
+                        data: null, // Kolom aksi
+                        orderable: false, // Aksi tidak perlu diurutkan
                         className: "action-table-data",
                         render: function (data, type, row, meta) {
                             return `
@@ -86,17 +85,16 @@ $(document).ready(function () {
                                 </a>
                             </div>
                         `;
-                        }
-                    }
+                        },
+                    },
                 ],
                 initComplete: (settings, json) => {
-                    $('.dataTables_filter').appendTo('#tableSearch');
-                    $('.dataTables_filter').appendTo('.search-input');
-
+                    $(".dataTables_filter").appendTo("#tableSearch");
+                    $(".dataTables_filter").appendTo(".search-input");
                 },
                 drawCallback: function () {
                     feather.replace(); // Inisialisasi ulang Feather Icons
-                }
+                },
             });
         }
     }
@@ -208,11 +206,12 @@ $(document).ready(function () {
             },
         });
     });
+
     function formatToIDR(amount) {
-        return new Intl.NumberFormat('id-ID', {
-            style: 'currency',
-            currency: 'IDR',
-            minimumFractionDigits: 0
+        return new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+            minimumFractionDigits: 0,
         }).format(amount);
     }
 
@@ -229,7 +228,10 @@ $(document).ready(function () {
                 let namaPenjual;
                 if (pembelian.suplier_id !== null && pembelian.suplier) {
                     namaPenjual = pembelian.suplier.suplier; // Nama suplier jika suplier_id tidak null
-                } else if (pembelian.pelanggan_id !== null && pembelian.pelanggan) {
+                } else if (
+                    pembelian.pelanggan_id !== null &&
+                    pembelian.pelanggan
+                ) {
                     namaPenjual = pembelian.pelanggan.nama; // Nama pelanggan jika suplier_id null
                 } else {
                     namaPenjual = "Tidak Diketahui"; // Default jika keduanya null
@@ -244,7 +246,9 @@ $(document).ready(function () {
                     statusText = "Tidak Diketahui"; // Default jika status tidak sesuai
                 }
 
-                const hargaBeliFormatted = formatToIDR(pembelian.produk?.harga_beli || 0);
+                const hargaBeliFormatted = formatToIDR(
+                    pembelian.produk?.harga_beli || 0
+                );
 
                 $("#detailPenjual").val(namaPenjual);
                 $("#detailKodepembelian").val(response.Data[0].kodepembelian);
@@ -279,7 +283,11 @@ $(document).ready(function () {
             type: "GET",
             success: function (response) {
                 // Isi modal dengan data pegawai
-                if (response.success && response.Data && response.Data.length > 0) {
+                if (
+                    response.success &&
+                    response.Data &&
+                    response.Data.length > 0
+                ) {
                     const pembelian = response.Data[0]; // Mengambil data pertama dari array
                     // Pilih Suplier atau Pelanggan berdasarkan ID
                     if (pembelian.suplier_id !== null) {
@@ -325,7 +333,6 @@ $(document).ready(function () {
                                 $("#editpelanggan_id").html(options);
                             },
                         });
-
                     } else if (pembelian.pelanggan_id !== null) {
                         // Tambahkan kelas active pada Pelanggan tab dan radio button
                         $("#editpills-profile-tab").addClass("active");
@@ -371,6 +378,14 @@ $(document).ready(function () {
                         });
                     }
 
+                    // Cek apakah pelanggan_id atau suplier_id yang aktif
+                    const isPelangganActive = $(
+                        "#editpills-profile-tab"
+                    ).hasClass("active");
+                    const isSuplierActive = $("#editpills-home-tab").hasClass(
+                        "active"
+                    );
+
                     // // Muat opsi jabatan
                     $.ajax({
                         url: "/jenis/getJenis",
@@ -395,14 +410,20 @@ $(document).ready(function () {
                     $("#editkarat").val(pembelian.produk?.karat || "");
 
                     $("#edithargabeli").val(pembelian.produk?.harga_beli);
-                    $("#editkondisi").val(pembelian.kondisi || "").trigger("change");
-                    $("#editketerangan").val(pembelian.produk?.keterangan || "");
+                    $("#editkondisi")
+                        .val(pembelian.kondisi || "")
+                        .trigger("change");
+                    $("#editketerangan").val(
+                        pembelian.produk?.keterangan || ""
+                    );
                     $("#editid").val(pembelian.id);
 
                     // Status pembelian
-                    const statusText = pembelian.status === 1 ? "Aktif" : "Pending";
-                    $("#editstatus").val(pembelian.status || "").trigger("change");
-
+                    const statusText =
+                        pembelian.status === 1 ? "Aktif" : "Pending";
+                    $("#editstatus")
+                        .val(pembelian.status || "")
+                        .trigger("change");
                 } else {
                     console.error("Data tidak valid atau tidak ditemukan.");
                 }
@@ -429,7 +450,6 @@ $(document).ready(function () {
         $("#editsuplier_id").val("").trigger("change"); // Reset dropdown Jenis Produk
         $("#editpelanggan_id").val("").trigger("change"); // Reset dropdown Jenis Produk
 
-
         // Menghapus class active pada tab dan radio button
         $("#editpills-home-tab").removeClass("active");
         $("#editpills-profile-tab").removeClass("active");
@@ -444,21 +464,20 @@ $(document).ready(function () {
         // Ambil data dari form
         const dataForm = new FormData();
 
-        // Cek apakah pelanggan_id atau suplier_id yang diisi
-        const pelangganId = $("#editpelanggan_id").val();
-        const suplierId = $("#editsuplier_id").val();
+        // Cek apakah pelanggan_id atau suplier_id yang aktif
+        const isPelangganActive = $("#editpills-profile-tab").hasClass(
+            "active"
+        );
+        const isSuplierActive = $("#editpills-home-tab").hasClass("active");
 
-        if (pelangganId) {
-            // Jika pelanggan_id diisi, tambahkan ke FormData
-            dataForm.append("pelanggan_id", pelangganId);
-            dataForm.append("suplier_id", '');
-        } else if (suplierId) {
-            // Jika suplier_id diisi, tambahkan ke FormData
-            dataForm.append("suplier_id", suplierId);
-            dataForm.append("pelanggan_id", '');
-        } 
+        if (isPelangganActive) {
+            dataForm.append("pelanggan_id", $("#editpelanggan_id").val());
+            dataForm.append("suplier_id", ""); // Ubah suplier_id menjadi null
+        } else if (isSuplierActive) {
+            dataForm.append("suplier_id", $("#editsuplier_id").val());
+            dataForm.append("pelanggan_id", ""); // Ubah pelanggan_id menjadi null
+        }
 
-        
         dataForm.append("id", $("#editid").val());
         dataForm.append("nama", $("#editnama").val());
         dataForm.append("berat", $("#editberat").val());
@@ -470,7 +489,6 @@ $(document).ready(function () {
         dataForm.append("status", $("#editstatus").val());
         dataForm.append("_token", $('meta[name="csrf-token"]').attr("content")); // CSRF Token Laravel
 
-        
         // Kirim data ke server menggunakan AJAX
         $.ajax({
             url: `/pembelian/${$("#editid").val()}`, // URL untuk mengupdate data pegawai
@@ -505,6 +523,4 @@ $(document).ready(function () {
             },
         });
     });
-
-
 });
