@@ -46,7 +46,7 @@ $(document).ready(function () {
                         data: "kodepembelian",
                         render: function (data, type, row) {
                             return `
-                                <a href="/detail-pembelian/${row.id}" class="btn btn-secondary btn-sm">
+                                <a href="/pembelian/detailPembelian/${row.id}" class="btn btn-secondary btn-sm">
                                     ${data}  <!-- Menampilkan name sebagai button-link -->
                                 </a>
                             `;

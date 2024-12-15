@@ -212,4 +212,9 @@ class PembelianController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Pembayaran Di Konfirmasi']);
     }
+
+    public function detailPembelian($id)
+    {
+        return view('pages.detail-pembelian');
+    }
 }
