@@ -59,35 +59,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @foreach ($pembelian as $item)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $item->kodepembelian }} </td>
-                                        <td>
-                                            @if ($item->suplier_id == null)
-                                                {{ $item->pelanggan->nama }}
-                                            @elseif($item->pelanggan_id == null)
-                                                {{ $item->suplier->suplier }}
-                                            @endif
-                                        </td>
-                                        <td>{{ $item->produk->nama }}</td>
-                                        <td>{{ $item->produk->berat }}</td>
-                                        <td>{{ $item->tanggal }}</td>
-                                        <td class="action-table-data">
-                                            <div class="edit-delete-action">
-                                                <a class="me-2 p-2" href="javascript:void(0);">
-                                                    <i data-feather="eye" class="action-eye"></i>
-                                                </a>
-                                                <a class="me-2 p-2" data-bs-toggle="modal" data-bs-target="#edit-units">
-                                                    <i data-feather="edit" class="feather-edit"></i>
-                                                </a>
-                                                <a class="confirm-text p-2" href="javascript:void(0);">
-                                                    <i data-feather="trash-2" class="feather-trash-2"></i>
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach --}}
                             </tbody>
                         </table>
                     </div>
@@ -127,6 +98,13 @@
                                             <input type="radio" class="form-control" name="sign">
                                             <span class="checkmark"></span> Pelanggan</span>
                                     </li>
+                                    <li class="nav-item" role="presentation">
+                                        <span class="custom_radio me-2 mb-0" id="pills-pembeli-tab" data-bs-toggle="pill"
+                                            data-bs-target="#pills-pembeli" role="tab" aria-controls="pills-pembeli"
+                                            aria-selected="false">
+                                            <input type="radio" class="form-control" name="sign">
+                                            <span class="checkmark"></span> Non Suplier / Pelanggan</span>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="tab-content" id="pills-tabContent">
@@ -146,7 +124,15 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="mb-3">
+                                <div class="tab-pane fade" id="pills-pembeli" role="tabpanel"
+                                    aria-labelledby="pills-pembeli-tab">
+                                    <div class="mb-3">
+                                        <label class="form-label">Non Suplier / Pembeli</label>
+                                        <input type="text" name="nonsuplierdanpembeli" id="nonsuplierdanpembeli"
+                                            class="form-control">
+                                    </div>
+                                </div>
+                                {{-- <div class="mb-3">
                                     <label class="form-label">Nama Produk</label>
                                     <input type="text" name="nama" id="nama" class="form-control">
                                 </div>
@@ -183,7 +169,7 @@
                                 <div class="mb-3">
                                     <label class="form-label">Keterangan</label>
                                     <textarea class="form-control" rows="4" name="keterangan" id="keterangan"></textarea>
-                                </div>
+                                </div> --}}
                                 <div class="mb-3">
                                     <label class="form-label">Status</label>
                                     <select class="form-control" name="status" id="status">

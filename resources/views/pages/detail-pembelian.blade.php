@@ -34,7 +34,7 @@
                             <div class="row">
                                 <div class="col-lg-4 col-sm-6 col-12">
                                     <div class="input-blocks">
-                                        <label class="form-label">Supplier</label>
+                                        <label class="form-label">PEMBELI</label>
                                         <div class="row">
                                             <div class="col-lg-10 col-sm-10 col-10">
                                                 <select class="select">
@@ -43,40 +43,22 @@
                                                     <option>AIM Infotech</option>
                                                 </select>
                                             </div>
-                                            <div class="col-lg-2 col-sm-2 col-2 ps-0">
-                                                <div class="add-icon">
-                                                    <a href="#" class="choose-add"><i data-feather="plus-circle"
-                                                            class="plus"></i></a>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-sm-6 col-12">
                                     <div class="input-blocks">
-                                        <label>Date</label>
+                                        <label>TANGGAL</label>
                                         <div class="input-groupicon calender-input">
                                             <i data-feather="calendar" class="info-img"></i>
-                                            <input type="text" class="datetimepicker" placeholder="Choose">
+                                            <input type="text" id="detailTanggalPembelian">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-sm-6 col-12">
                                     <div class="input-blocks">
-                                        <label class="form-label">Reference No.</label>
-                                        <input type="text" class="form-control" value="PT001">
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 col-sm-6 col-12">
-                                    <div class="input-blocks">
-                                        <label>Product Name</label>
-                                        <div class="input-groupicon select-code">
-                                            <input type="text" placeholder="Please type product code and select"
-                                                value="Apex Computers">
-                                            <div class="addonset">
-                                                <img src="assets/img/icons/qrcode-scan.svg" alt="img">
-                                            </div>
-                                        </div>
+                                        <label class="form-label">KODE PEMBELIAN</label>
+                                        <input type="text" class="form-control" id="detailkodepembelian">
                                     </div>
                                 </div>
                             </div>
@@ -99,7 +81,8 @@
                                         <tr>
                                             <td>
                                                 <a class="product-img">
-                                                    <img src="assets/img/products/product1.jpg" alt="product">
+                                                    <img src="{{ asset('assets') }}/img/products/product1.jpg"
+                                                        alt="product">
                                                 </a>
                                             </td>
                                             <td>2/27/2022</td>
@@ -114,7 +97,8 @@
                                         <tr>
                                             <td>
                                                 <a class="product-img">
-                                                    <img src="assets/img/products/product5.jpg" alt="product">
+                                                    <img src="{{ asset('assets') }}/img/products/product5.jpg"
+                                                        alt="product">
                                                 </a>
                                             </td>
                                             <td>3/24/2022</td>
@@ -190,11 +174,6 @@
                                             <option>Received</option>
                                         </select>
                                     </div>
-                                </div>
-                                <div class="col-lg-12 text-end">
-                                    <button type="button" class="btn btn-cancel add-cancel me-3"
-                                        data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-submit add-sale">Save Changes</button>
                                 </div>
                             </div>
                         </form>
