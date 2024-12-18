@@ -71,7 +71,7 @@
 
     <!-- MODAL TAMBAH PEMBELIAN -->
     <div class="modal fade" id="mdtambahPembelian">
-        <div class="modal-dialog modal-dialog-centered text-center" role="document">
+        <div class="modal-dialog modal-lg modal-dialog-centered text-center" role="document">
             <div class="modal-content modal-content-demo">
                 <div class="modal-header">
                     <h4 class="modal-title">TAMBAH PEMBELIAN</h4>
@@ -132,44 +132,121 @@
                                             class="form-control">
                                     </div>
                                 </div>
-                                {{-- <div class="mb-3">
-                                    <label class="form-label">Nama Produk</label>
-                                    <input type="text" name="nama" id="nama" class="form-control">
-                                </div>
-                                <div class="row">
-                                    <div class="col-6 mb-3">
-                                        <label class="form-label">Berat</label>
-                                        <input type="text" name="berat" id="berat" class="form-control">
+
+                                <div class="card">
+                                    <div class="card-body add-product pb-0">
+                                        <div class="accordion-card-one accordion" id="accordionExample">
+                                            <div class="accordion-item">
+                                                <div class="accordion-header" id="headingOne">
+                                                    <div class="accordion-button" data-bs-toggle="collapse"
+                                                        data-bs-target="#collapseOne" aria-controls="collapseOne">
+                                                        <div class="addproduct-icon">
+                                                            <h5><i data-feather="info" class="add-info"></i><span> FORM
+                                                                    TAMBAH PRODUK</span></h5>
+                                                            <a href="javascript:void(0);"><i data-feather="chevron-down"
+                                                                    class="chevron-down-add"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="collapseOne" class="accordion-collapse collapse"
+                                                    aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                                    <div class="accordion-body">
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Nama Produk</label>
+                                                            <input type="text" name="nama" id="nama"
+                                                                class="form-control">
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-6 mb-3">
+                                                                <label class="form-label">Berat</label>
+                                                                <input type="text" name="berat" id="berat"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div class="col-6 mb-3">
+                                                                <label class="form-label">Karat</label>
+                                                                <input type="text" name="karat" id="karat"
+                                                                    class="form-control">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-6 mb-3">
+                                                                <label class="form-label">Jenis</label>
+                                                                <select class="select" name="jenis_id" id="jenis">
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-6 mb-3">
+                                                                <label class="form-label">Harga Beli</label>
+                                                                <input type="text" name="harga_beli" id="hargabeli"
+                                                                    class="form-control">
+                                                            </div>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Kondisi Fisik</label>
+                                                            <select class="select" name="kondisi" id="kondisi">
+                                                                <option selected> Pilih Kondisi</option>
+                                                                <option value="baik">Baik</option>
+                                                                <option value="kusam">Kusam</option>
+                                                                <option value="rusak">Rusak</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Keterangan</label>
+                                                            <textarea class="form-control" rows="4" name="keterangan" id="keterangan"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="accordion-card-one accordion" id="accordionExample4">
+                                            <div class="accordion-item">
+                                                <div class="accordion-header" id="headingFour">
+                                                    <div class="accordion-button" data-bs-toggle="collapse"
+                                                        data-bs-target="#collapseFour" aria-controls="collapseFour">
+                                                        <div class="text-editor add-list">
+                                                            <div class="addproduct-icon list">
+                                                                <h5><i data-feather="list"
+                                                                        class="add-info"></i><span>PRODUK TABEL</span>
+                                                                </h5>
+                                                                <a href="javascript:void(0);"><i
+                                                                        data-feather="chevron-down"
+                                                                        class="chevron-down-add"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="collapseFour" class="accordion-collapse collapse"
+                                                    aria-labelledby="headingFour" data-bs-parent="#accordionExample4">
+                                                    <div class="accordion-body">
+                                                        <div class="table-top">
+                                                            <div class="search-set">
+                                                                <div class="search-input">
+                                                                    <a href="" class="btn btn-searchset"><i
+                                                                            data-feather="search"
+                                                                            class="feather-search"></i></a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="table-responsive product-list">
+                                                            <table class="table datanew table-hover" style="width: 100%">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>No.</th>
+                                                                        <th>Nama Produk</th>
+                                                                        <th>Berat </th>
+                                                                        <th>Action</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-6 mb-3">
-                                        <label class="form-label">Karat</label>
-                                        <input type="text" name="karat" id="karat" class="form-control">
-                                    </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-6 mb-3">
-                                        <label class="form-label">Jenis</label>
-                                        <select class="select" name="jenis_id" id="jenis">
-                                        </select>
-                                    </div>
-                                    <div class="col-6 mb-3">
-                                        <label class="form-label">Harga Beli</label>
-                                        <input type="text" name="harga_beli" id="hargabeli" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Kondisi Fisik</label>
-                                    <select class="select" name="kondisi" id="kondisi">
-                                        <option selected> Pilih Kondisi</option>
-                                        <option value="baik">Baik</option>
-                                        <option value="kusam">Kusam</option>
-                                        <option value="rusak">Rusak</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Keterangan</label>
-                                    <textarea class="form-control" rows="4" name="keterangan" id="keterangan"></textarea>
-                                </div> --}}
                                 <div class="mb-3">
                                     <label class="form-label">Status</label>
                                     <select class="form-control" name="status" id="status">
