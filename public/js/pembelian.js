@@ -188,11 +188,30 @@ $(document).ready(function () {
         });
     }
 
+    //Fungsi untuk memuat data Kondisi
+    function loadKondisi() {
+        $.ajax({
+            url: "/kondisi/getKondisi", // Endpoint untuk mendapatkan data jabatan
+            type: "GET",
+            success: function (response) {
+                let options = '<option value="">-- Pilih Kondisi --</option>';
+                response.Data.forEach((item) => {
+                    options += `<option value="${item.id}">${item.kondisi}</option>`;
+                });
+                $("#kondisi").html(options); // Masukkan data ke select
+            },
+            error: function () {
+                alert("Gagal memuat data jabatan!");
+            },
+        });
+    }
+
     $(".btn-tambahPembelian").on("click", function () {
         $("#mdtambahPembelian").modal("show");
         loadJenis();
         loadSuplier();
         loadPelanggan();
+        loadKondisi();
     });
 
     $("#storePembelian").on("submit", function (event) {

@@ -20,7 +20,7 @@ class Pembelian extends Model
         'pelanggan_id',
         'kodeproduk',
         'tanggal',
-        'kondisi',
+        'kondisi_id',
         'status'
     ];
 
@@ -62,5 +62,15 @@ class Pembelian extends Model
     public function produk(): BelongsTo
     {
         return $this->belongsTo(Produk::class, 'kodeproduk', 'kodeproduk');
+    }
+
+    /**
+     * Get the kondisi that owns the Pembelian
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function kondisi(): BelongsTo
+    {
+        return $this->belongsTo(Kondisi::class, 'kondisi_id', 'id');
     }
 }

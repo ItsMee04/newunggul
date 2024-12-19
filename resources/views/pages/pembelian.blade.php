@@ -182,11 +182,7 @@
                                                         </div>
                                                         <div class="mb-3">
                                                             <label class="form-label">Kondisi Fisik</label>
-                                                            <select class="select" name="kondisi" id="kondisi">
-                                                                <option selected> Pilih Kondisi</option>
-                                                                <option value="baik">Baik</option>
-                                                                <option value="kusam">Kusam</option>
-                                                                <option value="rusak">Rusak</option>
+                                                            <select class="select" name="kondisi_id" id="kondisi">
                                                             </select>
                                                         </div>
                                                         <div class="mb-3">

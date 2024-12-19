@@ -15,6 +15,7 @@ use App\Http\Controllers\Transaksi\OrderController;
 use App\Http\Controllers\Transaksi\DiskonController;
 use App\Http\Controllers\Pelanggan\SuplierController;
 use App\Http\Controllers\Pelanggan\PelangganController;
+use App\Http\Controllers\Produk\KondisiController;
 use App\Http\Controllers\Transaksi\KeranjangController;
 use App\Http\Controllers\Transaksi\PembelianController;
 
@@ -126,6 +127,8 @@ Route::middleware('auth')->group(function () {
     Route::get('confirmPayment/{id}', [OrderController::class, 'confirmPayment']);
     Route::get('cancelPayment/{id}', [OrderController::class, 'cancelPayment']);
     Route::get('order/{id}', [OrderController::class, 'detailOrder']);
+
+    Route::get('kondisi/getKondisi', [KondisiController::class, 'getKondisi']);
 
     Route::get('pembelian', [PembelianController::class, 'index']);
     Route::get('pembelian/getPembelian', [PembelianController::class, 'getPembelian']);
