@@ -249,7 +249,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Status</label>
-                                    <select class="form-control" name="status" id="status">
+                                    <select class="select" name="status" id="status">
                                         <option>Pilih Status</option>
                                         <option value="1">Aktif</option>
                                         <option value="2">Tidak Aktif</option>
@@ -440,7 +440,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Status</label>
-                                    <select class="form-control" name="status" id="editstatus">
+                                    <select class="select" name="status" id="editstatus">
                                         <option>Pilih Status</option>
                                         <option value="1">Aktif</option>
                                         <option value="2">Tidak Aktif</option>
