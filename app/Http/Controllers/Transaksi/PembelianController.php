@@ -217,4 +217,9 @@ class PembelianController extends Controller
     {
         return view('pages.detail-pembelian');
     }
+
+    public function formPembelian()
+    {
+        return view('pages.formPembelian');
+    }
 }

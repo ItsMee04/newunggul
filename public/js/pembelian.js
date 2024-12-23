@@ -1,5 +1,6 @@
 $(document).ready(function () {
     loadPembelian();
+    toggleFormPembelian();
 
     $(document).on("click", "#refreshButton", function () {
         if (pembelianTable) {
@@ -694,6 +695,34 @@ $(document).ready(function () {
                     );
                 }
             });
+        });
+    }
+
+    function toggleFormPembelian() {
+        const toggleFormBtn = document.getElementById('toggleFormBtn');
+        const formContainer = document.getElementById('formContainer');
+        const closeFormBtn = document.getElementById('closeFormBtn'); 
+    
+        // Tampilkan atau sembunyikan form saat tombol ditekan
+        toggleFormBtn.addEventListener('click', () => {
+            // Jika form sedang disembunyikan, tampilkan
+            if (formContainer.style.display === 'none' || formContainer.style.display === '') {
+                formContainer.style.display = 'block';
+                toggleFormBtn.textContent = 'Sembunyikan Form'; // Ubah teks tombol
+                loadJenis();
+                loadSuplier();
+                loadPelanggan();
+                loadKondisi();
+            } else {
+                formContainer.style.display = 'none';
+                toggleFormBtn.textContent = 'Tambah Pembelian'; // Ubah teks tombol
+            }
+        });
+    
+        // Menutup form saat tombol Close ditekan
+        closeFormBtn.addEventListener('click', () => {
+            formContainer.style.display = 'none';
+            toggleFormBtn.textContent = 'Tambah Pembelian'; // Ubah teks tombol
         });
     }
 });
