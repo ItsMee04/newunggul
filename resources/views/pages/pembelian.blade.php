@@ -31,7 +31,82 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="card" id="formContainer" style="display: none">
-                        <div class="card-body add-product">
+                        <div class="card-header">
+                            <h5 class="card-title">FORM PEMBELIAN PRODUK / BARANG</h5>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" enctype="multipart/form-data" id="storePembelianProduk">
+                                @csrf
+                                <div class="mb-3">
+                                    <label class="form-label">Nama Produk</label>
+                                    <input type="text" name="nama" id="nama" class="form-control">
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label">Berat</label>
+                                        <input type="text" name="berat" id="berat" class="form-control">
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label">Karat</label>
+                                        <input type="text" name="karat" id="karat" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label">Jenis</label>
+                                        <select class="select" name="jenis_id" id="jenis">
+                                        </select>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <label class="form-label">Harga Beli</label>
+                                        <input type="text" name="harga_beli" id="hargabeli" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Kondisi Fisik</label>
+                                    <select class="select" name="kondisi_id" id="kondisi">
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Keterangan</label>
+                                    <textarea class="form-control" rows="4" name="keterangan" id="keterangan"></textarea>
+                                </div>
+                                <!-- Form Tambahan -->
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card" id="tabelProduPembelian" style="display: none">
+                        <div class="card-header">
+                            <h5 class="card-title">FORM PEMBELIAN </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-top">
+                                <div class="search-set">
+                                    <div class="search-input">
+                                        <a href="" class="btn btn-searchset"><i data-feather="search"
+                                                class="feather-search"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive product-list">
+                                <table class="table tabelpembelianProduk table-hover" style="width: 100%">
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Nama Produk</th>
+                                            <th>Berat </th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
                             <form method="POST" enctype="multipart/form-data" id="storePembelian">
                                 @csrf
                                 <div class="input-blocks add-products">
@@ -86,73 +161,6 @@
                                                     id="nonsuplierdanpembeli" class="form-control">
                                             </div>
                                         </div>
-                                        <div class="card">
-                                            <div class="card-body add-product pb-0">
-                                                <div class="accordion-card-one accordion" id="accordionExample">
-                                                    <div class="accordion-item">
-                                                        <div class="accordion-header" id="headingOne">
-                                                            <div class="accordion-button" data-bs-toggle="collapse"
-                                                                data-bs-target="#collapseOne" aria-controls="collapseOne">
-                                                                <div class="addproduct-icon">
-                                                                    <h5><i data-feather="info" class="add-info"></i><span>
-                                                                            FORM
-                                                                            TAMBAH PRODUK</span></h5>
-                                                                    <a href="javascript:void(0);"><i
-                                                                            data-feather="chevron-down"
-                                                                            class="chevron-down-add"></i></a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div id="collapseOne" class="accordion-collapse collapse"
-                                                            aria-labelledby="headingOne"
-                                                            data-bs-parent="#accordionExample">
-                                                            <div class="accordion-body">
-                                                                <div class="mb-3">
-                                                                    <label class="form-label">Nama Produk</label>
-                                                                    <input type="text" name="nama" id="nama"
-                                                                        class="form-control">
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-6 mb-3">
-                                                                        <label class="form-label">Berat</label>
-                                                                        <input type="text" name="berat"
-                                                                            id="berat" class="form-control">
-                                                                    </div>
-                                                                    <div class="col-6 mb-3">
-                                                                        <label class="form-label">Karat</label>
-                                                                        <input type="text" name="karat"
-                                                                            id="karat" class="form-control">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-6 mb-3">
-                                                                        <label class="form-label">Jenis</label>
-                                                                        <select class="select" name="jenis_id"
-                                                                            id="jenis">
-                                                                        </select>
-                                                                    </div>
-                                                                    <div class="col-6 mb-3">
-                                                                        <label class="form-label">Harga Beli</label>
-                                                                        <input type="text" name="harga_beli"
-                                                                            id="hargabeli" class="form-control">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label class="form-label">Kondisi Fisik</label>
-                                                                    <select class="select" name="kondisi_id"
-                                                                        id="kondisi">
-                                                                    </select>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label class="form-label">Keterangan</label>
-                                                                    <textarea class="form-control" rows="4" name="keterangan" id="keterangan"></textarea>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                         <div class="mb-3">
                                             <label class="form-label">Status</label>
                                             <select class="select" name="status" id="status">
@@ -170,10 +178,8 @@
                             </form>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <!-- /product list -->
-                    <div class="card table-list-card" id="tabelProduPembelian" style="display: none">
+                    {{-- <!-- /product list -->
+                    <div class="card table-list-card" >
                         <div class="card-body">
                             <div class="table-top">
                                 <div class="search-set">
@@ -198,7 +204,7 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 

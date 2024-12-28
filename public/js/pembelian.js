@@ -207,6 +207,128 @@ $(document).ready(function () {
         });
     }
 
+    function loadPembelianProduk() {
+        if ($(".tabelpembelianProduk").length > 0) {
+            tabelpembelianProduk = $(".tabelpembelianProduk").DataTable({
+                scrollX: false, // Jangan aktifkan scroll horizontal secara paksa
+                bFilter: true,
+                sDom: "fBtlpi",
+                ordering: true,
+                language: {
+                    search: " ",
+                    sLengthMenu: "_MENU_",
+                    searchPlaceholder: "Search",
+                    info: "_START_ - _END_ of _TOTAL_ items",
+                    paginate: {
+                        next: ' <i class=" fa fa-angle-right"></i>',
+                        previous: '<i class="fa fa-angle-left"></i> ',
+                    },
+                },
+                ajax: {
+                    url: "pembelian/getPembelianProduk", // Ganti dengan URL endpoint server Anda
+                    type: "GET", // Metode HTTP (GET/POST)
+                    dataSrc: "Data", // Jalur data di response JSON
+                },
+                columns: [
+                    {
+                        data: null, // Kolom nomor urut
+                        render: function (data, type, row, meta) {
+                            return meta.row + 1; // Nomor urut dimulai dari 1
+                        },
+                        orderable: false,
+                    },
+                    {
+                        data: "kodepembelian",
+                        render: function (data, type, row) {
+                            return `
+                                <a href="/pembelian/detailPembelian/${row.id}" class="btn btn-secondary btn-sm">
+                                    ${data}  <!-- Menampilkan name sebagai button-link -->
+                                </a>
+                            `;
+                        },
+                    },
+                    {
+                        data: null, // Kolom yang memuat data pelanggan atau suplier
+                        render: function (data, type, row) {
+                            // Cek apakah pelanggan atau suplier tersedia
+                            if (row.suplier_id === null) {
+                                return row.pelanggan.nama; // Jika `suplier_id` null, tampilkan nama pelanggan
+                            } else if (row.pelanggan_id === null) {
+                                return row.suplier.suplier; // Jika `pelanggan_id` null, tampilkan nama suplier
+                            } else {
+                                return "-"; // Jika keduanya tidak ada, tampilkan tanda "-"
+                            }
+                        },
+                    },
+                    {
+                        data: "produk.nama",
+                    },
+                    {
+                        data: "produk.berat",
+                    },
+                    {
+                        data: "tanggal",
+                    },
+                    {
+                        data: "status",
+                        render: function (data, type, row) {
+                            // Menampilkan badge sesuai dengan status
+                            if (data == 1) {
+                                return `<span class="badge badge-sm bg-outline-warning"> UNPAID</span>`;
+                            } else if (data == 2) {
+                                return `<span class="badge badge-sm bg-outline-success"> PAID</span>`;
+                            } else {
+                                return `<span class="badge badge-sm bg-outline-danger"> CANCELED</span>`;
+                            }
+                        },
+                    },
+                    {
+                        data: null, // Kolom aksi
+                        orderable: false, // Aksi tidak perlu diurutkan
+                        className: "action-table-data",
+                        render: function (data, type, row, meta) {
+                            if (row.status === 1) {
+                                // Jika status adalah 1
+                                return `
+                                    <div class="edit-delete-action">
+                                        <a class="me-2 p-2 btn-detail" data-id="${row.id}">
+                                    <i data-feather="eye" class="action-eye"></i>
+                                    </a>
+                                    <a class="me-2 p-2 btn-edit" data-id="${row.id}">
+                                        <i data-feather="edit" class="feather-edit"></i>
+                                    </a>
+                                    <a class="me-2 p-2 confirm-payment" data-id="${row.id}">
+                                        <i data-feather="check-circle" class="feather-edit-2"></i>
+                                    </a>
+                                    <a class="confirm-text p-2" data-id="${row.id}">
+                                        <i data-feather="x-circle" class="feather-trash-2"></i>
+                                    </a>
+                                    </div>
+                                `;
+                            } else {
+                                // Jika status bukan 1
+                                return `
+                                    <div class="edit-delete-action">
+                                        <a class="me-2 p-2 btn-detail" data-id="${row.id}">
+                                            <i data-feather="eye" class="action-eye"></i>
+                                        </a>
+                                    </div>
+                                `;
+                            }
+                        },
+                    },
+                ],
+                initComplete: (settings, json) => {
+                    $(".dataTables_filter").appendTo("#tableSearch");
+                    $(".dataTables_filter").appendTo(".search-input");
+                },
+                drawCallback: function () {
+                    feather.replace(); // Inisialisasi ulang Feather Icons
+                },
+            });
+        }
+    }
+
     $(".btn-tambahPembelian").on("click", function () {
         $("#mdtambahPembelian").modal("show");
         loadJenis();
@@ -214,6 +336,30 @@ $(document).ready(function () {
         loadPelanggan();
         loadKondisi();
     });
+
+    $("#storePembelianProduk").on("submit", function (event) {
+        event.preventDefault(); // Mencegah form submit secara default
+        // Ambil elemen input file
+
+        // Buat objek FormData
+        const formData = new FormData(this);
+        $.ajax({
+            url: "/pembelianProduk",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                const successtoastExample =
+                    document.getElementById("successToast");
+                const toast = new bootstrap.Toast(successtoastExample);
+                $(".toast-body").text(response.message);
+                toast.show();
+
+                
+            }
+        })
+    })
 
     $("#storePembelian").on("submit", function (event) {
         event.preventDefault(); // Mencegah form submit secara default

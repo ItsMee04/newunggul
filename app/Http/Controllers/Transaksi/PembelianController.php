@@ -218,8 +218,9 @@ class PembelianController extends Controller
         return view('pages.detail-pembelian');
     }
 
-    public function formPembelian()
+    public function getPembelianProduk()
     {
-        return view('pages.formPembelian');
+        $pembelian  = Pembelian::with(['suplier', 'jenis', 'pelanggan', 'produk'])->get();
+        return response()->json(['success' => true, 'message' => 'Data Pembelian Berhasil Ditemukan', 'Data' => $pembelian]);
     }
 }
