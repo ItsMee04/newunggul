@@ -21,12 +21,14 @@ return new class extends Migration
             $table->text('keterangan')->nullable();
             $table->decimal('berat', 5, 2);
             $table->integer('karat');
+            $table->unsignedBigInteger('kondisi_id');
             $table->string('image', 100)->nullable();
             $table->integer('status')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('jenis_id')->references('id')->on('jenis')->onDelete('cascade');
+            $table->foreign('kondisi_id')->references('id')->on('kondisi')->onDelete('cascade');
         });
     }
 

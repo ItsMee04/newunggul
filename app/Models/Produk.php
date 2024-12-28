@@ -22,6 +22,7 @@ class Produk extends Model
         'keterangan',
         'berat',
         'karat',
+        'kondisi_id',
         'image',
         'status',
     ];
@@ -29,5 +30,15 @@ class Produk extends Model
     public function jenis(): BelongsTo
     {
         return $this->belongsTo(Jenis::class, 'jenis_id', 'id');
+    }
+
+    /**
+     * Get the kondisi that owns the Produk
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function kondisi(): BelongsTo
+    {
+        return $this->belongsTo(Kondisi::class, 'kondisi_id', 'id');
     }
 }
