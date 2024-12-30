@@ -73,7 +73,7 @@
                                 </div>
                                 <!-- Form Tambahan -->
                                 <div class="text-end">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" class="btn btn-primary">Simpan</button>
                                 </div>
                             </form>
                         </div>
@@ -173,7 +173,7 @@
                                 </div>
                                 <!-- Form Tambahan -->
                                 <div class="text-end">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" class="btn btn-primary">Simpan</button>
                                 </div>
                             </form>
                         </div>

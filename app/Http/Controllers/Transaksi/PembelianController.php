@@ -15,6 +15,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Http\Controllers\Produk\ProdukController;
+use App\Models\Kondisi;
 
 class PembelianController extends Controller
 {
@@ -222,5 +223,24 @@ class PembelianController extends Controller
     {
         $pembelian  = Pembelian::with(['suplier', 'jenis', 'pelanggan', 'produk'])->get();
         return response()->json(['success' => true, 'message' => 'Data Pembelian Berhasil Ditemukan', 'Data' => $pembelian]);
+    }
+
+    public function storeProdukPembelian(Request $request)
+    {
+        $messages = [
+            'required' => ':attribute wajib di isi !!!',
+            'integer'  => ':attribute format wajib menggunakan angka',
+            'mimes'    => ':attribute format wajib menggunakan PNG/JPG'
+        ];
+
+        $credentials = $request->validate([
+            'kodepembelianproduk'   =>  'required',
+            'produk_id'             =>  'required',
+            'harga'                 =>  'integer',
+            'total'                 =>  'string',
+            'kondisi_id'            =>  'required|' . Rule::in(Kondisi::where('status', 1)->pluck('id')),
+            'user_id'               =>  'required',
+            'status'                =>  'required'
+        ], $messages);
     }
 }
