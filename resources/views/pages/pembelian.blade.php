@@ -79,34 +79,39 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="col-md-6">
                     <div class="card" id="tabelProduPembelian" style="display: none">
                         <div class="card-header">
                             <h5 class="card-title">FORM PEMBELIAN </h5>
                         </div>
                         <div class="card-body">
-                            <div class="table-top">
-                                <div class="search-set">
-                                    <div class="search-input">
-                                        <a href="" class="btn btn-searchset"><i data-feather="search"
-                                                class="feather-search"></i></a>
+                            <div class="card table-list-card">
+                                <div class="table-top">
+                                    <div class="search-set">
+                                        <div class="search-input">
+                                            <a href="" class="btn btn-searchset"><i data-feather="search"
+                                                    class="feather-search"></i></a>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="table-responsive product-list">
+                                    <table class="table tabelpembelianProduk table-hover" style="width: 100%">
+                                        <thead>
+                                            <tr>
+                                                <th>No.</th>
+                                                <th>Nama Produk</th>
+                                                <th>Berat </th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                            <div class="table-responsive product-list">
-                                <table class="table tabelpembelianProduk table-hover" style="width: 100%">
-                                    <thead>
-                                        <tr>
-                                            <th>No.</th>
-                                            <th>Nama Produk</th>
-                                            <th>Berat </th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
+
+
                             <form method="POST" enctype="multipart/form-data" id="storePembelian">
                                 @csrf
                                 <div class="input-blocks add-products">
@@ -178,33 +183,6 @@
                             </form>
                         </div>
                     </div>
-                    {{-- <!-- /product list -->
-                    <div class="card table-list-card" >
-                        <div class="card-body">
-                            <div class="table-top">
-                                <div class="search-set">
-                                    <div class="search-input">
-                                        <a href="" class="btn btn-searchset"><i data-feather="search"
-                                                class="feather-search"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="table-responsive product-list">
-                                <table class="table datanew table-hover" style="width: 100%">
-                                    <thead>
-                                        <tr>
-                                            <th>No.</th>
-                                            <th>Nama Produk</th>
-                                            <th>Berat </th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div> --}}
                 </div>
             </div>
 
