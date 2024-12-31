@@ -5,17 +5,19 @@ namespace App\Http\Controllers\Transaksi;
 use Carbon\Carbon;
 use App\Models\Jenis;
 use App\Models\Produk;
+use App\Models\Kondisi;
 use App\Models\Suplier;
 use App\Models\Pelanggan;
 use App\Models\Pembelian;
 use Illuminate\Http\Request;
+use App\Models\PembelianProduk;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Http\Controllers\Produk\ProdukController;
-use App\Models\Kondisi;
 
 class PembelianController extends Controller
 {
@@ -41,6 +43,25 @@ class PembelianController extends Controller
 
         // Format kode customer baru
         $newKodeCustomer = '#P-' . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
+
+        return $newKodeCustomer;
+    }
+
+    public function generateKodePembelianProduk()
+    {
+        // Ambil kode customer terakhir dari database
+        $lastCustomer = DB::table('pembelian_produk')
+            ->orderBy('kodepembelianproduk', 'desc')
+            ->first();
+
+        // Jika tidak ada customer, mulai dari 1
+        $lastNumber = $lastCustomer ? (int) substr($lastCustomer->kodepembelianproduk, -5) : 0;
+
+        // Tambahkan 1 pada nomor terakhir
+        $newNumber = $lastNumber + 1;
+
+        // Format kode customer baru
+        $newKodeCustomer = '#PO-' . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
 
         return $newKodeCustomer;
     }
@@ -221,7 +242,7 @@ class PembelianController extends Controller
 
     public function getPembelianProduk()
     {
-        $pembelian  = Pembelian::with(['suplier', 'jenis', 'pelanggan', 'produk'])->get();
+        $pembelian  = PembelianProduk::with(['produk', 'kondisi', 'user.pegawai'])->get();
         return response()->json(['success' => true, 'message' => 'Data Pembelian Berhasil Ditemukan', 'Data' => $pembelian]);
     }
 
@@ -234,13 +255,65 @@ class PembelianController extends Controller
         ];
 
         $credentials = $request->validate([
-            'kodepembelianproduk'   =>  'required',
-            'produk_id'             =>  'required',
-            'harga'                 =>  'integer',
-            'total'                 =>  'string',
+            'nama'                  =>  'required',
+            'berat'                 =>  [
+                'required',
+                'regex:/^\d+\.\d{1}$/'
+            ],
+            'karat'                 =>  'required|integer',
+            'jenis_id'              =>  'required|' . Rule::in(Jenis::where('status', 1)->pluck('id')),
+            'hargabeli'             =>  'integer',
             'kondisi_id'            =>  'required|' . Rule::in(Kondisi::where('status', 1)->pluck('id')),
-            'user_id'               =>  'required',
+            'keterangan'            =>  'required',
             'status'                =>  'required'
         ], $messages);
+
+
+        $request['kodepembelianproduk']   = $this->generateKodePembelianProduk();
+        $request['kodeproduk']      = $this->produkController->generateKode();
+        $request['tanggal']         = Carbon::today()->format('Y-m-d');
+
+        $content = QrCode::format('png')->size(300)->generate($request['kodeproduk']); // Ini menghasilkan data PNG sebagai string
+
+        // Tentukan nama file
+        $fileName = 'barcode/' . $request['kodeproduk'] . '.png';
+
+        // Simpan file ke dalam storage/public/barcode/
+        Storage::put($fileName, $content);
+
+        $createProduk = Produk::create([
+            'kodeproduk'    => $request['kodeproduk'],
+            'jenis_id'      => $request->jenis_id,
+            'nama'          => $request->nama,
+            'harga_jual'    => 0,
+            'harga_beli'    => $request->hargabeli,
+            'keterangan'    => $request->keterangan,
+            'berat'         => $request->berat,
+            'karat'         => $request->karat,
+            'kondisi_id'    => $request->kondisi_id,
+            'status'        => 2
+        ]);
+
+        if ($createProduk) {
+
+            $produk = Produk::where('id', $request['kodeproduk'])->first()->id;
+            $berat  = $request->berat;
+            $harga  = $request->hargabeli;
+
+            $total  = $berat * $harga;
+
+            PembelianProduk::create([
+                'kodepembelianproduk'   =>  $request['kodepembelianproduk'],
+                'produk_id'             =>  $produk,
+                'harga'                 =>  $request->harga,
+                'total'                 =>  $total,
+                'kondisi_id'            =>  $request->kondisi_id,
+                'user_id'               =>  Auth::user()->id,
+                'status'                =>  $request->status,
+            ]);
+
+
+            return response()->json(['success' => true, 'message' => 'Data Produk Berhasil Ditambahkan']);
+        }
     }
 }

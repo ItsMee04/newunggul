@@ -59,7 +59,7 @@
                                     </div>
                                     <div class="col-6 mb-3">
                                         <label class="form-label">Harga Beli</label>
-                                        <input type="text" name="harga_beli" id="hargabeli" class="form-control">
+                                        <input type="text" name="hargabeli" id="hargabeli" class="form-control">
                                     </div>
                                 </div>
                                 <div class="mb-3">
@@ -81,7 +81,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <div class="card" id="tabelProduPembelian" style="display: none">
+                    <div class="card" id="tabelProdukPembelian" style="display: none">
                         <div class="card-header">
                             <h5 class="card-title">FORM PEMBELIAN </h5>
                         </div>
@@ -96,7 +96,7 @@
                                     </div>
                                 </div>
                                 <div class="table-responsive product-list">
-                                    <table class="table tabelpembelianProduk table-hover" style="width: 100%">
+                                    <table class="table pembelianProdukTable table-hover" style="width: 100%">
                                         <thead>
                                             <tr>
                                                 <th>No.</th>
