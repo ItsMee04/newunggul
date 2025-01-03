@@ -1,6 +1,6 @@
 $(document).ready(function () {
     loadPembelian();
-
+    loadPembelianProduk();
     $(document).on("click", "#refreshButton", function () {
         if (pembelianTable) {
             pembelianTable.ajax.reload(); // Reload data dari server
@@ -213,30 +213,6 @@ $(document).ready(function () {
         loadPelanggan();
         loadKondisi();
     });
-
-    // $("#storePembelianProduk").on("submit", function (event) {
-    //     event.preventDefault(); // Mencegah form submit secara default
-    //     // Ambil elemen input file
-
-    //     // Buat objek FormData
-    //     const formData = new FormData(this);
-    //     $.ajax({
-    //         url: "/pembelian/storePembelianProduk",
-    //         type: "POST",
-    //         data: formData,
-    //         processData: false,
-    //         contentType: false,
-    //         success: function (response) {
-    //             const successtoastExample =
-    //                 document.getElementById("successToast");
-    //             const toast = new bootstrap.Toast(successtoastExample);
-    //             $(".toast-body").text(response.message);
-    //             toast.show();
-
-    //             tabelProdukPembelian.ajax.reload();
-    //         }
-    //     })
-    // })
 
     $("#storePembelian").on("submit", function (event) {
         event.preventDefault(); // Mencegah form submit secara default
@@ -723,12 +699,73 @@ $(document).ready(function () {
 
     $('#toggleFormBtn').on('click', function () {
         // Tampilkan atau sembunyikan elemen
-        $('#formContainer, #tabelProdukPembelian').toggle(); 
+        $('#formContainer, #tabelProdukPembelian').toggle();
         loadJenis();
         loadKondisi();
         loadPelanggan();
         loadSuplier();
     });
+
+    function loadPembelianProduk() {
+        // Datatable
+        if ($(".pembelianProdukTable").length > 0) {
+            tabelProdukPembelian = $(".pembelianProdukTable").DataTable({
+                scrollX: false, // Jangan aktifkan scroll horizontal secara paksa
+                bFilter: true,
+                sDom: "fBtlpi",
+                ordering: true,
+                language: {
+                    search: " ",
+                    sLengthMenu: "_MENU_",
+                    searchPlaceholder: "Search",
+                    info: "_START_ - _END_ of _TOTAL_ items",
+                    paginate: {
+                        next: ' <i class=" fa fa-angle-right"></i>',
+                        previous: '<i class="fa fa-angle-left"></i> ',
+                    },
+                },
+                ajax: {
+                    url: "/getPembelianProduk", // Ganti dengan URL endpoint server Anda
+                    type: "GET", // Metode HTTP (GET/POST)
+                    dataSrc: "Data", // Jalur data di response JSON
+                },
+                columns: [
+                    {
+                        data: null, // Kolom nomor urut
+                        render: function (data, type, row, meta) {
+                            return meta.row + 1; // Nomor urut dimulai dari 1
+                        },
+                        orderable: false,
+                    },
+                    {
+                        data: "produk.nama",
+                    },
+                    {
+                        data: "produk.berat",
+                    },
+                    {
+                        data: null, // Kolom aksi
+                        orderable: false, // Aksi tidak perlu diurutkan
+                        className: "action-table-data",
+                        render: function (data, type, row, meta) {
+                            return `
+                                    <a class="confirm-text p-2" data-id="${row.id}">
+                                        <i data-feather="trash-2" class="feather-trash-2"></i>
+                                    </a>
+                                `;
+                        },
+                    },
+                ],
+                initComplete: (settings, json) => {
+                    $(".dataTables_filter").appendTo("#tableSearch");
+                    $(".dataTables_filter").appendTo(".search-input");
+                },
+                drawCallback: function () {
+                    feather.replace(); // Inisialisasi ulang Feather Icons
+                },
+            });
+        }
+    }
 
     $("#storePembelianProduk").on("submit", function (event) {
         event.preventDefault();
@@ -747,6 +784,12 @@ $(document).ready(function () {
                 const toast = new bootstrap.Toast(successtoastExample);
                 $(".toast-body").text(response.message);
                 toast.show();
+                $("#storePembelianProduk")[0].reset(); // Reset form
+                // Reset dropdown status jika perlu
+                $("#jenis").val("").trigger("change"); // Reset select status jika menggunakan Select2 atau lainnya
+                // Reset dropdown status jika perlu
+                $("#kondisi").val("").trigger("change"); // Reset select status jika menggunakan Select2 atau lainnya
+                tabelProdukPembelian.ajax.reload(); // Reload data dari server
             },
             error: function (xhr) {
                 // Tampilkan pesan error dari server

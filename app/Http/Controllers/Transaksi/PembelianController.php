@@ -242,7 +242,7 @@ class PembelianController extends Controller
 
     public function getPembelianProduk()
     {
-        $pembelian  = PembelianProduk::with(['produk', 'kondisi', 'user.pegawai'])->get();
+        $pembelian  = PembelianProduk::where('user_id', Auth::user()->id)->where('status', 1)->with(['produk', 'kondisi', 'user.pegawai'])->get();
         return response()->json(['success' => true, 'message' => 'Data Pembelian Berhasil Ditemukan', 'Data' => $pembelian]);
     }
 
@@ -294,8 +294,6 @@ class PembelianController extends Controller
         ]);
 
         if ($createProduk) {
-
-            $produk = Produk::where('id', $request['kodeproduk'])->first()->id;
             $berat  = $request->berat;
             $harga  = $request->hargabeli;
 
@@ -303,8 +301,8 @@ class PembelianController extends Controller
 
             PembelianProduk::create([
                 'kodepembelianproduk'   =>  $request['kodepembelianproduk'],
-                'produk_id'             =>  $produk,
-                'harga'                 =>  $request->harga,
+                'kodeproduk'            =>  $request['kodeproduk'],
+                'harga'                 =>  $request->hargabeli,
                 'total'                 =>  $total,
                 'kondisi_id'            =>  $request->kondisi_id,
                 'user_id'               =>  Auth::user()->id,

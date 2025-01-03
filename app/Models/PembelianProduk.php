@@ -16,7 +16,7 @@ class PembelianProduk extends Model
     protected $fillable = [
         'id',
         'kodepembelianproduk',
-        'produk_id',
+        'kodeproduk',
         'harga',
         'total',
         'kondisi_id',
@@ -31,7 +31,7 @@ class PembelianProduk extends Model
      */
     public function produk(): BelongsTo
     {
-        return $this->belongsTo(Produk::class, 'produk_id', 'id');
+        return $this->belongsTo(Produk::class, 'kodeproduk', 'kodeproduk');
     }
 
     /**

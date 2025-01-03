@@ -138,7 +138,7 @@ Route::middleware('auth')->group(function () {
     Route::get('pembelian/confirmPayment/{id}', [PembelianController::class, 'confirmPaymentPembelian']);
     Route::get('pembelian/cancelPayment/{id}', [PembelianController::class, 'cancelPaymentPembelian']);
     Route::get('pembelian/detailPembelian/{id}', [PembelianController::class, 'detailpembelian']);
-    Route::get('pembelian/getPembelianProduk', [PembelianController::class, 'getPembelianProduk']);
+    Route::get('getPembelianProduk', [PembelianController::class, 'getPembelianProduk']);
     Route::post('insertProdukPembelian', [PembelianController::class, 'insertProdukPembelian']);
 
     Route::get('order/cetakNotaTransaksi/{id}', [ReportController::class, 'cetakNotaTransaksi']);
