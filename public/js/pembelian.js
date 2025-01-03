@@ -729,4 +729,46 @@ $(document).ready(function () {
         loadPelanggan();
         loadSuplier();
     });
+
+    $("#storePembelianProduk").on("submit", function (event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+
+        $.ajax({
+            url: "/insertProdukPembelian", // Endpoint Laravel untuk menyimpan pegawai
+            type: "POST",
+            data: formData,
+            processData: false, // Agar data tidak diubah menjadi string
+            contentType: false, // Agar header Content-Type otomatis disesuaikan
+            success: function (response) {
+                const successtoastExample =
+                    document.getElementById("successToast");
+                const toast = new bootstrap.Toast(successtoastExample);
+                $(".toast-body").text(response.message);
+                toast.show();
+            },
+            error: function (xhr) {
+                // Tampilkan pesan error dari server
+                const errors = xhr.responseJSON.errors;
+                if (errors) {
+                    let errorMessage = "";
+                    for (let key in errors) {
+                        errorMessage += `${errors[key][0]}\n`;
+                    }
+                    const dangertoastExamplee =
+                        document.getElementById("dangerToastError");
+                    const toast = new bootstrap.Toast(dangertoastExamplee);
+                    $(".toast-body").text(errorMessage);
+                    toast.show();
+                } else {
+                    const dangertoastExamplee =
+                        document.getElementById("dangerToastError");
+                    const toast = new bootstrap.Toast(dangertoastExamplee);
+                    $(".toast-body").text(response.message);
+                    toast.show();
+                }
+            },
+        });
+    })
 });

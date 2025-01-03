@@ -246,7 +246,7 @@ class PembelianController extends Controller
         return response()->json(['success' => true, 'message' => 'Data Pembelian Berhasil Ditemukan', 'Data' => $pembelian]);
     }
 
-    public function storeProdukPembelian(Request $request)
+    public function insertProdukPembelian(Request $request)
     {
         $messages = [
             'required' => ':attribute wajib di isi !!!',
@@ -265,7 +265,6 @@ class PembelianController extends Controller
             'hargabeli'             =>  'integer',
             'kondisi_id'            =>  'required|' . Rule::in(Kondisi::where('status', 1)->pluck('id')),
             'keterangan'            =>  'required',
-            'status'                =>  'required'
         ], $messages);
 
 
@@ -309,7 +308,7 @@ class PembelianController extends Controller
                 'total'                 =>  $total,
                 'kondisi_id'            =>  $request->kondisi_id,
                 'user_id'               =>  Auth::user()->id,
-                'status'                =>  $request->status,
+                'status'                =>  1,
             ]);
 
 
