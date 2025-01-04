@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('pembelian', function (Blueprint $table) {
             $table->id();
             $table->string('kodepembelian', 100);
+            $table->string('kodepembelianproduk');
             $table->unsignedBigInteger('suplier_id')->nullable();
             $table->unsignedBigInteger('pelanggan_id')->nullable();
             $table->string('kodeproduk', 100);
-            $table->unsignedBigInteger('kondisi_id');
             $table->date('tanggal');
             $table->integer('status')->unsigned()->nullable();
             $table->timestamps();
@@ -25,8 +25,7 @@ return new class extends Migration
 
             $table->foreign('suplier_id')->references('id')->on('suplier')->onDelete('cascade');
             $table->foreign('pelanggan_id')->references('id')->on('pelanggan')->onDelete('cascade');
-            $table->foreign('kodeproduk')->references('kodeproduk')->on('produk')->onDelete('cascade');
-            $table->foreign('kondisi_id')->references('id')->on('kondisi')->onDelete('cascade');
+            $table->foreign('kodepembelianproduk')->references('kodepembelianproduk')->on('pembelian_produk')->onDelete('cascade');
         });
     }
 

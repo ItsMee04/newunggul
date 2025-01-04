@@ -49,21 +49,32 @@ class PembelianController extends Controller
 
     public function generateKodePembelianProduk()
     {
-        // Ambil kode customer terakhir dari database
-        $lastCustomer = DB::table('pembelian_produk')
+        // Cek apakah ada kode keranjang terakhir dengan status 1
+        $lastKeranjangWithStatusOne = DB::table('pembelian_produk')
+            ->where('status', 1)
             ->orderBy('kodepembelianproduk', 'desc')
             ->first();
 
-        // Jika tidak ada customer, mulai dari 1
-        $lastNumber = $lastCustomer ? (int) substr($lastCustomer->kodepembelianproduk, -5) : 0;
+        // Jika ada kode keranjang dengan status 1, gunakan kode itu
+        if ($lastKeranjangWithStatusOne) {
+            return $lastKeranjangWithStatusOne->kodepembelianproduk;
+        }
+
+        // Jika tidak ada keranjang dengan status 1, ambil kode keranjang terakhir secara umum
+        $lastKeranjang = DB::table('pembelian_produk')
+            ->orderBy('kodepembelianproduk', 'desc')
+            ->first();
+
+        // Jika tidak ada keranjang sama sekali, mulai dari 1
+        $lastNumber = $lastKeranjang ? (int) substr($lastKeranjang->kodepembelianproduk, -5) : 0;
 
         // Tambahkan 1 pada nomor terakhir
         $newNumber = $lastNumber + 1;
 
-        // Format kode customer baru
-        $newKodeCustomer = '#PO-' . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
+        // Format kode keranjang baru
+        $newKodeKeranjang = '#PO-' . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
 
-        return $newKodeCustomer;
+        return $newKodeKeranjang;
     }
 
     public function index()
@@ -89,21 +100,10 @@ class PembelianController extends Controller
     public function store(Request $request)
     {
         $messages = [
-            'required' => ':attribute wajib di isi !!!',
-            'integer'  => ':attribute format wajib menggunakan angka',
-            'mimes'    => ':attribute format wajib menggunakan PNG/JPG'
+            'required' => ':attribute wajib di isi !!!'
         ];
 
         $credentials = $request->validate([
-            'nama'          =>  'required',
-            'jenis_id'      =>  'required|' . Rule::in(Jenis::where('status', 1)->pluck('id')),
-            'harga_beli'    =>  'integer',
-            'keterangan'    =>  'string',
-            'berat'         =>  [
-                'required',
-                'regex:/^\d+\.\d{1}$/'
-            ],
-            'karat'         =>  'required|integer',
             'status'        =>  'required'
         ], $messages);
 
@@ -115,41 +115,16 @@ class PembelianController extends Controller
         }
 
         $request['kodepembelian']   = $this->generateCodeTransaksi();
-        $request['kodeproduk']      = $this->produkController->generateKode();
         $request['tanggal']         = Carbon::today()->format('Y-m-d');
 
-        $content = QrCode::format('png')->size(300)->generate($request['kodeproduk']); // Ini menghasilkan data PNG sebagai string
-
-        // Tentukan nama file
-        $fileName = 'barcode/' . $request['kodeproduk'] . '.png';
-
-        // Simpan file ke dalam storage/public/barcode/
-        Storage::put($fileName, $content);
-
-        $createProduk = Produk::create([
+        Pembelian::create([
+            'kodepembelian' => $request['kodepembelian'],
+            'suplier_id'    => $request['suplier_id'],
+            'pelanggan_id'  => $request['pelanggan_id'],
             'kodeproduk'    => $request['kodeproduk'],
-            'jenis_id'      => $request->jenis_id,
-            'nama'          => $request->nama,
-            'harga_jual'    => 0,
-            'harga_beli'    => $request->harga_beli,
-            'keterangan'    => $request->keterangan,
-            'berat'         => $request->berat,
-            'karat'         => $request->karat,
-            'status'        => 2
+            'tanggal'       => $request['tanggal'],
+            'status'        => $request['status']
         ]);
-
-        if ($createProduk) {
-            Pembelian::create([
-                'kodepembelian' => $request['kodepembelian'],
-                'suplier_id'    => $request['suplier_id'],
-                'pelanggan_id'  => $request['pelanggan_id'],
-                'kodeproduk'    => $request['kodeproduk'],
-                'kondisi'       => $request['kondisi'],
-                'tanggal'       => $request['tanggal'],
-                'status'        => $request['status']
-            ]);
-        }
-
         return response()->json(['success' => true, 'message' => 'Data Pembelian Berhasil Disimpan']);
     }
 
@@ -311,6 +286,55 @@ class PembelianController extends Controller
 
 
             return response()->json(['success' => true, 'message' => 'Data Produk Berhasil Ditambahkan']);
+        }
+    }
+
+    public function deleteProdukPembelian($id)
+    {
+        $pembelianproduk = PembelianProduk::where('id', $id)
+            ->update([
+                'status' => 0
+            ]);
+
+        if ($pembelianproduk) {
+            $kodeproduk = PembelianProduk::where('id', $id)->first()->kodeproduk;
+            Produk::where('kodeproduk', $kodeproduk)
+                ->update([
+                    'status'    =>  0,
+                ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Produk berhasil dihapus',
+        ]);
+    }
+
+    public function getKodePembelianProduk()
+    {
+        // Ambil data keranjang pertama dengan status 1 dan user_id pengguna yang sedang login
+        $PembelianProduk = PembelianProduk::where('status', 1)
+            ->where('user_id', Auth::user()->id)
+            ->first();
+
+        // Cek apakah keranjang ditemukan
+        if ($PembelianProduk) {
+            // Ambil kode keranjang
+            $kodeKeranjang = $PembelianProduk->kodepembelianproduk;
+
+            // Ambil daftar produk berdasarkan kode keranjang
+            $produkID = PembelianProduk::select('kodeproduk')
+                ->where('kodepembelianproduk', $kodeKeranjang)
+                ->get();
+
+            // Kembalikan response JSON dengan kode keranjang dan produk ID
+            return response()->json(['success' => true, 'kode' => $PembelianProduk, 'produk_id' => $produkID]);
+        } else {
+            // Jika keranjang tidak ditemukan
+            return response()->json([
+                'success' => false,
+                'message' => 'Belum ada barang dalam keranjang'
+            ]);
         }
     }
 }

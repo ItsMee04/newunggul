@@ -38,7 +38,7 @@ class ProdukController extends Controller
     public function getProduk()
     {
         $produk = Produk::where('status', '!=', 0)->with(['jenis', 'kondisi'])->get();
-        $count = Produk::count();
+        $count = Produk::where('status', 1)->count();
         return response()->json(['success' => true, 'message' => 'Data Produk Berhasil Ditemukan', 'Data' => $produk, 'Total' => $count]);
     }
 

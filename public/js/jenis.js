@@ -145,7 +145,8 @@ $(document).ready(function () {
                 toast.show();
                 $("#mdTambahjenis").modal("hide"); // Tutup modal
                 $("#storeJenis")[0].reset(); // Reset form
-
+                // Reset dropdown status jika perlu
+                $("#status").val("Pilih Status").trigger("change"); // Reset select status jika menggunakan Select2 atau lainnya
                 jenisTable.ajax.reload(); // Reload data dari server
             },
             error: function (xhr) {

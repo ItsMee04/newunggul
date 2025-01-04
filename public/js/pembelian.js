@@ -214,53 +214,6 @@ $(document).ready(function () {
         loadKondisi();
     });
 
-    $("#storePembelian").on("submit", function (event) {
-        event.preventDefault(); // Mencegah form submit secara default
-        // Ambil elemen input file
-
-        // Buat objek FormData
-        const formData = new FormData(this);
-        $.ajax({
-            url: "/pembelian", // Endpoint Laravel untuk menyimpan pegawai
-            type: "POST",
-            data: formData,
-            processData: false, // Agar data tidak diubah menjadi string
-            contentType: false, // Agar header Content-Type otomatis disesuaikan
-            success: function (response) {
-                const successtoastExample =
-                    document.getElementById("successToast");
-                const toast = new bootstrap.Toast(successtoastExample);
-                $(".toast-body").text(response.message);
-                toast.show();
-                $("#mdtambahPembelian").modal("hide"); // Tutup modal
-                $("#storePembelian")[0].reset(); // Reset form
-
-                pembelianTable.ajax.reload(); // Reload data dari server
-            },
-            error: function (xhr) {
-                // Tampilkan pesan error dari server
-                const errors = xhr.responseJSON.errors;
-                if (errors) {
-                    let errorMessage = "";
-                    for (let key in errors) {
-                        errorMessage += `${errors[key][0]}\n`;
-                    }
-                    const dangertoastExamplee =
-                        document.getElementById("dangerToastError");
-                    const toast = new bootstrap.Toast(dangertoastExamplee);
-                    $(".toast-body").text(errorMessage);
-                    toast.show();
-                } else {
-                    const dangertoastExamplee =
-                        document.getElementById("dangerToastError");
-                    const toast = new bootstrap.Toast(dangertoastExamplee);
-                    $(".toast-body").text(response.message);
-                    toast.show();
-                }
-            },
-        });
-    });
-
     function formatToIDR(amount) {
         return new Intl.NumberFormat("id-ID", {
             style: "currency",
@@ -697,15 +650,27 @@ $(document).ready(function () {
         });
     }
 
+    //Fungsi Button Tampilkan Form
     $('#toggleFormBtn').on('click', function () {
         // Tampilkan atau sembunyikan elemen
         $('#formContainer, #tabelProdukPembelian').toggle();
+
+        // Periksa apakah elemen terlihat
+        if ($('#formContainer').is(':visible')) {
+            $(this).html('<i data-feather="minus-circle" class="me-2"></i>SEMBUNYIKAN FORM');
+        } else {
+            $(this).html('<i data-feather="plus-circle" class="me-2"></i>TAMBAH PEMBELIAN');
+        }
+
+        feather.replace();
+
         loadJenis();
         loadKondisi();
         loadPelanggan();
         loadSuplier();
     });
 
+    //Fungsi untuk memuat data Pembelian Produk
     function loadPembelianProduk() {
         // Datatable
         if ($(".pembelianProdukTable").length > 0) {
@@ -749,7 +714,7 @@ $(document).ready(function () {
                         className: "action-table-data",
                         render: function (data, type, row, meta) {
                             return `
-                                    <a class="confirm-text p-2" data-id="${row.id}">
+                                    <a class="confirm-produkpembelian p-2" data-id="${row.id}">
                                         <i data-feather="trash-2" class="feather-trash-2"></i>
                                     </a>
                                 `;
@@ -767,6 +732,7 @@ $(document).ready(function () {
         }
     }
 
+    //Kirim data ke server
     $("#storePembelianProduk").on("submit", function (event) {
         event.preventDefault();
 
@@ -814,4 +780,110 @@ $(document).ready(function () {
             },
         });
     })
+
+    //Fungsi untuk hapus data produk pembelian
+    $(document).on("click", ".confirm-produkpembelian", function (e) {
+        e.preventDefault(); // Mencegah reload halaman
+        const kodepembelianproduk = $(this).data("id"); // Ambil ID produk dari atribut data-id
+
+        Swal.fire({
+            title: "Pembatalan Produk",
+            text: "Konfirmasi Produk Dibatalkan ?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Ya, Batalakan!",
+            cancelButtonText: "Batal",
+            reverseButtons: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Kirim permintaan hapus ke server
+                fetch(`/deleteProdukPembelian/${kodepembelianproduk}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                            "content"
+                        ),
+                    },
+                })
+                    .then((response) => {
+                        if (response.ok) {
+                            Swal.fire(
+                                "Dibatalkan!",
+                                "Produk Berhasil Dibatalkan.",
+                                "success"
+                            );
+                            tabelProdukPembelian.ajax.reload(); // Reload data dari server
+                        } else {
+                            Swal.fire(
+                                "Gagal!",
+                                "Terjadi kesalahan saat membatalkan produk.",
+                                "error"
+                            );
+                        }
+                    })
+                    .catch((error) => {
+                        Swal.fire(
+                            "Gagal!",
+                            "Terjadi kesalahan dalam pembatalan produk.",
+                            "error"
+                        );
+                    });
+            } else {
+                Swal.fire(
+                    "Dibatalkan",
+                    "Produk tidak dibatalkan.",
+                    "info"
+                );
+            }
+        });
+    });
+
+    $("#storePembelian").on("submit", function (event) {
+        event.preventDefault(); // Mencegah form submit secara default
+        // Ambil elemen input file
+
+        // Buat objek FormData
+        const formData = new FormData(this);
+        $.ajax({
+            url: "/pembelian", // Endpoint Laravel untuk menyimpan pegawai
+            type: "POST",
+            data: formData,
+            processData: false, // Agar data tidak diubah menjadi string
+            contentType: false, // Agar header Content-Type otomatis disesuaikan
+            success: function (response) {
+                const successtoastExample =
+                    document.getElementById("successToast");
+                const toast = new bootstrap.Toast(successtoastExample);
+                $(".toast-body").text(response.message);
+                toast.show();
+                $("#storePembelian")[0].reset(); // Reset form
+                $("#status").val("Pilih Status").trigger("change"); // Reset select status jika menggunakan Select2 atau lainnya
+                $("#suplier_id").val("").trigger("change"); // Reset select status jika menggunakan Select2 atau lainnya
+                $("#pelanggan_id").val("").trigger("change"); // Reset select status jika menggunakan Select2 atau lainnya
+                pembelianTable.ajax.reload(); // Reload data dari server
+            },
+            error: function (xhr) {
+                // Tampilkan pesan error dari server
+                const errors = xhr.responseJSON.errors;
+                if (errors) {
+                    let errorMessage = "";
+                    for (let key in errors) {
+                        errorMessage += `${errors[key][0]}\n`;
+                    }
+                    const dangertoastExamplee =
+                        document.getElementById("dangerToastError");
+                    const toast = new bootstrap.Toast(dangertoastExamplee);
+                    $(".toast-body").text(errorMessage);
+                    toast.show();
+                } else {
+                    const dangertoastExamplee =
+                        document.getElementById("dangerToastError");
+                    const toast = new bootstrap.Toast(dangertoastExamplee);
+                    $(".toast-body").text(response.message);
+                    toast.show();
+                }
+            },
+        });
+    });
 });
