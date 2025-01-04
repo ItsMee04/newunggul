@@ -91,7 +91,7 @@ $(document).ready(function () {
                                 // Jika status adalah 1
                                 return `
                                     <div class="edit-delete-action">
-                                        <a class="me-2 p-2 btn-detail" data-id="${row.id}">
+                                        <a href="pembelian/detailPembelian/${row.id}" class="me-2 p-2 btn-detail" data-id="${row.id}">
                                     <i data-feather="eye" class="action-eye"></i>
                                     </a>
                                     <a class="me-2 p-2 confirm-payment" data-id="${row.id}">
@@ -213,65 +213,6 @@ $(document).ready(function () {
             minimumFractionDigits: 0,
         }).format(amount);
     }
-
-    //ketika button deetail di tekan
-    $(document).on("click", ".btn-detail", function () {
-        const pembelianID = $(this).data("id");
-
-        $.ajax({
-            url: `/pembelian/${pembelianID}`, // Endpoint untuk mendapatkan data pegawai
-            type: "GET",
-            success: function (response) {
-                // Isi modal dengan data pembelian
-                const pembelian = response.Data[0]; // Ambil data pertama
-                let namaPenjual;
-                if (pembelian.suplier_id !== null && pembelian.suplier) {
-                    namaPenjual = pembelian.suplier.suplier; // Nama suplier jika suplier_id tidak null
-                } else if (
-                    pembelian.pelanggan_id !== null &&
-                    pembelian.pelanggan
-                ) {
-                    namaPenjual = pembelian.pelanggan.nama; // Nama pelanggan jika suplier_id null
-                } else {
-                    namaPenjual = "Tidak Diketahui"; // Default jika keduanya null
-                }
-
-                let statusText;
-                if (pembelian.status === 1) {
-                    statusText = "Aktif";
-                } else if (pembelian.status === 2) {
-                    statusText = "Pending";
-                } else {
-                    statusText = "Tidak Diketahui"; // Default jika status tidak sesuai
-                }
-
-                const hargaBeliFormatted = formatToIDR(
-                    pembelian.produk?.harga_beli || 0
-                );
-
-                $("#detailPenjual").val(namaPenjual);
-                $("#detailKodepembelian").val(response.Data[0].kodepembelian);
-                $("#detailNama").val(response.Data[0].produk.nama);
-                $("#detailBerat").val(response.Data[0].produk.berat);
-                $("#detailKarat").val(response.Data[0].produk.karat);
-                $("#detailJenis").val(response.Data[0].produk.jenis.jenis);
-                $("#detailHargabeli").val(hargaBeliFormatted);
-                $("#detailKondisi").val(response.Data[0].kondisi);
-                $("#detailKeterangan").val(response.Data[0].produk.keterangan);
-                $("#detailStatus").val(statusText);
-
-                // Tampilkan modal edit
-                $("#modalDetail").modal("show");
-            },
-            error: function () {
-                Swal.fire(
-                    "Gagal!",
-                    "Tidak dapat mengambil data pegawai.",
-                    "error"
-                );
-            },
-        });
-    });
 
     //ketika button edit di tekan
     $(document).on("click", ".btn-edit", function () {
