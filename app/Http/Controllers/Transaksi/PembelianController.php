@@ -112,18 +112,23 @@ class PembelianController extends Controller
             $request['pelanggan_id'] = null;
         } elseif ($request->suplier_id == '' || $request->pelanggan_id != "") {
             $request['suplier_id'] = null;
+        } elseif ($request->suplier_id == '' || $request->pelanggan_id == "" || $request->nonsuplierdanpembeli != "") {
+            $request['suplier_id'] = null;
+            $request['pelanggan_id'] = null;
         }
 
         $request['kodepembelian']   = $this->generateCodeTransaksi();
         $request['tanggal']         = Carbon::today()->format('Y-m-d');
 
         Pembelian::create([
-            'kodepembelian' => $request['kodepembelian'],
-            'suplier_id'    => $request['suplier_id'],
-            'pelanggan_id'  => $request['pelanggan_id'],
-            'kodeproduk'    => $request['kodeproduk'],
-            'tanggal'       => $request['tanggal'],
-            'status'        => $request['status']
+            'kodepembelian'         => $request['kodepembelian'],
+            'kodepembelianproduk'   => $request['kode'],
+            'suplier_id'            => $request['suplier_id'],
+            'pelanggan_id'          => $request['pelanggan_id'],
+            'nonsuplierdanpembeli'  => $request['nonsuplierdanpembeli'],
+            'kodeproduk'            => $request['kodeproduk'],
+            'tanggal'               => $request['tanggal'],
+            'status'                => $request['status']
         ]);
         return response()->json(['success' => true, 'message' => 'Data Pembelian Berhasil Disimpan']);
     }
@@ -328,12 +333,12 @@ class PembelianController extends Controller
                 ->get();
 
             // Kembalikan response JSON dengan kode keranjang dan produk ID
-            return response()->json(['success' => true, 'kode' => $PembelianProduk, 'produk_id' => $produkID]);
+            return response()->json(['success' => true, 'kode' => $kodeKeranjang, 'kodeproduk' => $produkID]);
         } else {
             // Jika keranjang tidak ditemukan
             return response()->json([
                 'success' => false,
-                'message' => 'Belum ada barang dalam keranjang'
+                'message' => 'Belum ada produk dalam pembelian'
             ]);
         }
     }

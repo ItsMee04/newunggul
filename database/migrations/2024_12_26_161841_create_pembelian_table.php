@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('kodepembelianproduk');
             $table->unsignedBigInteger('suplier_id')->nullable();
             $table->unsignedBigInteger('pelanggan_id')->nullable();
+            $table->string('nonsuplierdanpembeli', 100)->nullable();
             $table->string('kodeproduk', 100);
             $table->date('tanggal');
             $table->integer('status')->unsigned()->nullable();

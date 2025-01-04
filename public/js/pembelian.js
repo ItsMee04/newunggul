@@ -841,28 +841,101 @@ $(document).ready(function () {
 
     $("#storePembelian").on("submit", function (event) {
         event.preventDefault(); // Mencegah form submit secara default
-        // Ambil elemen input file
 
-        // Buat objek FormData
         const formData = new FormData(this);
+
         $.ajax({
-            url: "/pembelian", // Endpoint Laravel untuk menyimpan pegawai
-            type: "POST",
-            data: formData,
-            processData: false, // Agar data tidak diubah menjadi string
-            contentType: false, // Agar header Content-Type otomatis disesuaikan
+            url: "/getKodePembelianProduk", // Endpoint Laravel untuk menyimpan pegawai
+            type: "GET",
             success: function (response) {
-                const successtoastExample =
-                    document.getElementById("successToast");
-                const toast = new bootstrap.Toast(successtoastExample);
-                $(".toast-body").text(response.message);
-                toast.show();
-                $("#storePembelian")[0].reset(); // Reset form
-                $("#status").val("Pilih Status").trigger("change"); // Reset select status jika menggunakan Select2 atau lainnya
-                $("#suplier_id").val("").trigger("change"); // Reset select status jika menggunakan Select2 atau lainnya
-                $("#pelanggan_id").val("").trigger("change"); // Reset select status jika menggunakan Select2 atau lainnya
-                pembelianTable.ajax.reload(); // Reload data dari server
+                // Jika keranjang tidak ditemukan
+                if (!response.success) {
+                    const dangerToastExample =
+                        document.getElementById("dangerToastError");
+                    const toast = new bootstrap.Toast(dangerToastExample);
+                    $(".toast-body").text(response.message);
+                    toast.show();
+                }
+                // Jika keranjang ditemukan
+                else if (
+                    response.success &&
+                    response.kode &&
+                    response.kodeproduk
+                ) {
+
+                    // Menambahkan kode ke FormData
+                    formData.append('kode', response.kode);
+
+                    // Menambahkan kodeproduk ke FormData
+                    response.kodeproduk.forEach((item, index) => {
+                        formData.append(`kodeproduk[${index}]`, item.kodeproduk);
+                    });
+                    $.ajax({
+                        url: "/pembelian", // Endpoint di Laravel
+                        type: "POST",
+                        data: formData,
+                        processData: false, // Agar data tidak diubah menjadi string
+                        contentType: false, // Agar header Content-Type otomatis disesuaikan
+                        success: function (pembelianResponse) {
+                            // Jika pembayaran sukses
+                            if (pembelianResponse.success) {
+                                const successToastExample =
+                                    document.getElementById(
+                                        "successToast"
+                                    );
+                                const toast =
+                                    new bootstrap.Toast(
+                                        successToastExample
+                                    );
+                                $(".toast-body").text(
+                                    pembelianResponse.message
+                                );
+                                toast.show();
+                            }
+                            // Jika pembelian gagal
+                            else {
+                                const dangerToastExample =
+                                    document.getElementById(
+                                        "dangerToastError"
+                                    );
+                                const toast =
+                                    new bootstrap.Toast(
+                                        dangerToastExample
+                                    );
+                                $(".toast-body").text(
+                                    paymentResponse.message
+                                );
+                                toast.show();
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(
+                                "Error saat pembayaran:",
+                                error
+                            );
+                        },
+                    });
+                }
+                // Jika respons tidak valid
+                else {
+                    console.error(
+                        "Response Ambil Kode Pembelian Produk tidak valid:",
+                        response
+                    );
+                }
             },
+            // success: function (response) {
+            //     const successtoastExample =
+            //         document.getElementById("successToast");
+            //     const toast = new bootstrap.Toast(successtoastExample);
+            //     $(".toast-body").text(response.message);
+            //     toast.show();
+            //     $("#storePembelian")[0].reset(); // Reset form
+            //     $("#status").val("Pilih Status").trigger("change"); // Reset select status jika menggunakan Select2 atau lainnya
+            //     $("#suplier_id").val("").trigger("change"); // Reset select status jika menggunakan Select2 atau lainnya
+            //     $("#pelanggan_id").val("").trigger("change"); // Reset select status jika menggunakan Select2 atau lainnya
+            //     pembelianTable.ajax.reload(); // Reload data dari server
+            // },
             error: function (xhr) {
                 // Tampilkan pesan error dari server
                 const errors = xhr.responseJSON.errors;

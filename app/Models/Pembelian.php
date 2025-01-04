@@ -16,11 +16,12 @@ class Pembelian extends Model
     protected $fillable = [
         'id',
         'kodepembelian',
+        'kodepembelianproduk',
         'suplier_id',
         'pelanggan_id',
+        'nonsuplierdanpembeli',
         'kodeproduk',
         'tanggal',
-        'kondisi_id',
         'status'
     ];
 
