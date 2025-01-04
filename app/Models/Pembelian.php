@@ -20,7 +20,6 @@ class Pembelian extends Model
         'suplier_id',
         'pelanggan_id',
         'nonsuplierdanpembeli',
-        'kodeproduk',
         'tanggal',
         'status'
     ];
@@ -46,32 +45,12 @@ class Pembelian extends Model
     }
 
     /**
-     * Get the jenis that owns the Pembelian
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function jenis(): BelongsTo
-    {
-        return $this->belongsTo(Jenis::class, 'jenis_id', 'id');
-    }
-
-    /**
      * Get the produk that owns the Pembelian
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function produk(): BelongsTo
+    public function pembelianproduk(): BelongsTo
     {
-        return $this->belongsTo(Produk::class, 'kodeproduk', 'kodeproduk');
-    }
-
-    /**
-     * Get the kondisi that owns the Pembelian
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function kondisi(): BelongsTo
-    {
-        return $this->belongsTo(Kondisi::class, 'kondisi_id', 'id');
+        return $this->belongsTo(PembelianProduk::class, 'kodepembelianproduk', 'kodepembelianproduk');
     }
 }

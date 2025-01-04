@@ -1,6 +1,7 @@
 $(document).ready(function () {
     loadPembelian();
     loadPembelianProduk();
+
     $(document).on("click", "#refreshButton", function () {
         if (pembelianTable) {
             pembelianTable.ajax.reload(); // Reload data dari server
@@ -66,12 +67,6 @@ $(document).ready(function () {
                         },
                     },
                     {
-                        data: "produk.nama",
-                    },
-                    {
-                        data: "produk.berat",
-                    },
-                    {
                         data: "tanggal",
                     },
                     {
@@ -98,9 +93,6 @@ $(document).ready(function () {
                                     <div class="edit-delete-action">
                                         <a class="me-2 p-2 btn-detail" data-id="${row.id}">
                                     <i data-feather="eye" class="action-eye"></i>
-                                    </a>
-                                    <a class="me-2 p-2 btn-edit" data-id="${row.id}">
-                                        <i data-feather="edit" class="feather-edit"></i>
                                     </a>
                                     <a class="me-2 p-2 confirm-payment" data-id="${row.id}">
                                         <i data-feather="check-circle" class="feather-edit-2"></i>
@@ -870,6 +862,12 @@ $(document).ready(function () {
                     response.kodeproduk.forEach((item, index) => {
                         formData.append(`kodeproduk[${index}]`, item.kodeproduk);
                     });
+
+                    // Debugging: Periksa data di FormData
+                    for (const [key, value] of formData.entries()) {
+                        console.log(key, value);
+                    }
+
                     $.ajax({
                         url: "/pembelian", // Endpoint di Laravel
                         type: "POST",
@@ -891,6 +889,8 @@ $(document).ready(function () {
                                     pembelianResponse.message
                                 );
                                 toast.show();
+                                tabelProdukPembelian.ajax.reload(); // Reload data dari server
+                                pembelianTable.ajax.reload(); // Reload data dari server
                             }
                             // Jika pembelian gagal
                             else {

@@ -212,8 +212,6 @@
                                     <th>No.</th>
                                     <th>Kode Pembelian</th>
                                     <th>Penjual</th>
-                                    <th>Nama Produk</th>
-                                    <th>Berat </th>
                                     <th>Tanggal </th>
                                     <th>Status </th>
                                     <th>Action</th>

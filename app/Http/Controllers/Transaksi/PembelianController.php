@@ -79,13 +79,12 @@ class PembelianController extends Controller
 
     public function index()
     {
-        $pembelian  = Pembelian::with(['suplier', 'jenis', 'pelanggan'])->get();
+        $pembelian  = Pembelian::with(['suplier', 'pelanggan'])->get();
         $jenis      = Jenis::all();
         $suplier    = Suplier::where('status', 1)->get();
         $pelanggan  = Pelanggan::where('status', 1)->get();
         return view('pages.pembelian', [
             'pembelian' =>  $pembelian,
-            'jenis'     =>  $jenis,
             'suplier'   =>  $suplier,
             'pelanggan' =>  $pelanggan
         ]);
@@ -93,7 +92,7 @@ class PembelianController extends Controller
 
     public function getPembelian()
     {
-        $pembelian  = Pembelian::with(['suplier', 'jenis', 'pelanggan', 'produk'])->get();
+        $pembelian  = Pembelian::with(['suplier', 'pelanggan', 'pembelianproduk.produk'])->get();
         return response()->json(['success' => true, 'message' => 'Data Pembelian Berhasil Ditemukan', 'Data' => $pembelian]);
     }
 
@@ -120,16 +119,23 @@ class PembelianController extends Controller
         $request['kodepembelian']   = $this->generateCodeTransaksi();
         $request['tanggal']         = Carbon::today()->format('Y-m-d');
 
-        Pembelian::create([
+        $pembelian = Pembelian::create([
             'kodepembelian'         => $request['kodepembelian'],
-            'kodepembelianproduk'   => $request['kode'],
-            'suplier_id'            => $request['suplier_id'],
-            'pelanggan_id'          => $request['pelanggan_id'],
-            'nonsuplierdanpembeli'  => $request['nonsuplierdanpembeli'],
-            'kodeproduk'            => $request['kodeproduk'],
+            'kodepembelianproduk'   => $request->kode,
+            'suplier_id'            => $request->suplier_id,
+            'pelanggan_id'          => $request->pelanggan_id,
+            'nonsuplierdanpembeli'  => $request->nonsuplierdanpembeli,
             'tanggal'               => $request['tanggal'],
-            'status'                => $request['status']
+            'status'                => $request->status
         ]);
+
+        if ($pembelian) {
+            PembelianProduk::where('kodepembelianproduk', $request->kode)
+                ->update([
+                    'status' => 2,
+                ]);
+        }
+
         return response()->json(['success' => true, 'message' => 'Data Pembelian Berhasil Disimpan']);
     }
 
