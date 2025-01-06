@@ -57,11 +57,13 @@ $(document).ready(function () {
                         data: null, // Kolom yang memuat data pelanggan atau suplier
                         render: function (data, type, row) {
                             // Cek apakah pelanggan atau suplier tersedia
-                            if (row.suplier_id === null) {
+                            if (row.suplier_id === null && row.nonsuplierdanpembeli === null) {
                                 return row.pelanggan.nama; // Jika `suplier_id` null, tampilkan nama pelanggan
-                            } else if (row.pelanggan_id === null) {
+                            } else if (row.pelanggan_id === null && row.nonsuplierdanpembeli === null) {
                                 return row.suplier.suplier; // Jika `pelanggan_id` null, tampilkan nama suplier
-                            } else {
+                            } else if (row.pelanggan_id === null && row.suplier_id === null) {
+                                return row.nonsuplierdanpembeli; // Jika `pelanggan_id` null, tampilkan nama suplier
+                            }else {
                                 return "-"; // Jika keduanya tidak ada, tampilkan tanda "-"
                             }
                         },
