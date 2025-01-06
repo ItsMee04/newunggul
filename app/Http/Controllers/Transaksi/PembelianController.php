@@ -223,7 +223,7 @@ class PembelianController extends Controller
 
     public function detailPembelian($id)
     {
-        return view('pages.detail-pembelian');
+        return view('pages.pembelian-detail');
     }
 
     public function getPembelianProduk()
