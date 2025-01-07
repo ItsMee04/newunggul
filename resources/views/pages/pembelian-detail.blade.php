@@ -11,8 +11,9 @@
                 </div>
                 <ul class="table-top-head">
                     <li>
-                        <a href="cetakNotaTransaksi/" target="__blank" data-bs-toggle="tooltip" data-bs-placement="top"
-                            title="Print"><i data-feather="printer" class="feather-rotate-ccw"></i></a>
+                        <a href="cetakNotaTransaksi/{{ $pembelian->id }}" target="__blank" data-bs-toggle="tooltip"
+                            data-bs-placement="top" title="Print"><i data-feather="printer"
+                                class="feather-rotate-ccw"></i></a>
                     </li>
                     <li>
                         <a data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh"><i data-feather="rotate-ccw"
@@ -28,7 +29,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="card-sales-split">
-                        <h2>Detail Transaction : ini kode transaksi</h2>
+                        <h2>Detail Transaction : {{ $pembelian->kodepembelian }}</h2>
                     </div>
                     <div class="invoice-box table-height"
                         style="max-width: 1600px;width:100%;overflow: auto;margin:15px auto;padding: 0;font-size: 14px;line-height: 24px;color: #555;">
@@ -45,22 +46,43 @@
                                                         <font style="vertical-align: inherit;margin-bottom:25px;">
                                                             <font
                                                                 style="vertical-align: inherit;font-size:14px;color:#7367F0;font-weight:600;line-height: 35px; ">
-                                                                Pelanggan</font>
+                                                                Customer</font>
                                                         </font><br>
                                                         <font style="vertical-align: inherit;">
                                                             <font
                                                                 style="vertical-align: inherit;font-size: 14px;color:#000;font-weight: 400;">
-                                                                ini pelanggan</font>
+                                                                @if (is_null($pembelian->suplier_id) && is_null($pembelian->nonsuplierdanpembeli))
+                                                                    {{ $pembelian->pelanggan->kontak }}
+                                                                @elseif (is_null($pembelian->pelanggan_id) && is_null($pembelian->nonsuplierdanpembeli))
+                                                                    {{ $pembelian->suplier->kontak }}
+                                                                @elseif (is_null($pembelian->suplier_id) && is_null($pembelian->pelanggan_id))
+                                                                    -
+                                                                @endif
+                                                            </font>
                                                         </font><br>
                                                         <font style="vertical-align: inherit;">
                                                             <font
                                                                 style="vertical-align: inherit;font-size: 14px;color:#000;font-weight: 400;">
-                                                                ini kontak</font>
+                                                                @if (is_null($pembelian->suplier_id) && is_null($pembelian->nonsuplierdanpembeli))
+                                                                    {{ $pembelian->pelanggan->nama }}
+                                                                @elseif (is_null($pembelian->pelanggan_id) && is_null($pembelian->nonsuplierdanpembeli))
+                                                                    {{ $pembelian->suplier->suplier }}
+                                                                @elseif (is_null($pembelian->suplier_id) && is_null($pembelian->pelanggan_id))
+                                                                    {{ $pembelian->nonsuplierdanpembeli }}
+                                                                @endif
+                                                            </font>
                                                         </font><br>
                                                         <font style="vertical-align: inherit;">
                                                             <font
                                                                 style="vertical-align: inherit;font-size: 14px;color:#000;font-weight: 400;">
-                                                                ini alamat</font>
+                                                                @if (is_null($pembelian->suplier_id) && is_null($pembelian->nonsuplierdanpembeli))
+                                                                    {{ $pembelian->pelanggan->alamat }}
+                                                                @elseif (is_null($pembelian->pelanggan_id) && is_null($pembelian->nonsuplierdanpembeli))
+                                                                    {{ $pembelian->suplier->alamat }}
+                                                                @elseif (is_null($pembelian->suplier_id) && is_null($pembelian->pelanggan_id))
+                                                                    -
+                                                                @endif
+                                                            </font>
                                                         </font><br>
                                                     </td>
                                                     <td
@@ -89,7 +111,7 @@
                                                                 &nbsp;</font>
                                                         </font><br>
                                                         <font style="vertical-align: inherit;">
-                                                            {{-- @if ($transaksi->status == 1)
+                                                            @if ($pembelian->status == 1)
                                                                 <font
                                                                     style="vertical-align: inherit;font-size: 14px;color:#ff0000;font-weight: 400;">
                                                                     <span class="badge bg-danger">UN PAID</span>
@@ -99,11 +121,11 @@
                                                                     style="vertical-align: inherit;font-size: 14px;color:#2E7D32;font-weight: 400;">
                                                                     <span class="badge bg-success">PAID</span>
                                                                 </font>
-                                                            @endif --}}
+                                                            @endif
                                                         </font><br>
                                                         <font
                                                             style="vertical-align: inherit;font-size: 14px;color:#000000;font-weight: 400;">
-                                                            <strong>ini user siapa yang input</strong>
+                                                            <strong>{{ $pembelian->pembelianproduk->user->pegawai->nama }}</strong>
                                                         </font>
                                                     </td>
                                                 </tr>
@@ -130,34 +152,35 @@
                                     </td>
                                     <td
                                         style="padding: 5px;vertical-align: middle;font-weight: 600;color: #5E5873;font-size: 14px;padding: 10px; ">
-                                        Subtotal
+                                        Grand Total
                                     </td>
                                     <td
                                         style="padding: 5px;vertical-align: middle;font-weight: 600;color: #5E5873;font-size: 14px;padding: 10px; ">
                                         Print Surat Product
                                     </td>
                                 </tr>
-                                {{-- @foreach ($keranjang as $item)
+                                @foreach ($produk as $item)
                                     <tr class="details" style="border-bottom:1px solid #E9ECEF ;">
                                         <td style="padding: 10px;vertical-align: top; display: flex;align-items: center;">
-                                            <img src="{{ asset('storage/produk/' . $item->produk->image) }}" alt="img"
-                                                class="me-2" style="width:40px;height:40px;">
-                                            {{ $item->produk->nama }}
+                                            <img src="{{ $item->pembelianproduk->produk->image ? asset('storage/produk/' . $item->pembelianproduk->produk->image) : asset('assets/img/notfound.png') }}"
+                                                alt="Product Image" class="me-2" style="width:40px;height:40px;">
+                                            {{ $item->pembelianproduk->produk->nama }}
                                         </td>
                                         <td style="padding: 10px;vertical-align: top; ">
-                                            {{ $item->produk->berat }} grams
+                                            {{ $item->pembelianproduk->produk->berat }} grams
                                         </td>
                                         <td style="padding: 10px;vertical-align: top; ">
-                                            {{ $item->produk->karat }}
+                                            {{ $item->pembelianproduk->produk->karat }}
                                         </td>
                                         <td style="padding: 10px;vertical-align: top; ">
-                                            {{ 'Rp.' . ' ' . number_format($item->produk->harga_jual) }}
+                                            {{ 'Rp.' . ' ' . number_format($item->pembelianproduk->produk->harga_beli) }}
                                         </td>
                                         <td style="padding: 10px;vertical-align: top; ">
-                                            {{ 'Rp.' . ' ' . number_format($item->total) }}
+                                            {{ 'Rp.' . ' ' . number_format($item->pembelianproduk->total) }}
                                         </td>
                                         <td style="padding: 10px;vertical-align: top; ">
-                                            <a href="/NotaBarang/{{ $item->produk_id }}" target="__blank">
+                                            <a href="/NotaBarang/{{ $item->pembelianproduk->produk->id }}"
+                                                target="__blank">
                                                 <i data-feather="printer" class="feather-rotate-ccw"
                                                     data-bs-toggle="tooltip" data-bs-placement="top"
                                                     title="Cetak Surat Barang">
@@ -165,7 +188,7 @@
                                             </a>
                                         </td>
                                     </tr>
-                                @endforeach --}}
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -176,15 +199,18 @@
                                     <ul>
                                         <li class="total">
                                             <h4>Sub Total</h4>
-                                            <h5 class="text-danger">ini sub total</h5>
+                                            <h5 class="text-danger">
+                                                {{ 'Rp.' . ' ' . number_format($pembelian->pembelianproduk->produk->harga_beli) }}
+                                            </h5>
                                         </li>
                                         <li class="total">
                                             <h4>Discount</h4>
-                                            <h5>ini diskon %</h5>
+                                            <h5>0 %</h5>
                                         </li>
                                         <li class="total">
                                             <h4>Grand Total</h4>
-                                            <h5 class="text-success">ini grand total
+                                            <h5 class="text-success">
+                                                {{ 'Rp.' . ' ' . number_format($pembelian->pembelianproduk->total) }}
                                             </h5>
                                         </li>
                                     </ul>
