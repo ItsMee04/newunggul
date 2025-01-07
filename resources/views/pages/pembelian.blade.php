@@ -110,8 +110,6 @@
                                     </table>
                                 </div>
                             </div>
-
-
                             <form method="POST" enctype="multipart/form-data" id="storePembelian">
                                 @csrf
                                 <div class="input-blocks add-products">
@@ -129,14 +127,15 @@
                                                 <span class="custom_radio me-2 mb-0" id="pills-profile-tab"
                                                     data-bs-toggle="pill" data-bs-target="#pills-profile" role="tab"
                                                     aria-controls="pills-profile" aria-selected="false">
-                                                    <input type="radio" class="form-control" name="sign">
+                                                    <input type="radio" class="form-control" name="pelanggan">
                                                     <span class="checkmark"></span> Pelanggan</span>
                                             </li>
                                             <li class="nav-item" role="presentation">
                                                 <span class="custom_radio me-2 mb-0" id="pills-pembeli-tab"
                                                     data-bs-toggle="pill" data-bs-target="#pills-pembeli" role="tab"
                                                     aria-controls="pills-pembeli" aria-selected="false">
-                                                    <input type="radio" class="form-control" name="sign">
+                                                    <input type="radio" class="form-control"
+                                                        name="nonsuplierdanpembeli">
                                                     <span class="checkmark"></span> Non Suplier / Pelanggan</span>
                                             </li>
                                         </ul>

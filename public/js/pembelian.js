@@ -63,7 +63,7 @@ $(document).ready(function () {
                                 return row.suplier.suplier; // Jika `pelanggan_id` null, tampilkan nama suplier
                             } else if (row.pelanggan_id === null && row.suplier_id === null) {
                                 return row.nonsuplierdanpembeli; // Jika `pelanggan_id` null, tampilkan nama suplier
-                            }else {
+                            } else {
                                 return "-"; // Jika keduanya tidak ada, tampilkan tanda "-"
                             }
                         },
@@ -603,6 +603,43 @@ $(document).ready(function () {
         loadKondisi();
         loadPelanggan();
         loadSuplier();
+
+        // Event listener untuk menangani click pada radio button
+        // Menangani klik pada radio button
+        $(document).ready(function () {
+            // Tangkap event klik untuk setiap radio button
+            $('input[type="radio"]').on('click', function () {
+                // Reset nilai form ketika memilih radio button
+
+                $("#suplier_id").val("").trigger("change"); // Reset dropdown Jenis Produk
+                $("#pelanggan_id").val("").trigger("change"); // Reset dropdown Jenis Produk
+                $('#nonsuplierdanpembeli').val('').trigger("change"); // Reset nonsuplierdanpembeli
+
+                // Reset nilai form ketika memilih radio button
+                if ($(this).attr('id') === 'pills-home-tab') { // Jika Suplier dipilih
+                    $("#pelanggan_id").val("").trigger("change"); // Reset dropdown Pelanggan
+                    $('#nonsuplierdanpembeli').val('').trigger("change"); // Reset Non Suplier / Pembeli
+                } else if ($(this).attr('id') === 'pills-profile-tab') { // Jika Pelanggan dipilih
+                    $("#suplier_id").val("").trigger("change"); // Reset dropdown Suplier
+                    $('#nonsuplierdanpembeli').val('').trigger("change"); // Reset Non Suplier / Pembeli
+                } else if ($(this).attr('id') === 'pills-pembeli-tab') { // Jika Non Suplier / Pembeli dipilih
+                    $("#suplier_id").val("").trigger("change"); // Reset dropdown Suplier
+                    $("#pelanggan_id").val("").trigger("change"); // Reset dropdown Pelanggan
+                }
+
+
+                // // Reset semua tab-pane
+                // $('.tab-pane').removeClass('show active');
+
+                // Aktifkan tab yang sesuai dengan radio button yang dipilih
+                const targetTab = $(this).data('bs-target'); // Ambil target data-bs-target
+                $(targetTab).addClass('show active');
+
+                // Reset styling active pada semua radio buttons
+                $('input[type="radio"]').parent().removeClass('active');
+                $(this).parent().addClass('active');
+            });
+        });
     });
 
     //Fungsi untuk memuat data Pembelian Produk
@@ -832,6 +869,9 @@ $(document).ready(function () {
                                     pembelianResponse.message
                                 );
                                 toast.show();
+                                $("#suplier_id").val("").trigger("change"); // Reset dropdown Jenis Produk
+                                $("#pelanggan_id").val("").trigger("change"); // Reset dropdown Jenis Produk
+                                $('#nonsuplierdanpembeli').val('').trigger("change"); // Reset nonsuplierdanpembeli
                                 tabelProdukPembelian.ajax.reload(); // Reload data dari server
                                 pembelianTable.ajax.reload(); // Reload data dari server
                             }
