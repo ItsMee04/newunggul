@@ -223,7 +223,8 @@ class PembelianController extends Controller
 
     public function detailPembelian($id)
     {
-        return view('pages.pembelian-detail');
+        $pembelian = Pembelian::where('id', $id)->with(['pembelianproduk', 'pembelianproduk.produk', 'suplier', 'pelanggan', 'pembelianproduk.user.pegawai'])->get();
+        return response()->json(["success" => true, 'message' => 'Data Pembelian Berhasil Ditemukan', 'Data' => $pembelian]);
     }
 
     public function getPembelianProduk()
