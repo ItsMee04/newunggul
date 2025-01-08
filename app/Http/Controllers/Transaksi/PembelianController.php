@@ -204,7 +204,9 @@ class PembelianController extends Controller
 
     public function cancelPaymentPembelian($id)
     {
-        $kodeproduk = Pembelian::where('id', $id)->first()->kodeproduk;
+
+        $kodepembelian = Pembelian::where('id', $id)->first()->kodepembelianproduk;
+        $kodeproduk = PembelianProduk::where('kodepembelianproduk', $kodepembelian)->first()->kodeproduk;
 
         $pembelian  = Pembelian::where('id', $id)
             ->update([
@@ -216,6 +218,11 @@ class PembelianController extends Controller
                 ->update([
                     'status' => 0,
                 ]);
+
+            PembelianProduk::where('kodepembelianproduk', $kodepembelian)
+                ->update([
+                    'status' => 0,
+                ]);
         }
 
         return response()->json(['success' => true, 'message' => 'Pembayaran Di Konfirmasi']);
@@ -224,9 +231,9 @@ class PembelianController extends Controller
     public function detailPembelian($id)
     {
         $pembelian = Pembelian::where('id', $id)->with(['pembelianproduk', 'pembelianproduk.produk', 'suplier', 'pelanggan', 'pembelianproduk.user.pegawai'])->first();
-        $produk    = Pembelian::where('id', $id)->with(['pembelianproduk', 'pembelianproduk.produk', 'suplier', 'pelanggan', 'pembelianproduk.user.pegawai'])->get();
+        $produk    = PembelianProduk::where('kodepembelianproduk', $pembelian->kodepembelianproduk)->with(['produk', 'kondisi', 'user.pegawai'])->get();
         return view('pages.pembelian-detail', ['pembelian' => $pembelian, 'produk' => $produk]);
-        // return response()->json(["success" => true, 'message' => 'Data Pembelian Berhasil Ditemukan', 'Data' => $pembelian]);
+        // return response()->json(["success" => true, 'message' => 'Data Pembelian Berhasil Ditemukan', 'Data' => $produk]);
     }
 
     public function getPembelianProduk()

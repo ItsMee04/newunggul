@@ -116,10 +116,15 @@
                                                                     style="vertical-align: inherit;font-size: 14px;color:#ff0000;font-weight: 400;">
                                                                     <span class="badge bg-danger">UN PAID</span>
                                                                 </font>
-                                                            @else
+                                                            @elseif($pembelian->status == 2)
                                                                 <font
                                                                     style="vertical-align: inherit;font-size: 14px;color:#2E7D32;font-weight: 400;">
                                                                     <span class="badge bg-success">PAID</span>
+                                                                </font>
+                                                            @elseif ($pembelian->status == 0)
+                                                                <font
+                                                                    style="vertical-align: inherit;font-size: 14px;color:#ff0000;font-weight: 400;">
+                                                                    <span class="badge bg-danger">CANCELED</span>
                                                                 </font>
                                                             @endif
                                                         </font><br>
@@ -162,25 +167,24 @@
                                 @foreach ($produk as $item)
                                     <tr class="details" style="border-bottom:1px solid #E9ECEF ;">
                                         <td style="padding: 10px;vertical-align: top; display: flex;align-items: center;">
-                                            <img src="{{ $item->pembelianproduk->produk->image ? asset('storage/produk/' . $item->pembelianproduk->produk->image) : asset('assets/img/notfound.png') }}"
+                                            <img src="{{ $item->produk->image ? asset('storage/produk/' . $item->produk->image) : asset('assets/img/notfound.png') }}"
                                                 alt="Product Image" class="me-2" style="width:40px;height:40px;">
-                                            {{ $item->pembelianproduk->produk->nama }}
+                                            {{ $item->produk->nama }}
                                         </td>
                                         <td style="padding: 10px;vertical-align: top; ">
-                                            {{ $item->pembelianproduk->produk->berat }} grams
+                                            {{ $item->produk->berat }} grams
                                         </td>
                                         <td style="padding: 10px;vertical-align: top; ">
-                                            {{ $item->pembelianproduk->produk->karat }}
+                                            {{ $item->produk->karat }}
                                         </td>
                                         <td style="padding: 10px;vertical-align: top; ">
-                                            {{ 'Rp.' . ' ' . number_format($item->pembelianproduk->produk->harga_beli) }}
+                                            {{ 'Rp.' . ' ' . number_format($item->produk->harga_beli) }}
                                         </td>
                                         <td style="padding: 10px;vertical-align: top; ">
-                                            {{ 'Rp.' . ' ' . number_format($item->pembelianproduk->total) }}
+                                            {{ 'Rp.' . ' ' . number_format($item->total) }}
                                         </td>
                                         <td style="padding: 10px;vertical-align: top; ">
-                                            <a href="/NotaBarang/{{ $item->pembelianproduk->produk->id }}"
-                                                target="__blank">
+                                            <a href="/NotaBarang/{{ $item->produk->id }}" target="__blank">
                                                 <i data-feather="printer" class="feather-rotate-ccw"
                                                     data-bs-toggle="tooltip" data-bs-placement="top"
                                                     title="Cetak Surat Barang">
