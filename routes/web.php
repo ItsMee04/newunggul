@@ -15,6 +15,7 @@ use App\Http\Controllers\Transaksi\OrderController;
 use App\Http\Controllers\Transaksi\DiskonController;
 use App\Http\Controllers\Pelanggan\SuplierController;
 use App\Http\Controllers\Pelanggan\PelangganController;
+use App\Http\Controllers\Perbaikan\PerbaikanController;
 use App\Http\Controllers\Produk\KondisiController;
 use App\Http\Controllers\Transaksi\KeranjangController;
 use App\Http\Controllers\Transaksi\PembelianController;
@@ -142,6 +143,9 @@ Route::middleware('auth')->group(function () {
     Route::post('insertProdukPembelian', [PembelianController::class, 'insertProdukPembelian']);
     Route::get('deleteProdukPembelian/{id}', [PembelianController::class, 'deleteProdukPembelian']);
     Route::get('getKodePembelianProduk', [PembelianController::class, 'getKodePembelianProduk']);
+
+    Route::get('perbaikan', [PerbaikanController::class, 'index']);
+    Route::get('perbaikan/getPerbaikan', [PerbaikanController::class, 'getPerbaikan']);
 
     Route::get('order/cetakNotaTransaksi/{id}', [ReportController::class, 'cetakNotaTransaksi']);
 

@@ -5,6 +5,7 @@ $(document).ready(function () {
     $(document).on("click", "#refreshButton", function () {
         if (pembelianTable) {
             pembelianTable.ajax.reload(); // Reload data dari server
+            tabelProdukPembelian.ajax.reload();
         }
         const successtoastExample = document.getElementById("successToast");
         const toast = new bootstrap.Toast(successtoastExample);
@@ -108,7 +109,7 @@ $(document).ready(function () {
                                 // Jika status bukan 1
                                 return `
                                     <div class="edit-delete-action">
-                                        <a class="me-2 p-2 btn-detail" data-id="${row.id}">
+                                        <a href="pembelian/detailPembelian/${row.id}" class="me-2 p-2 btn-detail" data-id="${row.id}">
                                             <i data-feather="eye" class="action-eye"></i>
                                         </a>
                                     </div>
