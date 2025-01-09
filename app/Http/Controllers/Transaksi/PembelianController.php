@@ -254,7 +254,7 @@ class PembelianController extends Controller
             'nama'                  =>  'required',
             'berat'                 =>  [
                 'required',
-                'regex:/^\d+\.\d{1}$/'
+                'regex:/^\d+\.\d{1,}$/'
             ],
             'karat'                 =>  'required|integer',
             'jenis_id'              =>  'required|' . Rule::in(Jenis::where('status', 1)->pluck('id')),

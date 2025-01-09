@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('harga_jual')->nullable();
             $table->integer('harga_beli')->nullable();
             $table->text('keterangan')->nullable();
-            $table->decimal('berat', 5, 2);
+            $table->decimal('berat', 8, 5);
             $table->integer('karat');
             $table->unsignedBigInteger('kondisi_id');
             $table->string('image', 100)->nullable();
