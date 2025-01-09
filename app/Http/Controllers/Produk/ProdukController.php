@@ -58,7 +58,7 @@ class ProdukController extends Controller
             'keterangan'    =>  'string',
             'berat'         =>  [
                 'required',
-                'regex:/^\d+\.\d{1}$/'
+                'regex:/^\d+\.\d{1,}$/'
             ],
             'kondisi_id'    =>  'required',
             'karat'         =>  'required|integer',

@@ -46,7 +46,7 @@ $(document).ready(function () {
                         data: null,
                         render: function (data, type, row) {
                             // Cek apakah data gambar tersedia atau tidak
-                            const imageSrc = row.icon ? `/storage/icon/${row.icon}` : '/assets/img/notfound.png';
+                            const imageSrc = row.icon ? `/storage/icon/${row.icon}?t=${new Date().getTime()}` : '/assets/img/notfound.png';
                             return `
                                 <div class="productimgname">
                                     <a href="javascript:void(0);" class="product-img stock-img">
@@ -205,7 +205,7 @@ $(document).ready(function () {
             error: function () {
                 Swal.fire(
                     "Gagal!",
-                    "Tidak dapat mengambil data pegawai.",
+                    "Tidak dapat mengambil data jenis.",
                     "error"
                 );
             },
@@ -259,7 +259,7 @@ $(document).ready(function () {
 
         const avatar = $("#editImage")[0].files[0]; // Ambil gambar jika ada
         if (avatar) {
-            dataForm.append("avatar", avatar);
+            dataForm.append("icon", avatar);
         }
 
         // Kirim data ke server menggunakan AJAX
