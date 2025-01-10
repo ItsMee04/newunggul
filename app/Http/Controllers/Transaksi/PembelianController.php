@@ -131,6 +131,7 @@ class PembelianController extends Controller
 
         if ($pembelian) {
             PembelianProduk::where('kodepembelianproduk', $request->kode)
+                ->where('status', '!=', 0)
                 ->update([
                     'status' => 2,
                 ]);
@@ -231,7 +232,7 @@ class PembelianController extends Controller
     public function detailPembelian($id)
     {
         $pembelian = Pembelian::where('id', $id)->with(['pembelianproduk', 'pembelianproduk.produk', 'suplier', 'pelanggan', 'pembelianproduk.user.pegawai'])->first();
-        $produk    = PembelianProduk::where('kodepembelianproduk', $pembelian->kodepembelianproduk)->with(['produk', 'kondisi', 'user.pegawai'])->get();
+        $produk    = PembelianProduk::where('kodepembelianproduk', $pembelian->kodepembelianproduk)->with(['produk', 'kondisi', 'user.pegawai'])->where('status', '!=', 0)->get();
         return view('pages.pembelian-detail', ['pembelian' => $pembelian, 'produk' => $produk]);
         // return response()->json(["success" => true, 'message' => 'Data Pembelian Berhasil Ditemukan', 'Data' => $produk]);
     }
