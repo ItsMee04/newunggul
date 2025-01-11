@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('perbaikan', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('produk_id');
+            $table->unsignedBigInteger('kondisi_id');
             $table->text('keterangan');
             $table->unsignedBigInteger('user_id');
             $table->integer('status')->unsigned();
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->foreign('produk_id')->references('id')->on('produk')->onDelete('cascade');
+            $table->foreign('kondisi_id')->references('id')->on('kondisi')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

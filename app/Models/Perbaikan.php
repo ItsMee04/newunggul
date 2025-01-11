@@ -15,6 +15,7 @@ class Perbaikan extends Model
     protected $fillable = [
         'id',
         'produk_id',
+        'kondisi_id',
         'keterangan',
         'user_id',
         'status'
@@ -38,5 +39,15 @@ class Perbaikan extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    /**
+     * Get the kondisi that owns the Perbaikan
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function kondisi(): BelongsTo
+    {
+        return $this->belongsTo(Kondisi::class, 'kondisi_id', 'id');
     }
 }

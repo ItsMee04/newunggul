@@ -1,6 +1,7 @@
 $(document).ready(function () {
     loadKusam();
     loadRusak()
+
     function loadKusam() {
         // Datatable
         if ($(".kusamTable").length > 0) {
@@ -158,4 +159,12 @@ $(document).ready(function () {
             });
         }
     }
+
+    $(document).on("click", "#kusam-tab", function(){
+        kusamTable.ajax.reload();
+    })
+
+    $(document).on("click", "#rusak-tab", function(){
+        rusakTable.ajax.reload();
+    })
 })
