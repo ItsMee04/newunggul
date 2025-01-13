@@ -18,8 +18,26 @@ class PerbaikanController extends Controller
         $perbaikan = Perbaikan::with([
             'produk',
             'user.pegawai'
-        ])->get();
+        ])->where('status', '!=', 0)->get();
 
         return response()->json(['success' => true, 'message' => 'Data Perbaikan Berhasil Ditemukan', 'Data' => $perbaikan]);
+    }
+
+    public function getProdukKusam()
+    {
+        $produkKusam = Perbaikan::where('status', '!=', 0)
+            ->where('kondisi_id', 2)
+            ->with(['produk', 'user.pegawai'])->get();
+
+        return response()->json(['success' => true, 'message' => 'Data Produk Kusam Berhasil Ditemukan', 'Data' => $produkKusam]);
+    }
+
+    public function getProdukRusak()
+    {
+        $produkRusak = Perbaikan::where('status', '!=', 0)
+            ->where('kondisi_id', 3)
+            ->with(['produk', 'user.pegawai'])->get();
+
+        return response()->json(['success' => true, 'message' => 'Data Produk Rusak Berhasil Ditemukan', 'Data' => $produkRusak]);
     }
 }

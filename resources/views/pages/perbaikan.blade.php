@@ -54,7 +54,7 @@
                                                 <th>Kode Produk</th>
                                                 <th>Keterangan</th>
                                                 <th>Status</th>
-                                                <th>Discount</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>

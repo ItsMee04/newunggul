@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Http\Controllers\Produk\ProdukController;
+use App\Models\Perbaikan;
 
 class PembelianController extends Controller
 {
@@ -306,6 +307,17 @@ class PembelianController extends Controller
                 'status'                =>  1,
             ]);
 
+            $produk_id = Produk::where('kodeproduk', $request['kodeproduk'])->first()->id;
+
+            if ($request->kondisi_id != 1) {
+                Perbaikan::create([
+                    'produk_id'     =>  $produk_id,
+                    'kondisi_id'    =>  $request->kondisi_id,
+                    'keterangan'    =>  $request->keterangan,
+                    'user_id'       =>  Auth::user()->id,
+                    'status'        =>  1,
+                ]);
+            }
 
             return response()->json(['success' => true, 'message' => 'Data Produk Berhasil Ditambahkan']);
         }
@@ -319,10 +331,17 @@ class PembelianController extends Controller
             ]);
 
         if ($pembelianproduk) {
-            $kodeproduk = PembelianProduk::where('id', $id)->first()->kodeproduk;
+            $kodeproduk     = PembelianProduk::where('id', $id)->first()->kodeproduk;
+            $produk         = Produk::where('kodeproduk', $kodeproduk)->first()->id;
+            $perbaikan_id   = Perbaikan::where('produk_id', $produk)->first()->id;
             Produk::where('kodeproduk', $kodeproduk)
                 ->update([
                     'status'    =>  0,
+                ]);
+
+            Perbaikan::where('id', $perbaikan_id)
+                ->update([
+                    'status'    => 0,
                 ]);
         }
 

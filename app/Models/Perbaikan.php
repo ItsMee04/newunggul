@@ -28,7 +28,7 @@ class Perbaikan extends Model
      */
     public function produk(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'produk_id', 'id');
+        return $this->belongsTo(Produk::class, 'produk_id', 'id');
     }
 
     /**
