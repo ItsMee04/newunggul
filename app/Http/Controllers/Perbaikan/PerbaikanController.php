@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Perbaikan;
 
-use App\Http\Controllers\Controller;
+use Carbon\Carbon;
+use App\Models\Produk;
 use App\Models\Perbaikan;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class PerbaikanController extends Controller
 {
@@ -39,5 +41,29 @@ class PerbaikanController extends Controller
             ->with(['produk', 'user.pegawai'])->get();
 
         return response()->json(['success' => true, 'message' => 'Data Produk Rusak Berhasil Ditemukan', 'Data' => $produkRusak]);
+    }
+
+    public function updatePerbaikanProduk($id)
+    {
+        $produkid = Perbaikan::where('id', $id)->first()->produk_id;
+
+        $perbaikan = Perbaikan::where('id', $id)
+            ->update([
+                'tanggal_keluar'    =>  Carbon::today()->format('Y-m-d'),
+            ]);
+
+        if ($perbaikan) {
+            $produk = Produk::where('id', $produkid)
+                ->update([
+                    'kondisi_id'        =>  1,
+                    'status'            =>  1,
+                ]);
+
+            if ($produk) {
+                $dataproduk = Produk::where('id', $id)->get();
+            }
+        }
+
+        return response()->json(['success' => true, 'message' => 'Data Berhasil Diupdate', 'Data' => $dataproduk]);
     }
 }

@@ -17,6 +17,8 @@ class Perbaikan extends Model
         'produk_id',
         'kondisi_id',
         'keterangan',
+        'tanggal_masuk',
+        'tanggal_keluar',
         'user_id',
         'status'
     ];

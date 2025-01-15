@@ -53,6 +53,8 @@
                                                 <th>No.</th>
                                                 <th>Kode Produk</th>
                                                 <th>Keterangan</th>
+                                                <th>Tanggal Masuk</th>
+                                                <th>Tanggal Keluar</th>
                                                 <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
@@ -78,8 +80,10 @@
                                                 <th>No.</th>
                                                 <th>Kode Produk</th>
                                                 <th>Keterangan</th>
+                                                <th>Tanggal Masuk</th>
+                                                <th>Tanggal Keluar</th>
                                                 <th>Status</th>
-                                                <th>Discount</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>

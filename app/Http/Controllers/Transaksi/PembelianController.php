@@ -314,6 +314,7 @@ class PembelianController extends Controller
                     'produk_id'     =>  $produk_id,
                     'kondisi_id'    =>  $request->kondisi_id,
                     'keterangan'    =>  $request->keterangan,
+                    'tanggal_masuk' =>  Carbon::today()->format('Y-m-d'),
                     'user_id'       =>  Auth::user()->id,
                     'status'        =>  1,
                 ]);

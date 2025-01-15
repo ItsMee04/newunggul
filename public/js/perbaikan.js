@@ -31,6 +31,8 @@ $(document).ready(function () {
                     { data: null, render: (data, type, row, meta) => meta.row + 1, orderable: false },
                     { data: 'produk.kodeproduk' },
                     { data: 'keterangan' },
+                    { data: 'tanggal_masuk'},
+                    { data: 'tanggal_keluar'},
                     {
                         data: 'status',
                         render: function (data) {
@@ -48,11 +50,11 @@ $(document).ready(function () {
                         render: function (data, type, row) {
                             return `
                                 <div class="edit-delete-action">
-                                    <a class="me-2 p-2 btn-edit" data-id="${row.id}">
-                                        <i data-feather="edit" class="feather-edit"></i>
+                                    <a class="me-2 p-2 btn-detailProduk" data-id="${row.id}">
+                                        <i data-feather="eye" class="feather-edit"></i>
                                     </a>
-                                    <a class="confirm-text p-2" data-id="${row.id}">
-                                        <i data-feather="trash-2" class="feather-trash-2"></i>
+                                    <a class="confirm-service p-2" data-id="${row.id}">
+                                        <i data-feather="check-circle" class="feather-trash-2"></i>
                                     </a>
                                 </div>`;
                         }
@@ -90,4 +92,62 @@ $(document).ready(function () {
         $(this).addClass("active"); // Tambahkan kelas active ke tab yang diklik
         loadActiveTabData(); // Muat data untuk tab yang baru aktif
     });
+
+    $(document).on("click",".btn-detailProduk", function(){
+        const itemId = $(this).data("id");
+        console.log(itemId);
+    })
+
+    $(document).on("click",".confirm-service", function(){
+        const itemId = $(this).data("id");
+
+        Swal.fire({
+            title: "Status Produk",
+            text: "Apakah Produk Sudah Di Reparasi ?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Ya, Sudah!",
+            cancelButtonText: "Batal",
+            reverseButtons: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Kirim permintaan hapus (gunakan itemId)
+                fetch(`perbaikan/updatePerbaikanProduk/${itemId}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                            "content"
+                        ),
+                    },
+                })
+                    .then((response) => {
+                        if (response.ok) {
+                            Swal.fire(
+                                "Di Update!",
+                                "Data berhasil diperbarui.",
+                                "success"
+                            );
+                            loadActiveTabData();
+                        } else {
+                            Swal.fire(
+                                "Gagal!",
+                                "Terjadi kesalahan saat memperbarui data.",
+                                "error"
+                            );
+                        }
+                    })
+                    .catch((error) => {
+                        Swal.fire(
+                            "Gagal!",
+                            "Terjadi kesalahan dalam memperbarui data.",
+                            "error"
+                        );
+                    });
+            } else {
+                // Jika batal, beri tahu pengguna
+                Swal.fire("Dibatalkan", "Data tidak diperbarui.", "info");
+            }
+        });
+    })
 });

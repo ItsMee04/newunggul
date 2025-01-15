@@ -148,6 +148,7 @@ Route::middleware('auth')->group(function () {
     Route::get('perbaikan/getPerbaikan', [PerbaikanController::class, 'getPerbaikan']);
     Route::get('perbaikan/getProdukKusam', [PerbaikanController::class, 'getProdukKusam']);
     Route::get('perbaikan/getProdukRusak', [PerbaikanController::class, 'getProdukRusak']);
+    Route::get('perbaikan/updatePerbaikanProduk/{id}', [PerbaikanController::class, 'updatePerbaikanProduk']);
 
     Route::get('order/cetakNotaTransaksi/{id}', [ReportController::class, 'cetakNotaTransaksi']);
 
