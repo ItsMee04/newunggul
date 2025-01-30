@@ -1,4 +1,9 @@
 $(document).ready(function () {
+
+    // Inisialisasi tooltip Bootstrap
+    function initializeTooltip() {
+        $('[data-bs-toggle="tooltip"]').tooltip();
+    }
     function initTable(selector, url) {
         if ($(selector).length > 0) {
             if ($.fn.DataTable.isDataTable(selector)) {
@@ -50,10 +55,10 @@ $(document).ready(function () {
                         render: function (data, type, row) {
                             return `
                                 <div class="edit-delete-action">
-                                    <a class="me-2 p-2 btn-detailProduk" data-id="${row.id}">
+                                    <a class="me-2 p-2 btn-detailProduk" data-id="${row.id}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Detail Data">
                                         <i data-feather="eye" class="feather-edit"></i>
                                     </a>
-                                    <a class="confirm-service p-2" data-id="${row.id}">
+                                    <a class="confirm-service p-2" data-id="${row.id}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Confirm Service">
                                         <i data-feather="check-circle" class="feather-trash-2"></i>
                                     </a>
                                 </div>`;
@@ -66,6 +71,8 @@ $(document).ready(function () {
                 },
                 drawCallback: function () {
                     feather.replace();
+                    // Re-inisialisasi tooltip Bootstrap setelah render ulang DataTable
+                    initializeTooltip();
                 },
             });
         }

@@ -2,6 +2,11 @@ $(document).ready(function () {
     loadPembelian();
     loadPembelianProduk();
 
+    // Inisialisasi tooltip Bootstrap
+    function initializeTooltip() {
+        $('[data-bs-toggle="tooltip"]').tooltip();
+    }
+
     $(document).on("click", "#refreshButton", function () {
         if (pembelianTable) {
             pembelianTable.ajax.reload(); // Reload data dari server
@@ -94,13 +99,13 @@ $(document).ready(function () {
                                 // Jika status adalah 1
                                 return `
                                     <div class="edit-delete-action">
-                                        <a href="pembelian/detailPembelian/${row.id}" class="me-2 p-2 btn-detail" data-id="${row.id}">
+                                        <a href="pembelian/detailPembelian/${row.id}" class="me-2 p-2 btn-detail" data-id="${row.id}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Detail Data">
                                     <i data-feather="eye" class="action-eye"></i>
                                     </a>
-                                    <a class="me-2 p-2 confirm-payment" data-id="${row.id}">
+                                    <a class="me-2 p-2 confirm-payment" data-id="${row.id}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Confirm Payment">
                                         <i data-feather="check-circle" class="feather-edit-2"></i>
                                     </a>
-                                    <a class="confirm-text p-2" data-id="${row.id}">
+                                    <a class="confirm-text p-2" data-id="${row.id}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Cancel Payment">
                                         <i data-feather="x-circle" class="feather-trash-2"></i>
                                     </a>
                                     </div>
@@ -109,7 +114,7 @@ $(document).ready(function () {
                                 // Jika status bukan 1
                                 return `
                                     <div class="edit-delete-action">
-                                        <a href="pembelian/detailPembelian/${row.id}" class="me-2 p-2 btn-detail" data-id="${row.id}">
+                                        <a href="pembelian/detailPembelian/${row.id}" class="me-2 p-2 btn-detail" data-id="${row.id}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Detail Data">
                                             <i data-feather="eye" class="action-eye"></i>
                                         </a>
                                     </div>
@@ -123,8 +128,11 @@ $(document).ready(function () {
                     $(".dataTables_filter").appendTo(".search-input");
                 },
                 drawCallback: function () {
-                    feather.replace(); // Inisialisasi ulang Feather Icons
-                },
+                    // Re-inisialisasi Feather Icons setelah render ulang DataTable
+                    feather.replace();
+                    // Re-inisialisasi tooltip Bootstrap setelah render ulang DataTable
+                    initializeTooltip();
+                }
             });
         }
     }

@@ -165,14 +165,6 @@
                                                     id="nonsuplierdanpembeli" class="form-control">
                                             </div>
                                         </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Status</label>
-                                            <select class="select" name="status" id="status">
-                                                <option>Pilih Status</option>
-                                                <option value="1">Aktif</option>
-                                                <option value="2">Tidak Aktif</option>
-                                            </select>
-                                        </div>
                                     </div>
                                 </div>
                                 <!-- Form Tambahan -->

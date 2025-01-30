@@ -1,6 +1,11 @@
 $(document).ready(function () {
     loadOrder();
 
+    // Inisialisasi tooltip Bootstrap
+    function initializeTooltip() {
+        $('[data-bs-toggle="tooltip"]').tooltip();
+    }
+
     $(document).on("click", "#refreshButton", function () {
         if (orderTable) {
             orderTable.ajax.reload(); // Reload data dari server
@@ -99,15 +104,15 @@ $(document).ready(function () {
                                 // Jika status adalah 1
                                 return `
                                     <div class="edit-delete-action">
-                                        <a class="me-2 edit-icon  p-2" href="/order/${row.id}">
+                                        <a class="me-2 edit-icon  p-2" href="/order/${row.id}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Detail Data">
                                             <i data-feather="eye" class="feather-eye"></i>
                                         </a>
                                         <a class="me-2 confirm-payment p-2" href="javascript:void(0);"
-                                            data-id="${row.id}">
+                                            data-id="${row.id}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Confirm Payment">
                                             <i data-feather="check-circle" class="feather-edit"></i>
                                         </a>
                                         <a class="confirm-cancel p-2" href="javascript:void(0);"
-                                            data-id="${row.id}">
+                                            data-id="${row.id}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Cancel Payment">
                                             <i data-feather="x-circle" class="feather-trash-2"></i>
                                         </a>
                                     </div>
@@ -116,7 +121,7 @@ $(document).ready(function () {
                                 // Jika status bukan 1
                                 return `
                                     <div class="edit-delete-action">
-                                        <a class="me-2 edit-icon p-2" href="/order/${row.id}">
+                                        <a class="me-2 edit-icon p-2" href="/order/${row.id}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Detail Data">
                                             <i data-feather="eye" class="feather-eye"></i>
                                         </a>
                                     </div>
@@ -131,6 +136,8 @@ $(document).ready(function () {
                 },
                 drawCallback: function () {
                     feather.replace(); // Inisialisasi ulang Feather Icons
+                    // Re-inisialisasi tooltip Bootstrap setelah render ulang DataTable
+                    initializeTooltip();
                 },
             });
         }

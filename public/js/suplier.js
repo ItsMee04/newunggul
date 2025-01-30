@@ -1,6 +1,11 @@
 $(document).ready(function () {
     loadSuplier();
 
+    // Inisialisasi tooltip Bootstrap
+    function initializeTooltip() {
+        $('[data-bs-toggle="tooltip"]').tooltip();
+    }
+
     $(document).on("click", "#refreshButton", function () {
         if (suplierTable) {
             suplierTable.ajax.reload(); // Reload data dari server
@@ -74,10 +79,10 @@ $(document).ready(function () {
                         render: function (data, type, row, meta) {
                             return `
                             <div class="edit-delete-action">
-                                <a class="me-2 p-2 btn-edit" data-id="${row.id}">
+                                <a class="me-2 p-2 btn-edit" data-id="${row.id}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Edit Data">
                                     <i data-feather="edit" class="feather-edit"></i>
                                 </a>
-                                <a class="confirm-text p-2" data-id="${row.id}">
+                                <a class="confirm-text p-2" data-id="${row.id}" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Hapus Data">
                                     <i data-feather="trash-2" class="feather-trash-2"></i>
                                 </a>
                             </div>
@@ -90,6 +95,12 @@ $(document).ready(function () {
                     $('.dataTables_filter').appendTo('.search-input');
 
                 },
+                drawCallback: function () {
+                    // Re-inisialisasi Feather Icons setelah render ulang DataTable
+                    feather.replace();
+                    // Re-inisialisasi tooltip Bootstrap setelah render ulang DataTable
+                    initializeTooltip();
+                }
             });
         }
     }

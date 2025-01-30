@@ -99,15 +99,6 @@ class PembelianController extends Controller
 
     public function store(Request $request)
     {
-        $messages = [
-            'required' => ':attribute wajib di isi !!!'
-        ];
-
-        $credentials = $request->validate([
-            'status'        =>  'required'
-        ], $messages);
-
-
         if ($request->suplier_id != "" || $request->pelanggan_id == "") {
             $request['pelanggan_id'] = null;
         } elseif ($request->suplier_id == '' || $request->pelanggan_id != "") {
@@ -127,7 +118,7 @@ class PembelianController extends Controller
             'pelanggan_id'          => $request->pelanggan_id,
             'nonsuplierdanpembeli'  => $request->nonsuplierdanpembeli,
             'tanggal'               => $request['tanggal'],
-            'status'                => $request->status
+            'status'                => 1,
         ]);
 
         if ($pembelian) {
