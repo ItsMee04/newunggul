@@ -17,8 +17,10 @@ use App\Http\Controllers\Pelanggan\SuplierController;
 use App\Http\Controllers\Pelanggan\PelangganController;
 use App\Http\Controllers\Perbaikan\PerbaikanController;
 use App\Http\Controllers\Produk\KondisiController;
+use App\Http\Controllers\Stok\StokController;
 use App\Http\Controllers\Transaksi\KeranjangController;
 use App\Http\Controllers\Transaksi\PembelianController;
+use App\Models\Stok;
 
 /*
 |--------------------------------------------------------------------------
@@ -151,6 +153,9 @@ Route::middleware('auth')->group(function () {
     Route::get('perbaikan/updatePerbaikanProduk/{id}', [PerbaikanController::class, 'updatePerbaikanProduk']);
 
     Route::get('order/cetakNotaTransaksi/{id}', [ReportController::class, 'cetakNotaTransaksi']);
+
+    Route::get('stock', [StokController::class, 'index']);
+    Route::get('stock/getStokByNampan', [StokController::class, 'getStokByNampan']);
 
     Route::get('logout', [AuthController::class, 'logout']);
 });

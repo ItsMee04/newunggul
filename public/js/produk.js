@@ -110,7 +110,7 @@ $(document).ready(function () {
         });
     }
 
-    // Fungsi untuk memuat data jabatan
+    // Fungsi untuk memuat data jenis
     function loadJenis() {
         $.ajax({
             url: "/jenis/getJenis", // Endpoint untuk mendapatkan data jabatan
