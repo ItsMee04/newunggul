@@ -157,6 +157,7 @@ Route::middleware('auth')->group(function () {
     Route::get('stock', [StokController::class, 'index']);
     Route::get('stock/getStokByNampan', [StokController::class, 'getStokByNampan']);
     Route::post('stock', [StokController::class, 'store']);
+    Route::get('stock/{id}', [StokController::class, 'show']);
 
     Route::get('logout', [AuthController::class, 'logout']);
 });

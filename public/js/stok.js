@@ -7,6 +7,16 @@ $(document).ready(function () {
         $('[data-bs-toggle="tooltip"]').tooltip();
     }
 
+    $(document).on("click", "#refreshButton", function () {
+        if (tabelStok) {
+            tabelStok.ajax.reload(); // Reload data dari server
+        }
+        const successtoastExample = document.getElementById("successToast");
+        const toast = new bootstrap.Toast(successtoastExample);
+        $(".toast-body").text("Data Stok Berhasil Direfresh");
+        toast.show();
+    });
+
     // Fungsi untuk memuat data nampan
     function loadNampan() {
         $.ajax({
@@ -167,6 +177,107 @@ $(document).ready(function () {
                         document.getElementById("dangerToastError");
                     const toast = new bootstrap.Toast(dangertoastExamplee);
                     $(".toast-body").text(response.message);
+                    toast.show();
+                }
+            },
+        });
+    });
+
+    //ketika button edit di tekan
+    $(document).on("click", ".btn-edit", function () {
+        const stokID = $(this).data("id");
+
+        $.ajax({
+            url: `/stock/${stokID}`, // Endpoint untuk mendapatkan data pegawai
+            type: "GET",
+            success: function (response) {
+                // Isi modal dengan data pegawai
+                $("#editketerangan").val(response.Data.keterangan); 
+                $("#editkodetransaksi").val(response.Data.kodetransaksi);
+
+                // // Muat opsi nampan
+                $.ajax({
+                    url: "/nampan/getNampan",
+                    type: "GET",
+                    success: function (jabatanResponse) {
+                        let options =
+                            '<option value="">-- Pilih Nampan --</option>';
+                        jabatanResponse.Data.forEach((item) => {
+                            const selected =
+                                item.id === response.Data.nampan_id
+                                    ? "selected"
+                                    : "";
+                            options += `<option value="${item.id}" ${selected}>${item.nampan}</option>`;
+                        });
+                        $("#editnampan").html(options);
+                    },
+                });
+
+                // Tampilkan modal edit
+                $("#modaledit").modal("show");
+            },
+            error: function () {
+                Swal.fire(
+                    "Gagal!",
+                    "Tidak dapat mengambil data jenis.",
+                    "error"
+                );
+            },
+        });
+    });
+
+    // Ketika modal ditutup, reset semua field
+    $("#modaledit").on("hidden.bs.modal", function () {
+        // Reset form input (termasuk gambar dan status)
+        $("#formEditNampan")[0].reset();
+
+        // Reset dropdown status jika perlu
+        $("#editnampan").val("").trigger("change"); // Reset select status jika menggunakan Select2 atau lainnya
+    });
+
+    // Kirim data ke server saat form disubmit
+    $(document).on("submit", "#formEditStok", function (e) {
+        e.preventDefault(); // Mencegah form submit secara default
+
+        // Ambil data dari form
+        const dataForm = new FormData();
+        dataForm.append("id", $("#editid").val());
+        dataForm.append("nampan", $("#editnampan").val());
+        dataForm.append("jenis", $("#editjenis").val());
+        dataForm.append("status", $("#editstatus").val());
+        dataForm.append("_token", $('meta[name="csrf-token"]').attr("content")); // CSRF Token Laravel
+
+        // Kirim data ke server menggunakan AJAX
+        $.ajax({
+            url: `/update-nampan/${$("#editid").val()}`, // URL untuk mengupdate data pegawai
+            type: "POST", // Gunakan metode POST (atau PATCH jika route mendukung)
+            data: dataForm, // Gunakan FormData
+            processData: false, // Jangan proses FormData sebagai query string
+            contentType: false, // Jangan set Content-Type secara manual
+            success: function (response) {
+                // Tampilkan toast sukses
+                const successtoastExample =
+                    document.getElementById("successToast");
+                const toast = new bootstrap.Toast(successtoastExample);
+                $(".toast-body").text(response.message);
+                toast.show();
+                $("#modaledit").modal("hide"); // Tutup modal
+                $("#formEditNampan")[0].reset(); // Reset form
+                if (nampanTable) {
+                    nampanTable.ajax.reload(); // Reload data dari server
+                }
+            },
+            error: function (xhr) {
+                const errors = xhr.responseJSON.errors;
+                if (errors) {
+                    let errorMessage = "";
+                    for (let key in errors) {
+                        errorMessage += `${errors[key][0]}\n`;
+                    }
+                    const dangertoastExamplee =
+                        document.getElementById("dangerToastError");
+                    const toast = new bootstrap.Toast(dangertoastExamplee);
+                    $(".toast-body").text(errorMessage);
                     toast.show();
                 }
             },

@@ -7,6 +7,7 @@ use App\Models\Stok;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use PhpParser\Node\Expr\FuncCall;
 
 class StokController extends Controller
 {
@@ -61,5 +62,12 @@ class StokController extends Controller
         ]);
 
         return response()->json(['success' => true, 'message' => 'Data Berhasil Ditambahkan', 'Data' => $stok]);
+    }
+
+    public function show($id)
+    {
+        $stok = Stok::with(['nampan'])->find($id);
+
+        return response()->json(['success' => true, 'message' => 'Data Berhasil Ditemukan', 'Data' => $stok]);
     }
 }
