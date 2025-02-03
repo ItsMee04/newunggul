@@ -2,12 +2,33 @@
 
 namespace App\Http\Controllers\Stok;
 
-use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use App\Models\Stok;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class StokController extends Controller
 {
+    private function generateCodeStok()
+    {
+        // Ambil kode customer terakhir dari database
+        $lastCustomer = DB::table('stok')
+            ->orderBy('kodetransaksi', 'desc')
+            ->first();
+
+        // Jika tidak ada customer, mulai dari 1
+        $lastNumber = $lastCustomer ? (int) substr($lastCustomer->kodetransaksi, -5) : 0;
+
+        // Tambahkan 1 pada nomor terakhir
+        $newNumber = $lastNumber + 1;
+
+        // Format kode customer baru
+        $newKodeCustomer = '#STK-' . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
+
+        return $newKodeCustomer;
+    }
+
     public function index()
     {
         return view('pages.stok');
@@ -17,5 +38,28 @@ class StokController extends Controller
     {
         $stok = Stok::with(['nampan'])->where('status', 1)->get();
         return response()->json(['success' => true, 'message' => 'Data Stok Berhasil Ditemukan', 'Data' => $stok]);
+    }
+
+    public function store(Request $request)
+    {
+        $messages = [
+            'required' => ':attribute wajib di isi !!!',
+        ];
+
+        $credentials = $request->validate([
+            'nampan'   =>  'required'
+        ], $messages);
+
+        $kodetransaksi = $this->generateCodeStok();
+
+        $stok = Stok::create([
+            'kodetransaksi' =>  $kodetransaksi,
+            'nampan_id'     =>  $request->nampan,
+            'tanggal'       =>  Carbon::today()->format('Y-m-d'),
+            'keterangan'    =>  $request->keterangan,
+            'status'        =>  1,
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Data Berhasil Ditambahkan', 'Data' => $stok]);
     }
 }

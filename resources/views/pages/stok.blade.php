@@ -81,24 +81,8 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Kontak</label>
-                            <input type="text" id="kontak" name="kontak" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Tanggal</label>
-                            <input type="date" id="tanggal" name="tanggal" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Alamat</label>
-                            <textarea class="form-control" id="alamat" name="alamat"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Status</label>
-                            <select class="select" name="status" id="status">
-                                <option>Pilih Status</option>
-                                <option value="1"> Aktif</option>
-                                <option value="2"> Tidak Aktif</option>
-                            </select>
+                            <label class="form-label">Keterangan</label>
+                            <textarea class="form-control" id="keterangan" name="keterangan"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -115,51 +99,24 @@
         <div class="modal-dialog modal-dialog-centered text-center" role="document">
             <div class="modal-content modal-content-demo">
                 <div class="modal-header">
-                    <h4 class="modal-title">Edit Pelanggan</h4><button aria-label="Close" class="btn-close"
+                    <h4 class="modal-title">Edit Stok</h4><button aria-label="Close" class="btn-close"
                         data-bs-dismiss="modal"></button>
                 </div>
-                <form id="formEditPelanggan" method="POST" enctype="multipart/form-data">
+                <form id="formEditStok" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body text-start">
                         <div class="mb-3">
-                            <label class="form-label">ID</label>
-                            <input type="text" id="editid" class="form-control" readonly>
+                            <label class="form-label">Kode Transaksi</label>
+                            <input type="text" id="editkodetransaksi" class="form-control" readonly>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Kode Pelanggan</label>
-                            <input type="text" id="editkodepelanggan" class="form-control" readonly>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">NIK</label>
-                                <input type="text" id="editnik" class="form-control">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Nama</label>
-                                <input type="text" id="editnama" class="form-control">
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Kontak</label>
-                            <input type="text" id="editkontak" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Tanggal</label>
-                            <input type="date" id="edittanggal" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Alamat</label>
-                            <textarea class="form-control" id="editalamat"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Status</label>
-                            <select class="select" id="editstatus">
-                                <option>Pilih Status</option>
-                                <option value="1">
-                                    Aktif</option>
-                                <option value="2">
-                                    Tidak Aktif</option>
+                            <label class="form-label">Nampan</label>
+                            <select class="select" name="nampan" id="editnampan">
                             </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Keterangan</label>
+                            <textarea class="form-control" id="editketerangan"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
