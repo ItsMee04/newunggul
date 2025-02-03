@@ -158,6 +158,8 @@ Route::middleware('auth')->group(function () {
     Route::get('stock/getStokByNampan', [StokController::class, 'getStokByNampan']);
     Route::post('stock', [StokController::class, 'store']);
     Route::get('stock/{id}', [StokController::class, 'show']);
+    Route::post('update-stock/{id}', [StokController::class, 'update']);
+    Route::delete('delete-stock/{id}', [StokController::class, 'delete']);
 
     Route::get('logout', [AuthController::class, 'logout']);
 });

@@ -192,6 +192,7 @@ $(document).ready(function () {
             type: "GET",
             success: function (response) {
                 // Isi modal dengan data pegawai
+                $("#editid").val(response.Data.id); 
                 $("#editketerangan").val(response.Data.keterangan); 
                 $("#editkodetransaksi").val(response.Data.kodetransaksi);
 
@@ -243,13 +244,12 @@ $(document).ready(function () {
         const dataForm = new FormData();
         dataForm.append("id", $("#editid").val());
         dataForm.append("nampan", $("#editnampan").val());
-        dataForm.append("jenis", $("#editjenis").val());
-        dataForm.append("status", $("#editstatus").val());
+        dataForm.append("keterangan", $("#editketerangan").val());
         dataForm.append("_token", $('meta[name="csrf-token"]').attr("content")); // CSRF Token Laravel
 
         // Kirim data ke server menggunakan AJAX
         $.ajax({
-            url: `/update-nampan/${$("#editid").val()}`, // URL untuk mengupdate data pegawai
+            url: `/update-stock/${$("#editid").val()}`, // URL untuk mengupdate data pegawai
             type: "POST", // Gunakan metode POST (atau PATCH jika route mendukung)
             data: dataForm, // Gunakan FormData
             processData: false, // Jangan proses FormData sebagai query string
@@ -262,9 +262,9 @@ $(document).ready(function () {
                 $(".toast-body").text(response.message);
                 toast.show();
                 $("#modaledit").modal("hide"); // Tutup modal
-                $("#formEditNampan")[0].reset(); // Reset form
-                if (nampanTable) {
-                    nampanTable.ajax.reload(); // Reload data dari server
+                $("#formEditStok")[0].reset(); // Reset form
+                if (tabelStok) {
+                    tabelStok.ajax.reload(); // Reload data dari server
                 }
             },
             error: function (xhr) {
@@ -281,6 +281,61 @@ $(document).ready(function () {
                     toast.show();
                 }
             },
+        });
+    });
+
+    // ketika button hapus di tekan
+    $(document).on("click", ".confirm-text", function () {
+        const itemId = this.getAttribute("data-id"); // Ambil ID item dari data-item-id
+
+        // SweetAlert2 untuk konfirmasi
+        Swal.fire({
+            title: "Apakah Anda yakin?",
+            text: "Data ini akan dihapus secara permanen!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Ya, hapus!",
+            cancelButtonText: "Batal",
+            reverseButtons: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Kirim permintaan hapus (gunakan itemId)
+                fetch(`/delete-stock/${itemId}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                            "content"
+                        ),
+                    },
+                })
+                    .then((response) => {
+                        if (response.ok) {
+                            Swal.fire(
+                                "Dihapus!",
+                                "Data berhasil dihapus.",
+                                "success"
+                            );
+                            tabelStok.ajax.reload(); // Reload data dari server
+                        } else {
+                            Swal.fire(
+                                "Gagal!",
+                                "Terjadi kesalahan saat menghapus data.",
+                                "error"
+                            );
+                        }
+                    })
+                    .catch((error) => {
+                        Swal.fire(
+                            "Gagal!",
+                            "Terjadi kesalahan dalam penghapusan data.",
+                            "error"
+                        );
+                    });
+            } else {
+                // Jika batal, beri tahu pengguna
+                Swal.fire("Dibatalkan", "Data tidak dihapus.", "info");
+            }
         });
     });
 })

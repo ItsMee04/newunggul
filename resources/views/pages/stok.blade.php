@@ -106,6 +106,10 @@
                     @csrf
                     <div class="modal-body text-start">
                         <div class="mb-3">
+                            <label class="form-label">ID</label>
+                            <input type="text" id="editid" class="form-control" readonly>
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label">Kode Transaksi</label>
                             <input type="text" id="editkodetransaksi" class="form-control" readonly>
                         </div>

@@ -70,4 +70,34 @@ class StokController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Data Berhasil Ditemukan', 'Data' => $stok]);
     }
+
+    public function update(Request $request, $id)
+    {
+        $messages = [
+            'required' => ':attribute wajib di isi !!!',
+        ];
+
+        $credentials = $request->validate([
+            'nampan'   =>  'required',
+            'keterangan'    => 'required'
+        ], $messages);
+
+        $stok = Stok::where('id', $id)
+            ->update([
+                'nampan_id'     =>  $request->nampan,
+                'keterangan'    => $request->keterangan,
+                'tanggal'       =>  Carbon::today()->format('Y-m-d'),
+            ]);
+
+        return response()->json(['success' => true, 'message' => 'Data Berhasil Diubah']);
+    }
+
+    public function delete($id)
+    {
+        $stok = Stok::find($id);
+
+        $stok->delete();
+
+        return response()->json(['success' => true, 'message' => 'Data Stok Berhasil Dihapus']);
+    }
 }
