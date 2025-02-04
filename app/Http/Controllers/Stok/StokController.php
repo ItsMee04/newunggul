@@ -7,6 +7,7 @@ use App\Models\Stok;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\NampanProduk;
 use PhpParser\Node\Expr\FuncCall;
 
 class StokController extends Controller
@@ -99,5 +100,11 @@ class StokController extends Controller
         $stok->delete();
 
         return response()->json(['success' => true, 'message' => 'Data Stok Berhasil Dihapus']);
+    }
+
+    public function getProdukByNampanID($id)
+    {
+        $produk = NampanProduk::with(['produk.jenis', 'nampan.jenis'])->where('nampan_id', $id)->get();
+        return response()->json(['success' => true, 'message' => 'Data Produk Berhasil Ditemukan', 'Data' => $produk]);
     }
 }

@@ -70,7 +70,7 @@ $(document).ready(function () {
                         data: 'kodetransaksi',
                         render: function (data, type, row) {
                             return `
-                                <a href="/stok/detailStok/${row.id}" class="btn btn-secondary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Detail Stok Data">
+                                <a href="/stok/detailStok/${row.nampan_id}" class="btn btn-secondary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Detail Stok Data">
                                     ${data}  <!-- Menampilkan name sebagai button-link -->
                                 </a>
                             `;
