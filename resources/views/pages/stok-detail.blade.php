@@ -39,7 +39,7 @@
                     </div>
                     <!-- /Filter -->
                     <div class="table-responsive product-list">
-                        <table class="table tabelStok table-hover" style="width: 100%">
+                        <table class="table tabelProdukStok table-hover" style="width: 100%">
                             <thead>
                                 <tr>
                                     <th>No.</th>
@@ -47,11 +47,17 @@
                                     <th>Nama</th>
                                     <th>Berat</th>
                                     <th>Harga</th>
-                                    <th>Jumlah</th>
                                 </tr>
                             </thead>
                             <tbody>
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="3"></th>
+                                    <th id="totalBerat"></th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>

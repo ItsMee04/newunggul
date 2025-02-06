@@ -102,9 +102,24 @@ class StokController extends Controller
         return response()->json(['success' => true, 'message' => 'Data Stok Berhasil Dihapus']);
     }
 
+    public function detailProduk($id)
+    {
+        return view('pages.stok-detail');
+    }
+
     public function getProdukByNampanID($id)
     {
         $produk = NampanProduk::with(['produk.jenis', 'nampan.jenis'])->where('nampan_id', $id)->get();
-        return response()->json(['success' => true, 'message' => 'Data Produk Berhasil Ditemukan', 'Data' => $produk]);
+
+        $totalBerat = $produk->sum(function ($item) {
+            return (float) $item->produk->berat;
+        });
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Produk Berhasil Ditemukan',
+            'total_berat' => $totalBerat,
+            'Data' => $produk
+        ]);
     }
 }

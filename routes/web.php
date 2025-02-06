@@ -20,7 +20,6 @@ use App\Http\Controllers\Produk\KondisiController;
 use App\Http\Controllers\Stok\StokController;
 use App\Http\Controllers\Transaksi\KeranjangController;
 use App\Http\Controllers\Transaksi\PembelianController;
-use App\Models\Stok;
 
 /*
 |--------------------------------------------------------------------------
@@ -161,6 +160,7 @@ Route::middleware('auth')->group(function () {
     Route::post('update-stock/{id}', [StokController::class, 'update']);
     Route::delete('delete-stock/{id}', [StokController::class, 'delete']);
     Route::get('stock/getProdukByNampanID/{id}', [StokController::class, 'getProdukByNampanID']);
+    Route::get('stock/detailStok/{id}', [StokController::class, 'detailProduk']);
 
     Route::get('logout', [AuthController::class, 'logout']);
 });

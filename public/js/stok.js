@@ -34,7 +34,7 @@ $(document).ready(function () {
             },
         });
     }
-    
+
     function loadStok() {
         // Datatable
         if ($('.tabelStok').length > 0) {
@@ -70,7 +70,7 @@ $(document).ready(function () {
                         data: 'kodetransaksi',
                         render: function (data, type, row) {
                             return `
-                                <a href="/stok/detailStok/${row.nampan_id}" class="btn btn-secondary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Detail Stok Data">
+                                <a href="/stock/detailStok/${row.nampan_id}" class="btn btn-secondary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Detail Stok Data">
                                     ${data}  <!-- Menampilkan name sebagai button-link -->
                                 </a>
                             `;
@@ -192,8 +192,8 @@ $(document).ready(function () {
             type: "GET",
             success: function (response) {
                 // Isi modal dengan data pegawai
-                $("#editid").val(response.Data.id); 
-                $("#editketerangan").val(response.Data.keterangan); 
+                $("#editid").val(response.Data.id);
+                $("#editketerangan").val(response.Data.keterangan);
                 $("#editkodetransaksi").val(response.Data.kodetransaksi);
 
                 // // Muat opsi nampan
@@ -338,4 +338,86 @@ $(document).ready(function () {
             }
         });
     });
+
+    function loadProduk() {
+        const path = window.location.pathname;
+        const paramNampan = path.split('/').pop(); // Ambil ID dari URL
+        // Datatable
+        if ($('.tabelProdukStok').length > 0) {
+            tabelStok = $('.tabelProdukStok').DataTable({
+                "scrollX": false, // Jangan aktifkan scroll horizontal secara paksa
+                "bFilter": true,
+                "sDom": 'fBtlpi',
+                "ordering": true,
+                "language": {
+                    search: ' ',
+                    sLengthMenu: '_MENU_',
+                    searchPlaceholder: "Search",
+                    info: "_START_ - _END_ of _TOTAL_ items",
+                    paginate: {
+                        next: ' <i class=" fa fa-angle-right"></i>',
+                        previous: '<i class="fa fa-angle-left"></i> '
+                    },
+                },
+                ajax: {
+                    url: `/stock/getProdukByNampanID/${paramNampan}`,
+                    type: 'GET',
+                    dataSrc: function (json) {
+                        // Pastikan total_berat adalah angka
+                        totalBerat = parseFloat(json.total_berat) || 0; // Jika null atau NaN, set menjadi 0
+                        return json.Data;
+                    }
+                },
+                columns: [
+                    {
+                        data: null, // Kolom nomor urut
+                        render: function (data, type, row, meta) {
+                            return meta.row + 1; // Nomor urut dimulai dari 1
+                        },
+                        orderable: false,
+                    },
+                    { data: 'produk.kodeproduk' },
+                    { data: 'produk.nama' },
+                    { 
+                        data: 'produk.berat',
+                        render: function (data, type, row) {
+                            // Format berat dengan 2 angka di belakang koma
+                            return parseFloat(data).toFixed(4); // Format angka menjadi 2 desimal
+                        }
+                    },
+                    { 
+                        data: 'produk.harga_jual',
+                        render: function (data, type, row) {
+                            // Format harga jual menjadi angka dengan pemisah ribuan
+                            return 'Rp ' + parseFloat(data).toLocaleString(); // Format angka dengan pemisah ribuan
+                        }
+                    }
+                ],
+                "footerCallback": function (row, data, start, end, display) {
+                    let api = this.api();
+            
+                    // Pastikan totalBerat adalah angka
+                    if (typeof totalBerat === 'number') {
+                        $(api.column(3).footer()).html(`<strong class="text-danger">Total: ${totalBerat.toFixed(4)} g</strong>`);
+                    } else {
+                        $(api.column(3).footer()).html(`<strong>Total: 0 g</strong>`);
+                    }
+                },
+                initComplete: function (settings, json) {
+                    $('.dataTables_filter').appendTo('#tableSearch');
+                    $('.dataTables_filter').appendTo('.search-input');
+                },
+                drawCallback: function () {
+                    feather.replace();
+                }
+            });
+        }
+    }
+
+    const path = window.location.pathname;
+
+    // Periksa apakah URL mengandung "stock/detailStok/"
+    if (path.includes("stock/detailStok/")) {
+        loadProduk(); // Jalankan fungsi jika URL cocok
+    }
 })
