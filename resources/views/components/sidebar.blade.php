@@ -47,10 +47,6 @@
                     <ul>
                         <li><a href="/stock"><i data-feather="package"></i><span>Manage
                                     Stock</span></a></li>
-                        <li><a href="stock-adjustment.html"><i data-feather="clipboard"></i><span>Stock
-                                    Adjustment</span></a></li>
-                        <li><a href="stock-transfer.html"><i data-feather="truck"></i><span>Stock
-                                    Transfer</span></a></li>
                     </ul>
                 </li>
                 <li class="submenu-open">

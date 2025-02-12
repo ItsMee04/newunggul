@@ -19,7 +19,8 @@ class Stok extends Model
         'nampan_id',
         'tanggal',
         'keterangan',
-        'status'
+        'status',
+        'user_id'
     ];
 
     /**
@@ -30,5 +31,15 @@ class Stok extends Model
     public function nampan(): BelongsTo
     {
         return $this->belongsTo(Nampan::class, 'nampan_id', 'id');
+    }
+
+    /**
+     * Get the user that owns the Stok
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }

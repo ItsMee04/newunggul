@@ -18,10 +18,12 @@ return new class extends Migration
             $table->date('tanggal');
             $table->text('keterangan');
             $table->integer('status');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('nampan_id')->references('id')->on('nampan')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
