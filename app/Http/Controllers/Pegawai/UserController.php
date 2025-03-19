@@ -18,8 +18,8 @@ class UserController extends Controller
 
     public function getUser()
     {
-        $user = User::with(['pegawai', 'role'])->get();
-        $count   = User::count();
+        $user = User::with(['pegawai', 'role'])->where('status', 1)->get();
+        $count   = User::where('status', 1)->count();
         return response()->json(['success' => true, 'message' => 'Data Pegawai Ditemukan', 'Data' => $user, 'Total' => $count]);
     }
 

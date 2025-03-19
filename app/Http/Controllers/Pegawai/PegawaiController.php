@@ -18,8 +18,8 @@ class PegawaiController extends Controller
 
     public function getpegawai()
     {
-        $pegawai = Pegawai::with('jabatan')->get();
-        $count   = Pegawai::count();
+        $pegawai = Pegawai::with('jabatan')->where('status', 1)->get();
+        $count   = Pegawai::where('status', 1)->count();
         return response()->json(['success' => true, 'message' => 'Data Pegawai Ditemukan', 'Data' => $pegawai, 'Total' => $count]);
     }
 
@@ -57,7 +57,7 @@ class PegawaiController extends Controller
             'alamat'        => $request->alamat,
             'kontak'        => $request->kontak,
             'jabatan_id'    => $request->jabatan,
-            'status'        => $request->status,
+            'status'        => 1,
             'image'         => $newAvatar,
         ]);
 
@@ -67,7 +67,7 @@ class PegawaiController extends Controller
             User::create([
                 'pegawai_id' => $pegawai_id,
                 'role_id'    => $request->jabatan,
-                'status'     => $request->status
+                'status'     => 1
             ]);
         }
 
@@ -94,7 +94,6 @@ class PegawaiController extends Controller
             'kontak'        => 'required',
             'jabatan'       => 'required',
             'alamat'        => 'required',
-            'status'        => 'required',
             'avatar'        => 'mimes:png,jpg,jpeg',
         ], $messages);
 
@@ -116,7 +115,7 @@ class PegawaiController extends Controller
                     'alamat'        => $request->alamat,
                     'kontak'        => $request->kontak,
                     'jabatan_id'    => $request->jabatan,
-                    'status'        => $request->status,
+                    'status'        => 1,
                     'image'        => $newAvatar,
                 ]);
 
@@ -124,7 +123,6 @@ class PegawaiController extends Controller
                 User::where('pegawai_id', $id)
                     ->update([
                         'role_id'   =>  $request->jabatan,
-                        'status'    =>  $request->status
                     ]);
             }
         } else {
@@ -134,14 +132,12 @@ class PegawaiController extends Controller
                     'alamat'        => $request->alamat,
                     'kontak'        => $request->kontak,
                     'jabatan_id'    => $request->jabatan,
-                    'status'        => $request->status
                 ]);
 
             if ($updatepegawai) {
                 User::where('pegawai_id', $id)
                     ->update([
                         'role_id'   =>  $request->jabatan,
-                        'status'    =>  $request->status
                     ]);
             }
         }
@@ -151,11 +147,13 @@ class PegawaiController extends Controller
     public function delete($id)
     {
         $user    = User::where('pegawai_id', $id)->first();
-        $hapuspegawai = Pegawai::where('id', $id)->delete();
+        $hapuspegawai = Pegawai::where('id', $id)->update(['status' => 0]);
 
         if ($user != null) {
             if ($hapuspegawai) {
-                User::where('pegawai_id', $id)->delete();
+                User::where('pegawai_id', $id)->update([
+                    'status' => 10,
+                ]);
             }
         }
 

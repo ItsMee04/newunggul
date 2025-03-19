@@ -17,8 +17,8 @@ class JenisController extends Controller
 
     public function getJenis()
     {
-        $jenis = Jenis::all();
-        $count = Jenis::count();
+        $jenis = Jenis::where('status', 1)->get();
+        $count = Jenis::where('status', 1)->count();
         return response()->json(['success' => true, 'message' => 'Data Jenis Ditemukan', 'Data' => $jenis, 'Total' => $count]);
     }
 
@@ -32,7 +32,6 @@ class JenisController extends Controller
         $credentials = $request->validate([
             'jenis'         => 'required',
             'icon'          => 'mimes:png,jpg,jpeg',
-            'status'        => 'required',
         ], $messages);
 
         if ($request->status == 'Pilih Status') {
@@ -50,7 +49,7 @@ class JenisController extends Controller
         $jenis = Jenis::create([
             'jenis'  => $request->jenis,
             'icon'   => $icon,
-            'status' => $request->status
+            'status' => 1
         ]);
 
         return response()->json(['success' => true, 'message' => "Data Jenis Berhasil Disimpan", 'Data' => $jenis]);
@@ -74,7 +73,6 @@ class JenisController extends Controller
         $credentials = $request->validate([
             'jenis'         => 'required',
             'icon'          => 'mimes:png,jpg,jpeg',
-            'status'        => 'required',
         ], $messages);
 
         if ($request->status == 'Pilih Status') {
@@ -98,13 +96,11 @@ class JenisController extends Controller
                 ->update([
                     'jenis'  => $request->jenis,
                     'icon'  => $newphoto,
-                    'status' => $request->status
                 ]);
         } else {
             Jenis::where('id', $id)
                 ->update([
                     'jenis'  => $request->jenis,
-                    'status' => $request->status
                 ]);
         }
 
@@ -113,7 +109,9 @@ class JenisController extends Controller
 
     public function delete($id)
     {
-        Jenis::where('id', $id)->delete();
+        Jenis::where('id', $id)->update([
+            'status' => 0,
+        ]);
         return response()->json(['message' => 'Data berhasil dihapus.']);
     }
 }

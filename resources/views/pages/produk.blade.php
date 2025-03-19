@@ -123,14 +123,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Status</label>
-                            <select class="select" name="status">
-                                <option>Pilih Status</option>
-                                <option value="1"> Aktif</option>
-                                <option value="2"> Tidak Aktif</option>
-                            </select>
-                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
@@ -181,14 +173,17 @@
                                 <input type="text" id="edithargabeli" class="form-control" name="hargabeli">
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Jenis</label>
-                            <select class="select" name="jenis_id" id="editjenis">
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Keterangan</label>
-                            <textarea class="form-control" id="editketerangan"></textarea>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Jenis</label>
+                                <select class="select" name="jenis_id" id="editjenis">
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Kondisi</label>
+                                <select class="select" name="kondisi_id" id="editkondisi">
+                                </select>
+                            </div>
                         </div>
                         <div class=" mb-3">
                             <div class="new-employee-field">
@@ -202,13 +197,6 @@
                             <div class="mb-3">
                                 <input type="file" class="form-control" name="avatar" id="editImage">
                             </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Status</label>
-                            <select class="select" id="editstatus">
-                                <option value="1">Aktif</option>
-                                <option value="2">Tidak Aktif</option>
-                            </select>
                         </div>
                     </div>
                     <div class="modal-footer">

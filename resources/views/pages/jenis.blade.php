@@ -91,14 +91,6 @@
                                 <input id="image" type="file" class="form-control" name="icon">
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Status</label>
-                            <select class="select" name="status" id="status">
-                                <option>Pilih Status</option>
-                                <option value="1"> Aktif</option>
-                                <option value="2"> Tidak Aktif</option>
-                            </select>
-                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
@@ -138,13 +130,6 @@
                             <div class="mb-3">
                                 <input type="file" class="form-control" name="avatar" id="editImage">
                             </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Status</label>
-                            <select class="select" id="editstatus">
-                                <option value="1">Aktif</option>
-                                <option value="2">Tidak Aktif</option>
-                            </select>
                         </div>
                     </div>
                     <div class="modal-footer">

@@ -92,7 +92,7 @@ $(document).ready(function () {
                                             </span>
                                             <p>
                                                 <strong>
-                                                    Harga : ${hargaJual} </br> ${statusBadge}
+                                                    Harga : ${hargaJual}
                                                 </strong>
                                             </p>
                                         </div>
@@ -246,13 +246,23 @@ $(document).ready(function () {
                     },
                 });
 
-                // Update dropdown status sesuai dengan data yang diterima
-                // Cek status dan pilih option yang sesuai menggunakan Select2
-                if (response.data.status == 2) {
-                    $("#editstatus").val(2).trigger("change"); // Pilih option dengan value=2 dan update Select2
-                } else {
-                    $("#editstatus").val(1).trigger("change"); // Pilih option dengan value=1 dan update Select2
-                }
+                // // Muat opsi kondisi
+                $.ajax({
+                    url: "/kondisi/getKondisi",
+                    type: "GET",
+                    success: function (kondisiResponse) {
+                        let options =
+                            '<option value="">-- Pilih Jenis --</option>';
+                            kondisiResponse.Data.forEach((item) => {
+                            const selected =
+                                item.id === response.data.kondisi_id
+                                    ? "selected"
+                                    : "";
+                            options += `<option value="${item.id}" ${selected}>${item.kondisi}</option>`;
+                        });
+                        $("#editkondisi").html(options);
+                    },
+                });
 
                 // Tampilkan modal edit
                 $("#modaledit").modal("show");
@@ -324,7 +334,7 @@ $(document).ready(function () {
         dataForm.append("hargabeli", $("#edithargabeli").val());
         dataForm.append("jenis_id", $("#editjenis").val());
         dataForm.append("keterangan", $("#editketerangan").val());
-        dataForm.append("status", $("#editstatus").val());
+        dataForm.append("kondisi_id", $("#editkondisi").val());
         dataForm.append("_token", $('meta[name="csrf-token"]').attr("content")); // CSRF Token Laravel
 
         const avatar = $("#editImage")[0].files[0]; // Ambil gambar jika ada

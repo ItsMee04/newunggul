@@ -37,7 +37,7 @@ class ProdukController extends Controller
 
     public function getProduk()
     {
-        $produk = Produk::where('status', '!=', 0)->where('status', '!=', 2)->with(['jenis', 'kondisi'])->get();
+        $produk = Produk::where('status', 1)->with(['jenis', 'kondisi'])->get();
         $count = Produk::where('status', 1)->count();
         return response()->json(['success' => true, 'message' => 'Data Produk Berhasil Ditemukan', 'Data' => $produk, 'Total' => $count]);
     }
@@ -63,12 +63,7 @@ class ProdukController extends Controller
             'kondisi_id'    =>  'required',
             'karat'         =>  'required|integer',
             'image_file'    =>  'nullable|mimes:png,jpg',
-            'status'        =>  'required'
         ], $messages);
-
-        if ($request->status == 'Pilih Status') {
-            return redirect('produk')->with('errors-message', 'Status wajib di isi !!!');
-        }
 
         if ($request->jenis_id == 'Pilih Jenis') {
             return redirect('produk')->with('errors-message', 'Status Jenis di isi !!!');
@@ -102,7 +97,7 @@ class ProdukController extends Controller
             'karat'             =>  $request->karat,
             'kondisi_id'        =>  $request->kondisi_id,
             'image'             =>  $image,
-            'status'            =>  $request->status
+            'status'            =>  1,
         ]);
 
         return response()->json(['success' => true, 'message' => 'Data Produk Berhasil Disimpan', 'Data' => $data]);
@@ -129,16 +124,14 @@ class ProdukController extends Controller
             'harga_jual'    =>  'integer',
             'harga_beli'    =>  'integer',
             'keterangan'    =>  'string',
-            'berat'         =>  ['required', 'numeric', 'regex:/^\d{1,3}(\.\d{1,2})?$/'],
+            'berat'         =>  [
+                'required',
+                'regex:/^\d+\.\d{1,}$/'
+            ],
             'karat'         =>  'required|integer',
             'kondisi_id'    =>  'required',
             'avatar'        =>  'nullable|mimes:png,jpg',
-            'status'        =>  'required'
         ], $messages);
-
-        if ($request->status == 'Pilih Status') {
-            return redirect('produk')->with('errors-message', 'Status wajib di isi !!!');
-        }
 
         if ($request->file('avatar')) {
             $pathavatar     = 'storage/produk/' . $produk->image;
@@ -162,7 +155,6 @@ class ProdukController extends Controller
                     'karat'             =>  $request->karat,
                     'kondisi_id'        =>  $request->kondisi_id,
                     'image'             =>  $newImage,
-                    'status'            =>  $request->status
                 ]);
         } else {
             $updateProduk = Produk::where('kodeproduk', $id)
@@ -174,7 +166,6 @@ class ProdukController extends Controller
                     'berat'             =>  $request->berat,
                     'karat'             =>  $request->karat,
                     'kondisi_id'        =>  $request->kondisi_id,
-                    'status'            =>  $request->status
                 ]);
         }
 
@@ -183,7 +174,7 @@ class ProdukController extends Controller
 
     public function delete($id)
     {
-        Produk::where('id', $id)->delete();
+        Produk::where('id', $id)->update(['status' => 0]);
         return response()->json(['message' => 'Data berhasil dihapus.']);
     }
 
