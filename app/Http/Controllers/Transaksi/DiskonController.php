@@ -16,7 +16,7 @@ class DiskonController extends Controller
 
     public function getDiskon()
     {
-        $diskon = Diskon::all();
+        $diskon = Diskon::where('status', 1)->get();
         return response()->json(['success' => true, 'message' => 'Data Diskon Berhasil Ditemukan', 'Data' => $diskon]);
     }
 
@@ -31,14 +31,13 @@ class DiskonController extends Controller
         $credentials = $request->validate([
             'nama'            => 'required',
             'diskon'          => 'required|integer|numeric',
-            'status'          => 'required',
         ], $messages);
 
-        if ($request->status == 'Pilih Status') {
-            return redirect('diskon')->with('errors-message', 'Status wajib di isi !!!');
-        }
-
-        $diskon = Diskon::create($request->all());
+        $diskon = Diskon::create([
+            'nama'      =>  $request->nama,
+            'diskon'    =>  $request->diskon,
+            'status'    =>  1,
+        ]);
 
         return response()->json(['success' => true, 'message' => 'Data Diskon Berhasil Ditemukan']);
     }
@@ -60,12 +59,7 @@ class DiskonController extends Controller
         $credentials = $request->validate([
             'nama'            => 'required',
             'diskon'          => 'required|integer|numeric',
-            'status'          => 'required',
         ], $messages);
-
-        if ($request->status == 'Pilih Status') {
-            return redirect('diskon')->with('errors-message', 'Status wajib di isi !!!');
-        }
 
         $diskon = Diskon::findOrFail($id);
 
@@ -78,7 +72,9 @@ class DiskonController extends Controller
     {
         $diskon = Diskon::find($id);
 
-        $diskon->delete();
+        $diskon->update([
+            'status'    =>  0
+        ]);
 
         return response()->json(['success' => true, 'message' => 'Data Promo Berhasil Dihapus']);
     }

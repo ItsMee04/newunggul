@@ -35,7 +35,7 @@ class PelangganController extends Controller
 
     public function getPelanggan()
     {
-        $pelanggan = Pelanggan::all();
+        $pelanggan = Pelanggan::where('status', 1)->get();
 
         return response()->json(['success' => true, 'message' => 'Data Pelanggan Berhasil Ditemukan', 'Data' => $pelanggan]);
     }
@@ -56,15 +56,18 @@ class PelangganController extends Controller
             'alamat'          => 'required',
             'kontak'          => 'required|numeric',
             'tanggal'         => 'required',
-            'status'          => 'required',
         ], $messages);
 
-        if ($request->status == 'Pilih Status') {
-            return redirect('pelanggan')->with('errors-message', 'Status wajib di isi !!!');
-        }
-
         $request['kodepelanggan'] = $generateCode;
-        $pelanggan = Pelanggan::create($request->all());
+        $pelanggan = Pelanggan::create([
+            'kodepelanggan' =>  $generateCode,
+            'nik'           =>  $request->nik,
+            'nama'          =>  $request->nama,
+            'alamat'        =>  $request->alamat,
+            'kontak'        =>  $request->kontak,
+            'tanggal'       =>  $request->tanggal,
+            'status'        =>  1,
+        ]);
 
         return response()->json(['success' => true, 'message' => 'Data Pelanggan Berhasil Ditambahkan']);
     }
@@ -89,12 +92,7 @@ class PelangganController extends Controller
             'alamat'          => 'required',
             'kontak'          => 'required|numeric',
             'tanggal'         => 'required',
-            'status'          => 'required',
         ], $messages);
-
-        if ($request->status == 'Pilih Status') {
-            return redirect('pelanggan')->with('errors-message', 'Status wajib di isi !!!');
-        }
 
         $pelanggan = Pelanggan::findOrFail($id);
 
@@ -107,7 +105,7 @@ class PelangganController extends Controller
     {
         $pelanggan = Pelanggan::find($id);
 
-        $pelanggan->delete();
+        $pelanggan->update(['status' => 0]);
 
         return response()->json(['success' => true, 'message' => 'Data Pelanggan Berhasil Dihapus']);
     }

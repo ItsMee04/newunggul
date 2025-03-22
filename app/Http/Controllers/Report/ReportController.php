@@ -33,7 +33,7 @@ class ReportController extends Controller
         ];
 
         // Generate PDF dari view
-        $pdf = Pdf::loadView('reports.nota-transaksi', $data)->setPaper('A5', 'landscape');
+        $pdf = Pdf::loadView('reports.nota-transaksi', $data)->setPaper('A4', 'landscape');
 
         // Nama file diambil dari kode transaksi
         $filename = 'UnggulKencana' . $transaksi->kodetransaksi . '.pdf';

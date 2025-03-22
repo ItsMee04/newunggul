@@ -35,7 +35,7 @@ class SuplierController extends Controller
 
     public function getSuplier()
     {
-        $suplier = Suplier::all();
+        $suplier = Suplier::where('status', 1)->get();
         return response()->json(['success' => true, 'message' => 'Data Suplier Berhasil Ditemukan', 'Data' => $suplier]);
     }
 
@@ -53,15 +53,16 @@ class SuplierController extends Controller
             'suplier'         => 'required',
             'alamat'          => 'required',
             'kontak'          => 'required|numeric',
-            'status'          => 'required',
         ], $messages);
 
-        if ($request->status == 'Pilih Status') {
-            return redirect('supplier')->with('errors-message', 'Status wajib di isi !!!');
-        }
-
         $request['kodesuplier'] = $generateCode;
-        $suplier = Suplier::create($request->all());
+        $suplier = Suplier::create([
+            'kodesuplier'   =>  $generateCode,
+            'suplier'       =>  $request->suplier,
+            'kontak'        =>  $request->kontak,
+            'alamat'        =>  $request->alamat,
+            'status'        =>  1,
+        ]);
 
         return response()->json(['success' => true, 'message' => 'Data Suplier Berhasil Disimpan']);
     }
@@ -84,12 +85,7 @@ class SuplierController extends Controller
             'suplier'         => 'required',
             'alamat'          => 'required',
             'kontak'          => 'required|numeric',
-            'status'          => 'required',
         ], $messages);
-
-        if ($request->status == 'Pilih Status') {
-            return redirect('supplier')->with('errors-message', 'Status wajib di isi !!!');
-        }
 
         $suplier = Suplier::findOrFail($id);
 
@@ -101,7 +97,9 @@ class SuplierController extends Controller
     {
         $suplier = Suplier::find($id);
 
-        $suplier->delete();
+        $suplier->update([
+            'status'    =>  0,
+        ]);
 
         return response()->json(['success' => true, 'message' => 'Data Suplier Berhasil Dihapus']);
     }

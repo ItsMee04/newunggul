@@ -96,14 +96,6 @@
                             <label class="form-label">Alamat</label>
                             <textarea class="form-control" id="alamat" name="alamat"></textarea>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Status</label>
-                            <select class="select" name="status" id="status">
-                                <option>Pilih Status</option>
-                                <option value="1"> Aktif</option>
-                                <option value="2"> Tidak Aktif</option>
-                            </select>
-                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
@@ -154,16 +146,6 @@
                         <div class="mb-3">
                             <label class="form-label">Alamat</label>
                             <textarea class="form-control" id="editalamat"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Status</label>
-                            <select class="select" id="editstatus">
-                                <option>Pilih Status</option>
-                                <option value="1">
-                                    Aktif</option>
-                                <option value="2">
-                                    Tidak Aktif</option>
-                            </select>
                         </div>
                     </div>
                     <div class="modal-footer">

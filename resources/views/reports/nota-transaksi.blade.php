@@ -1,197 +1,138 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nota Transaksi</title>
+    <title>Invoice</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: Calibri, sans-serif;
-            line-height: 1.6;
-            background-color: #f9f9f9;
-            color: #393939;
-            padding: 20px;
-            width: 20cm;
-            height: 10cm;
-            margin: 0;
+            font-family: Arial, sans-serif;
         }
 
-        h1 {
-            font-size: 24pt;
-            color: #3A5775;
-            text-align: left;
-        }
-
-        h2 {
-            font-size: 12pt;
-            color: #3A5775;
-            font-weight: bold;
-        }
-
-        .container {
-            width: auto;
-            height: auto;
-            background: #fff;
-            border: 1px solid #ddd;
+        .invoice-container {
+            width: 100%;
+            border: 1px solid black;
             padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .header {
-            text-align: left;
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
             margin-bottom: 10px;
         }
 
-        .header h2 {
-            margin-bottom: 5px;
-        }
-
-        .header p {
-            font-size: 10pt;
-        }
-
-        /* Client & Invoice Details Section */
-        .details {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 0;
-        }
-
-        .client,
-        .invoice-info {
-            width: 48%;
-            font-size: 10pt;
-        }
-
-        /* Table Section */
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        .table th,
-        .table td {
-            border: 1px solid #ddd;
-            padding: 6px;
-            text-align: center;
-            font-size: 10pt;
-        }
-
-        .table th {
-            background-color: #3A5775;
-            color: white;
-        }
-
-        .table td:nth-child(odd) {
-            background-color: #EEF3F7;
-        }
-
-        .footer {
-            margin-top: 20px;
+        .header-table,
+        .header-table th,
+        .header-table td {
+            border: 1px solid black;
+            padding: 5px;
             text-align: left;
         }
 
-        .footer p {
-            font-size: 10pt;
+        .header-table .no-border {
+            border: none;
         }
 
-        .total {
-            font-weight: bold;
-            color: #3A5775;
+        .table {
+            width: 100%;
+            border-collapse: collapse;
         }
 
-        .table td img {
-            width: 40px;
-            height: 40px;
-            margin-right: 10px;
+        .table,
+        .table th,
+        .table td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
         }
 
-        .table tfoot td {
-            padding: 6px;
-            font-weight: bold;
+        .barcode-sales {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .box {
+            width: 150px;
+            height: 100px;
+            border: 1px solid black;
+        }
+
+        @media print {
+            img {
+                display: block !important;
+                max-width: 100% !important;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <!-- Header Section -->
-        <div class="header">
-            <h2>INVOICE <strong>{{ $transaksi->kodetransaksi }}</strong></h2>
-            <h1>UNGGUL KENCANA</h1>
-            <p>Jl. Kapten Pattimura No.8, Kec. Purwokerto Barat.</p>
-            <p>Kabupaten Banyumas, Jawa Tengah 53136</p>
-            <p>Phone: 0822-2537-7888 | Email: contact@yourcompany.com</p>
-        </div>
-
-        <!-- Client & Invoice Details Section -->
-        <div class="details">
-            <!-- Client Details -->
-            <div class="client">
-                <p><strong>Client Name:</strong> {{ $transaksi->pelanggan->nama }}</p>
-                <p><strong>Address:</strong> {{ $transaksi->pelanggan->alamat }}</p>
-            </div>
-        </div>
-
-        <!-- Table Section -->
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>No.</th>
-                    <th>Item</th>
-                    <th>Berat</th>
-                    <th>Harga</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($keranjang as $item)
-                    <tr>
-                        <td>{{ $loop->iteration }}</td>
-                        <td>
-                            <div style="display: flex; align-items: center;">
-                                <img src="storage/produk/{{ $item->produk->image }}" alt="Product A Image"
-                                    style="width: 40px; height: 40px; margin-right: 10px;" />
-                                <span>{{ $item->produk->nama }}</span>
-                            </div>
-                        </td>
-                        <td>{{ $item->produk->berat }}</td>
-                        <td>{{ 'Rp.' . ' ' . number_format($item->produk->harga_jual) }}</td>
-                        <td>{{ 'Rp.' . ' ' . number_format($item->total) }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="4" class="total">Subtotal</td>
-                    <td>{{ 'Rp.' . ' ' . number_format($subtotal) }}</td>
-                </tr>
-                <tr>
-                    <td colspan="4" class="total">Diskon</td>
-                    <td>{{ $transaksi->diskon }} %</td>
-                </tr>
-                <tr>
-                    <td colspan="4" class="total">Total</td>
-                    <td>{{ 'Rp.' . ' ' . number_format($transaksi->total) }}</td>
-                </tr>
-            </tfoot>
+    <div class="invoice-container">
+        <table class="header-table">
+            <tr>
+                <td rowspan="4" style="text-align: center; width: 200px;" class="no-border">
+                    <img src="{{ url('assets/img/logo.png') }}" alt="Logo" width="150">
+                </td>
+                <td rowspan="4" class="no-border">
+                    <strong>Jl. Kapten Patimura No.8, Karanglewas Lor,</strong><br>
+                    Kec. Purwokerto Barat, Kab. Banyumas, Jawa Tengah 53136<br>
+                    0822-2537-7888
+                </td>
+                <td>Purwokerto</td>
+                <td>30, November 2025</td>
+            </tr>
+            <tr>
+                <td>Mr/Mrs</td>
+                <td>Dimnas Anugerah</td>
+            </tr>
+            <tr>
+                <td>Alamat</td>
+                <td>Purbalingga</td>
+            </tr>
+            <tr>
+                <td>No. Hp</td>
+                <td>081390469322</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="no-border"></td>
+                <td>Sales</td>
+                <td>Indra Kusuma</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="no-border"></td>
+                <td>No. Transaksi</td>
+                <td>#00001</td>
+            </tr>
         </table>
 
-        <!-- Footer Section -->
-        <div class="footer">
-            <p>Thank you for your business!</p>
-            <p>Please make payment by the due date specified above.</p>
-        </div>
+        <table class="table">
+            <tr>
+                <th>NO</th>
+                <th>KODE BARANG</th>
+                <th>NAMA BARANG / ITEM</th>
+                <th>BERAT</th>
+                <th>KARAT</th>
+                <th>HARGA</th>
+                <th>TOTAL</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>K-0001</td>
+                <td>CINCIN</td>
+                <td>2,93</td>
+                <td>18</td>
+                <td>Rp 650.000</td>
+                <td>Rp 1.907.100</td>
+            </tr>
+        </table>
+
+        <p><strong>TERBILANG:</strong> SATU JUTA SEMBILAN RATUS TUJUH RIBU SERATUS RUPIAH</p>
+
+        <p><strong>KETERANGAN</strong><br>
+            THANK YOU FOR YOUR BUSINESS!<br>
+            PLEASE MAKE PAYMENT BY THE DUE DATE SPECIFIED ABOVE</p>
     </div>
 </body>
 

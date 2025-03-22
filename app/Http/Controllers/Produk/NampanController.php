@@ -34,21 +34,16 @@ class NampanController extends Controller
         $credentials = $request->validate([
             'jenis'         => 'required',
             'nampan'        => 'required',
-            'status'        => 'required'
         ], $messages);
 
         if ($request->jenis == 'Pilih Jenis Produk') {
             return redirect('nampan')->with('errors-message', 'Jenis wajib di isi !!!');
         }
 
-        if ($request->status == 'Pilih Status') {
-            return redirect('nampan')->with('errors-message', 'Status wajib di isi !!!');
-        }
-
         $storeNampan = Nampan::create([
             'jenis_id'  =>  $request->jenis,
             'nampan'    =>  $request->nampan,
-            'status'    =>  $request->status
+            'status'    =>  1,
         ]);
 
         return response()->json(['success' => true, 'message' => 'Data Nampan Berhasil Disimpan', 'Data' => $storeNampan]);
@@ -90,22 +85,16 @@ class NampanController extends Controller
         $credentials = $request->validate([
             'jenis'         => 'required',
             'nampan'        => 'required',
-            'status'        => 'required'
         ], $messages);
 
         if ($request->jenis == 'Pilih Jenis Produk') {
             return redirect('nampan')->with('errors-message', 'Jenis wajib di isi !!!');
         }
 
-        if ($request->status == 'Pilih Status') {
-            return redirect('nampan')->with('errors-message', 'Status wajib di isi !!!');
-        }
-
         $updateNampan = Nampan::where('id', $id)
             ->update([
                 'jenis_id'  =>  $request->jenis,
                 'nampan'    =>  $request->nampan,
-                'status'    =>  $request->status
             ]);
 
         return response()->json(['success' => true, 'message' => 'Data Nampan Berhasil Disimpan']);
