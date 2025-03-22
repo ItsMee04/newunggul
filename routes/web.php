@@ -162,5 +162,9 @@ Route::middleware('auth')->group(function () {
     Route::get('stock/getProdukByNampanID/{id}', [StokController::class, 'getProdukByNampanID']);
     Route::get('stock/detailStok/{id}', [StokController::class, 'detailProduk']);
 
+    Route::get('cetak', function () {
+        return view('reports.nota-transaksi');
+    });
+
     Route::get('logout', [AuthController::class, 'logout']);
 });
