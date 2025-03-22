@@ -32,16 +32,18 @@ class ReportController extends Controller
             'subtotal'  => $subtotal,
         ];
 
-        // Generate PDF dari view
-        $pdf = Pdf::loadView('reports.nota-transaksi', $data)->setPaper('A4', 'landscape');
+        return view('reports.nota-transaksi');
 
-        // Nama file diambil dari kode transaksi
-        $filename = 'UnggulKencana' . $transaksi->kodetransaksi . '.pdf';
+        // // Generate PDF dari view
+        // $pdf = Pdf::loadView('reports.nota-transaksi', $data)->setPaper('A5', 'landscape');
 
-        // Stream PDF ke browser
-        return $pdf->stream($filename);
+        // // Nama file diambil dari kode transaksi
+        // $filename = 'UnggulKencana' . $transaksi->kodetransaksi . '.pdf';
 
-        // Jika ingin langsung diunduh:
-        // return $pdf->download('nota-transaksi.pdf');
+        // // Stream PDF ke browser
+        // return $pdf->stream($filename);
+
+        // // Jika ingin langsung diunduh:
+        // // return $pdf->download('nota-transaksi.pdf');
     }
 }

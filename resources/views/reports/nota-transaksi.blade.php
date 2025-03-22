@@ -14,45 +14,36 @@
     <meta name="author" content="Dreams Technologies">
     <meta name="robots" content="index, follow">
     <title>Dreams POS - Inventory Management & Admin Dashboard Template</title>
-
-    <script src="{{ asset('assets') }}/js/theme-script.js" type="text/javascript"></script>
-
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets') }}/img/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/img/favicon.png') }}">
 
     <!-- Apple Touch Icon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets') }}/img/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/img/apple-touch-icon.png') }}">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{{ asset('assets') }}/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
 
     <!-- animation CSS -->
-    <link rel="stylesheet" href="{{ asset('assets') }}/css/animate.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/animate.css') }}">
 
     <!-- Select2 CSS -->
-    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }}">
 
     <!-- Datatable CSS -->
-    <link rel="stylesheet" href="{{ asset('assets') }}/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/dataTables.bootstrap5.min.css') }}">
 
     <!-- Datetimepicker CSS -->
-    <link rel="stylesheet" href="{{ asset('assets') }}/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css') }}">
 
     <!-- Summernote CSS -->
-    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/summernote/summernote-bs4.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/summernote/summernote-bs4.min.css') }}">
 
     <!-- Fontawesome CSS -->
-    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/fontawesome/css/fontawesome.min.css">
-    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/fontawesome/css/all.min.css">
-
-    <!-- Tabler Icon CSS -->
-    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/tabler-icons/tabler-icons.css">
-
-    <!-- Color Picker Css -->
-    <link rel="stylesheet" href="{{ asset('assets') }}/plugins/@simonwep/pickr/themes/nano.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
     <!-- Main CSS -->
-    <link rel="stylesheet" href="{{ asset('assets') }}/css/style.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
 </head>
 
@@ -65,7 +56,7 @@
                 <div class="row justify-content-between align-items-center border-bottom mb-3">
                     <div class="col-md-6">
                         <div class="mb-2">
-                            <img src="{{ asset('assets') }}/img/logo.png" width="150px" class="img-fluid"
+                            <img src="{{ asset('assets/img/logo.png') }}" width="150px" class="img-fluid"
                                 alt="logo">
                         </div>
                         <p class="mb-1 fw-medium">Jl. Kapten patimura No. 8, karanglewas lor, </p>
@@ -113,7 +104,7 @@
                             <span class="bg-success text-white fs-10 px-1 rounded"><i
                                     class="ti ti-point-filled "></i>Paid</span>
                             <div class="mt-3">
-                                <img src="{{ asset('assets') }}/img/qr.svg" class="img-fluid" alt="QR">
+                                <img src="{{ asset('assets/img/qr.svg') }}" class="img-fluid" alt="QR">
                             </div>
                         </div>
                     </div>
@@ -141,33 +132,6 @@
                                     <td class="text-gray-9 fw-medium text-end">$500</td>
                                     <td class="text-gray-9 fw-medium text-end">$100</td>
                                     <td class="text-gray-9 fw-medium text-end">$500</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h6>Design System</h6>
-                                    </td>
-                                    <td class="text-gray-9 fw-medium text-end">1</td>
-                                    <td class="text-gray-9 fw-medium text-end">$5000</td>
-                                    <td class="text-gray-9 fw-medium text-end">$100</td>
-                                    <td class="text-gray-9 fw-medium text-end">$5000</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h6>Brand Guidellines</h6>
-                                    </td>
-                                    <td class="text-gray-9 fw-medium text-end">1</td>
-                                    <td class="text-gray-9 fw-medium text-end">$5000</td>
-                                    <td class="text-gray-9 fw-medium text-end">$100</td>
-                                    <td class="text-gray-9 fw-medium text-end">$5000</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h6>Social Media Template</h6>
-                                    </td>
-                                    <td class="text-gray-9 fw-medium text-end">1</td>
-                                    <td class="text-gray-9 fw-medium text-end">$5000</td>
-                                    <td class="text-gray-9 fw-medium text-end">$100</td>
-                                    <td class="text-gray-9 fw-medium text-end">$5000</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -212,7 +176,7 @@
                     </div>
                     <div class="col-md-5">
                         <div class="text-end">
-                            <img src="{{ asset('assets') }}/img/sign.svg" class="img-fluid" alt="sign">
+                            <img src="{{ asset('assets/img/sign.svg') }}" class="img-fluid" alt="sign">
                         </div>
                         <div class="text-end mb-3">
                             <h6 class="fs-14 fw-medium pe-3">Ted M. Davis</h6>
@@ -222,7 +186,7 @@
                 </div>
                 <div class="text-center">
                     <div class="mb-3">
-                        <img src="{{ asset('assets') }}/img/logo.svg" width="130" class="img-fluid"
+                        <img src="{{ asset('assets/img/logo.png') }}" width="130" class="img-fluid"
                             alt="logo">
                     </div>
                     <p class="text-dark mb-1">Payment Made Via bank transfer / Cheque in the name of Thomas
@@ -240,35 +204,40 @@
     </div>
 
     <!-- jQuery -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-    <script src="{{ asset('assets') }}/js/jquery-3.7.1.min.js" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}" type="text/javascript"></script>
 
     <!-- Feather Icon JS -->
-    <script src="{{ asset('assets') }}/js/feather.min.js" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/feather.min.js') }}" type="text/javascript"></script>
 
     <!-- Slimscroll JS -->
-    <script src="{{ asset('assets') }}/js/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/jquery.slimscroll.min.js') }}" type="text/javascript"></script>
 
     <!-- Datatable JS -->
-    <script src="{{ asset('assets') }}/js/jquery.dataTables.min.js" type="text/javascript"></script>
-    <script src="{{ asset('assets') }}/js/dataTables.bootstrap5.min.js" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/dataTables.bootstrap5.min.js') }}" type="text/javascript"></script>
 
     <!-- Datetimepicker JS -->
-    <script src="{{ asset('assets') }}/js/moment.min.js" type="text/javascript"></script>
-    <script src="{{ asset('assets') }}/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/moment.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
 
     <!-- Bootstrap Core JS -->
-    <script src="{{ asset('assets') }}/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}" type="text/javascript"></script>
 
     <!-- Summernote JS -->
-    <script src="{{ asset('assets') }}/plugins/summernote/summernote-bs4.min.js" type="text/javascript"></script>
+    <script src="{{ asset('assets/plugins/summernote/summernote-bs4.min.js') }}" type="text/javascript"></script>
 
     <!-- Select2 JS -->
-    <script src="{{ asset('assets') }}/plugins/select2/js/select2.min.js" type="text/javascript"></script>
+    <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}" type="text/javascript"></script>
 
     <!-- Custom JS -->
-    <script src="{{ asset('assets') }}/js/theme-colorpicker.js" type="text/javascript"></script>
-    <script src="{{ asset('assets') }}/js/script.js" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/theme-colorpicker.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/script.js') }}" type="text/javascript"></script>
+    <script>
+        window.onload = function() {
+            window.print(); // Membuka dialog cetak otomatis
+        };
+    </script>
+
 </body>
 
 </html>
