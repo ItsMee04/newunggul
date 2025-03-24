@@ -7,6 +7,7 @@ use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\Controller;
+use App\Models\Produk;
 
 class ReportController extends Controller
 {
@@ -43,5 +44,13 @@ class ReportController extends Controller
 
         // Jika ingin langsung diunduh:
         // return $pdf->download('nota-transaksi.pdf');
+    }
+
+    public function CetakSuratBarang($id)
+    {
+        $produk = Keranjang::with(['produk'])
+            ->findOrFail($id);
+
+        return response()->json(['success' => true, 'message' => 'Data Produk Berhasil Ditemukan', 'Data' => $produk]);
     }
 }

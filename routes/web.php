@@ -151,7 +151,11 @@ Route::middleware('auth')->group(function () {
     Route::get('perbaikan/getProdukRusak', [PerbaikanController::class, 'getProdukRusak']);
     Route::get('perbaikan/updatePerbaikanProduk/{id}', [PerbaikanController::class, 'updatePerbaikanProduk']);
 
-    Route::get('order/cetakNotaTransaksi/{id}', [ReportController::class, 'cetakNotaTransaksi']);
+
+    Route::get('cetaksuratbarang/{id}', function () {
+        return view('reports.nota-barang');
+    });
+    Route::get('/getNotaBarang/{id}', [ReportController::class, 'CetakSuratBarang']);
 
     Route::get('stock', [StokController::class, 'index']);
     Route::get('stock/getStokByNampan', [StokController::class, 'getStokByNampan']);

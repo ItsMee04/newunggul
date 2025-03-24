@@ -75,14 +75,39 @@ class POSController extends Controller
     public function getItem($id)
     {
         if ($id == 'all') {
-            $produk = NampanProduk::with('produk')->where('status', 1)->get();
+            $produk = NampanProduk::with('produk')
+                ->where('status', 1)
+                ->get()
+                ->map(function ($item) {
+                    if ($item->produk) {
+                        // Format berat dengan 4 angka di belakang koma
+                        $item->produk->berat = number_format((float) $item->produk->berat, 4, '.', '');
+
+                        // Hitung harga total
+                        $item->produk->hargatotal = number_format((float) $item->produk->harga_jual * (float) $item->produk->berat, 2, '.', '');
+                    }
+                    return $item;
+                });
             return response()->json([
                 'success'   =>  true,
                 'message'   =>  "Data Ditemukan",
                 "Data"      =>  $produk
             ]);
         } else {
-            $produk = NampanProduk::with('produk')->where('nampan_id', $id)->where('status', 1)->get();
+            $produk = NampanProduk::with('produk')
+                ->where('nampan_id', $id)
+                ->where('status', 1)
+                ->get()
+                ->map(function ($item) {
+                    if ($item->produk) {
+                        // Format berat dengan 4 angka di belakang koma
+                        $item->produk->berat = number_format((float) $item->produk->berat, 4, '.', '');
+
+                        // Hitung harga total
+                        $item->produk->hargatotal = number_format((float) $item->produk->harga_jual * (float) $item->produk->berat, 2, '.', '');
+                    }
+                    return $item;
+                });
 
             return response()->json([
                 'success'   =>  true,

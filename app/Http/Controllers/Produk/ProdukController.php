@@ -37,7 +37,14 @@ class ProdukController extends Controller
 
     public function getProduk()
     {
-        $produk = Produk::where('status', 1)->with(['jenis', 'kondisi'])->get();
+        $produk = Produk::where('status', 1)
+            ->with(['jenis', 'kondisi'])
+            ->get()
+            ->map(function ($item) {
+                $item->berat = round((float) $item->berat, 4);
+                $item->hargatotal = number_format((float) $item->harga_jual * (float) $item->berat, 2, '.', '');
+                return $item;
+            });
         $count = Produk::where('status', 1)->count();
         return response()->json(['success' => true, 'message' => 'Data Produk Berhasil Ditemukan', 'Data' => $produk, 'Total' => $count]);
     }
