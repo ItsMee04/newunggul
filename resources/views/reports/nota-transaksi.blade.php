@@ -204,6 +204,13 @@
     </div>
 
     <!-- jQuery -->
+    <script>
+        window.onload = function() {
+            window.print(); // Membuka dialog cetak otomatis
+        };
+    </script>
+
+    <script src="{{ asset('assets') }}/js/jquery-3.7.1.min.js" type="text/javascript"></script>
     <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}" type="text/javascript"></script>
 
     <!-- Feather Icon JS -->

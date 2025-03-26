@@ -43,7 +43,20 @@ class KeranjangController extends Controller
 
     public function index()
     {
-        $keranjang = Keranjang::where('status', 1)->where('user_id', Auth::user()->id)->with('produk')->with('user')->get();
+        $keranjang = Keranjang::where('status', 1)
+            ->where('user_id', Auth::user()->id)
+            ->with(['produk', 'user'])
+            ->get()
+            ->map(function ($item) {
+                if ($item->produk) {
+                    // Format berat dengan 4 angka di belakang koma
+                    $item->produk->berat = number_format((float) $item->produk->berat, 4, '.', '');
+
+                    // Hitung harga total
+                    $item->produk->hargatotal = number_format((float) $item->produk->harga_jual * (float) $item->produk->berat, 2, '.', '');
+                }
+                return $item;
+            });
 
         return response()->json(['success' => true, 'message' => 'Produk Keranjang Berhasil Ditemukan', 'data' => $keranjang]);
     }

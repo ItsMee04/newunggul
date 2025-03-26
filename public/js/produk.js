@@ -41,7 +41,7 @@ $(document).ready(function () {
                         minimumFractionDigits: 0,
                     });
 
-                    const hargaJual = formatter.format(item.harga_jual);
+                    const hargaJual = formatter.format(item.hargatotal);
 
                     $("#daftarProduk").append(`
                         <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3 produk-item" data-name="${item.nama}"

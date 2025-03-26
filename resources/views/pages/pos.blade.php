@@ -96,8 +96,8 @@
                                         <td class="text-end" id="totalhargabarang">0</td>
                                     </tr>
                                     <tr>
-                                        <td class="danger">Discount (<span id="discount"></span> %)</td>
-                                        <td class="danger text-end" id="hargadiskon"></td>
+                                        <td class="danger">Discount (<span id="discount">0</span> %)</td>
+                                        <td class="danger text-end" id="hargadiskon">Rp. 0</td>
                                     </tr>
                                     <tr>
                                         <td>Total</td>

@@ -49,7 +49,7 @@ $(document).ready(function () {
                         minimumFractionDigits: 0, // Biasanya mata uang Rupiah tidak menggunakan desimal
                     });
 
-                    const hargajual = formatter.format(item.produk.harga_jual); // Output: "Rp1.500.000"
+                    const hargajual = formatter.format(item.produk.hargatotal); // Output: "Rp1.500.000"
                     $("#daftarProduk").append(
                         `
                         <div class="col-sm-2 col-md-6 col-lg-3 col-xl-3">
@@ -151,7 +151,7 @@ $(document).ready(function () {
                             currency: "IDR",
                             minimumFractionDigits: 0,
                         });
-                        const hargajual = formatter.format(produk.harga_jual);
+                        const hargajual = formatter.format(produk.hargatotal);
 
                         // Tambahkan item ke elemen keranjang
                         $("#keranjang").append(`
@@ -341,8 +341,12 @@ $(document).ready(function () {
                     var formattedAmount = formatter.format(total); // Output: "Rp1.500.000"
 
                     $("#totalhargabarang").text(formattedAmount);
+                    $("#total").text(formattedAmount);
+                    $("#grandtotal").text(formattedAmount);
                 } else {
                     $("#totalhargabarang").text(0);
+                    $("#total").text(formattedAmount);
+                    $("#grandtotal").text(formattedAmount);
                 }
             },
             error: function (xhr, status, error) {

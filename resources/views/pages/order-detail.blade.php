@@ -11,11 +11,6 @@
                 </div>
                 <ul class="table-top-head">
                     <li>
-                        <a href="cetakNotaTransaksi/{{ $transaksi->id }}" target="__blank" data-bs-toggle="tooltip"
-                            data-bs-placement="top" title="Print"><i data-feather="printer"
-                                class="feather-rotate-ccw"></i></a>
-                    </li>
-                    <li>
                         <a data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh"><i data-feather="rotate-ccw"
                                 class="feather-rotate-ccw"></i></a>
                     </li>
@@ -135,7 +130,7 @@
                                     </td>
                                     <td
                                         style="padding: 5px;vertical-align: middle;font-weight: 600;color: #5E5873;font-size: 14px;padding: 10px; ">
-                                        Print Surat Product
+                                        Print Surat Produk
                                     </td>
                                 </tr>
                                 @foreach ($keranjang as $item)
@@ -158,7 +153,7 @@
                                             {{ 'Rp.' . ' ' . number_format($item->total) }}
                                         </td>
                                         <td style="padding: 10px;vertical-align: top; ">
-                                            <a href="/NotaBarang/{{ $item->produk_id }}" target="__blank">
+                                            <a href="/cetaksuratbarang/{{ $item->produk_id }}" target="__blank">
                                                 <i data-feather="printer" class="feather-rotate-ccw"
                                                     data-bs-toggle="tooltip" data-bs-placement="top"
                                                     title="Cetak Surat Barang">
