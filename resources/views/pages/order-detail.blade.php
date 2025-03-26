@@ -152,13 +152,14 @@
                                         <td style="padding: 10px;vertical-align: top; ">
                                             {{ 'Rp.' . ' ' . number_format($item->total) }}
                                         </td>
-                                        <td style="padding: 10px;vertical-align: top; ">
-                                            <a href="/cetaksuratbarang/{{ $item->produk_id }}" target="__blank">
-                                                <i data-feather="printer" class="feather-rotate-ccw"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    title="Cetak Surat Barang">
-                                                </i>
-                                            </a>
+                                        <td>
+                                            <div class="edit-delete-action">
+                                                <a class="me-2 edit-icon  p-2" href="#" data-bs-toggle="tooltip"
+                                                    data-bs-placement="top" title=""
+                                                    data-bs-original-title="Cetak Surat barang">
+                                                    <i data-feather="printer" class="feather-eye"></i>
+                                                </a>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
