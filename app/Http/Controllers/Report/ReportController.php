@@ -48,8 +48,7 @@ class ReportController extends Controller
 
     public function CetakSuratBarang($id)
     {
-        $produk = Keranjang::with(['produk'])
-            ->findOrFail($id);
+        $produk = Transaksi::with(['keranjang', 'pelanggan', 'keranjang.produk', 'keranjang.produk.kondisi'])->where('id', $id)->get();
 
         return response()->json(['success' => true, 'message' => 'Data Produk Berhasil Ditemukan', 'Data' => $produk]);
     }
