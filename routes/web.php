@@ -156,6 +156,7 @@ Route::middleware('auth')->group(function () {
         return view('reports.nota-barang');
     });
     Route::get('/getNotaBarang/{id}', [ReportController::class, 'CetakSuratBarang']);
+    Route::get('/order/cetakinvoice/{id}', [ReportController::class, 'jasperNotaTransaksi']);
 
     Route::get('stock', [StokController::class, 'index']);
     Route::get('stock/getStokByNampan', [StokController::class, 'getStokByNampan']);

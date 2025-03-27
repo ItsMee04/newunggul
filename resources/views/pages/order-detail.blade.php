@@ -11,6 +11,10 @@
                 </div>
                 <ul class="table-top-head">
                     <li>
+                        <a href="/order/cetakinvoice/{{ $transaksi->id }}" data-bs-toggle="tooltip" data-bs-placement="top"
+                            title="Print Invoice"><i data-feather="printer" class="feather-rotate-ccw"></i></a>
+                    </li>
+                    <li>
                         <a data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh"><i data-feather="rotate-ccw"
                                 class="feather-rotate-ccw"></i></a>
                     </li>
@@ -154,7 +158,7 @@
                                         </td>
                                         <td>
                                             <div class="edit-delete-action">
-                                                <a class="me-2 edit-icon  p-2" href="#" data-bs-toggle="tooltip"
+                                                <a class="me-2 edit-icon  p-2" href="" data-bs-toggle="tooltip"
                                                     data-bs-placement="top" title=""
                                                     data-bs-original-title="Cetak Surat barang">
                                                     <i data-feather="printer" class="feather-eye"></i>
